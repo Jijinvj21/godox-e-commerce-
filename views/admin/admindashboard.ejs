@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/public/stylesheet/userheader.css">
+  </head>
+  <body>
+    <%- include('../partials/admin-header')%>
+    <div class="grid-container">
+
+      
+
+
+      
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <p class="font-weight-bold" style=" font-size: 180%;">DASHBOARD</p>
+        </div>
+
+        <div class="main-cards">
+           
+        </div> 
+
+        <!-- <div class="charts"> -->
+
+          <div class="charts-card">
+            <p class="chart-title" style="text-align: center; font-size: 130%;">Category Data</p>
+            <div id="bar-chart"></div>
+          </div>
+
+          <div class="charts-card">
+            <p class="chart-title"style="text-align: center; font-size: 130%;">Purchase and Sales Orders</p>
+            <div id="area-chart"></div>
+          </div>
+
+        </div>
+      </main>
+      <!-- End Main -->
+     
+
+    </div>
+     
+
+    <!-- Scripts -->
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+    <!-- Custom JS -->
+    <!-- <script src="/public/javascript/admindashboard.js"></script> -->
+    
+<script>
+
+// SIDEBAR TOGGLE
+
+var sidebarOpen = false;
+var sidebar = document.getElementById("sidebar");
+
+function openSidebar() {
+  if(!sidebarOpen) {
+    sidebar.classList.add("sidebar-responsive");
+    sidebarOpen = true;
+  }
+}
+
+function closeSidebar() {
+  if(sidebarOpen) {
+    sidebar.classList.remove("sidebar-responsive");
+    sidebarOpen = false;
+  }
+}
+
+
+
+// ---------- CHARTS ----------
+
+// BAR CHART
+var barChartOptions = {
+  series: [{
+    data: [<%=flashcount.length%>,<%=audio.length%>,<%=monitor.length%>,<%=lightshaper.length%>,<%=accessories.length%>,<%=continuouslight.length%> ]
+  }],
+  chart: {
+    type: 'bar',
+    height: 350,
+    toolbar: {
+      show: false
+    },
+  },
+  colors: [
+    "#6c6c6c",
+    "#5b9ec9",
+    "#5bc980",
+    "#c9c25b",
+    "#c9835b",
+    "#c95bb1"
+  ],
+  plotOptions: {
+    bar: {
+      distributed: true,
+      borderRadius: 4,
+      horizontal: false,
+      columnWidth: '25%',
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  legend: {
+    show: false
+  },
+  xaxis: {
+    categories: ["Flash", "Audio", "Moniter", "Light shaper", "Accessories", "Continuous Light" ],
+  },
+  yaxis: {
+    title: {
+      text: "Count"
+    }
+  }
+};
+
+var barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+barChart.render();
+
+
+// AREA CHART
+var areaChartOptions = {
+  series: [{
+    name: 'Customers',
+    data: [31, 40, 28, 51, 42, 109, 120, 110, 150, 115, 180, 200]
+  }, {
+    name: 'Sales Orders',
+    data: [11, 32, 45, 32, 34, 52, 41, 71, 81, 101, 91, 110]
+  }],
+  chart: {
+    height: 350,
+    type: 'area',
+    toolbar: {
+      show: false,
+    },
+  },
+  colors: [" #c9835b", "#5bc980"],
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  markers: {
+    size: 0
+  },
+  yaxis: [
+    {
+      title: {
+        text: 'Customers',
+      },
+    },
+    {
+      opposite: true,
+      title: {
+        text: 'Sales Orders',
+      },
+    },
+  ],
+  tooltip: {
+    shared: true,
+    intersect: false,
+  }
+};
+
+var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+areaChart.render();
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

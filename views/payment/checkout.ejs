@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<body>
+    <div class="container">
+        <div class="py-5 text-center">
+         </div>
+         <%=usercart.cartItems[0].productId.name%>
+      
+        <div class="row">
+          <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted">Your cart</span>
+              <span class="badge badge-secondary badge-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+            
+
+                <div class=" ">
+                  <%for(let i=0;i< usercart.cartItems.length;i++){%>
+                  <small class="text-muted"><%=usercart.cartItems[i].productId.name%></small>
+                  <div class="text-muted " style="float: right; " >$<%=usercart.cartItems[i].productId.price%></div>
+                    <br>
+                    <%}%>
+                </div>
+                <%for(let i=0;i< usercart.cartItems.length;i++){%>
+              
+                <br>
+                <%}%>
+              </li>
+             
+             
+             
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Total (USD)</span>
+                <strong>$<%=totprice%></strong>
+              </li>
+            </ul>
+      
+            <form class="card p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo code">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-secondary">Redeem</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Billing address</h4>
+            <form class="needs-validation" novalidate action="/checkoutdata" method="post">
+              <input type="text" name="total" value="<%=totprice%>" style="display: none;">
+              <div class="row">
+                <div class="mb-3">
+                    <!-- <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                    <input type="text" class="form-control" id="address2" placeholder="Name"> -->
+                    <!-- <select class="custom-select d-block w-100 py-2"  required> -->
+                      <select  class="custom-select d-block w-100 py-2" onchange=" setaddress(this.value)">
+                        <option value="">Select an option</option>
+                        <%for(let i=0;i< useraddress.addresses.length;i++){%>
+                          <option value="<%=useraddress.addresses[i]._id%>"   ><%=useraddress.addresses[i].address%></option>
+                      
+                        <%}%>  
+                      </select>
+                       
+                      <!-- </select> -->
+                  </div>
+                <div class="col-md-6 mb-3">
+                  <label for="firstName">Name</label>
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="" required>
+                  <div class="invalid-feedback">
+                    Valid first name is required.
+                  </div>
+                </div>
+               
+              </div>
+      
+             
+      
+              <div class="mb-3">
+                <label for="email">Mobile number <span class="text-muted"></span></label>
+                <input type="email" class="form-control" name="mobile" id="mobno" placeholder="Enter your mobile number">
+                <div class="invalid-feedback">
+                  Enter your mobile number
+                </div>
+              </div>
+      
+              <div class="mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" placeholder="Enter your address"  name="address" required>
+                <div class="invalid-feedback">
+                  Please enter your shipping address.
+                </div>
+              </div>
+      
+             
+      
+              <div class="row">
+                
+                <div class="col-md-3 mb-3">
+                  <label for="zip">Zip</label>
+                  <input type="text" class="form-control" id="zip" placeholder="" name="zip" required>
+                  <div class="invalid-feedback">
+                    Zip code required.
+                  </div>
+                </div>
+              </div>
+             
+              <hr class="mb-4">
+      
+              <h4 class="mb-3">Payment</h4>
+      
+              <div class="d-block my-3">
+                <div class="custom-control custom-radio">
+                  <input id="credit" name="paymentMethod" value="COD" type="radio" class="custom-control-input" checked required>
+                  <label class="custom-control-label" for="credit">COD</label>
+                </div>
+                <!-- <div class="custom-control custom-radio">
+                  <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                  <label class="custom-control-label" for="debit">Debit card</label>
+                </div> -->
+                <div class="custom-control custom-radio">
+                  <input id="paypal" name="paymentMethod" type="radio" value="PayPal"class="custom-control-input" required>
+                  <label class="custom-control-label" for="paypal">PayPal</label>
+                </div>
+              </div>
+           
+             
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            </form>
+          </div>
+        </div>
+       
+  
+  
+        <!-- Input field to display the selected color -->
+  
+  
+  <script>
+    function setaddress(id){
+      console.log('reach');
+    $.ajax({
+        url:'/checkoutform',
+        method:'post',
+        data : {
+            addresId : id
+        },
+        success:(response)=>{
+            console.log(response.data);
+            $("#name").val(response.data[0].name);
+            $("#mobno").val(response.data[0].phone);
+            $("#address").val(response.data[0].address);
+            $("#zip").val(response.data[0].pincode);
+            
+            
+            }
+
+    })
+}
+  </script>
+  
+  <!-- ajax -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
+
+    
+
+
+  <!-- ajaxclose -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

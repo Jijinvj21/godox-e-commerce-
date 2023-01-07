@@ -1,0 +1,194 @@
+
+body
+{
+  margin: 0;
+  padding: 0;
+
+}
+
+
+.nav-logo
+{
+    width: 80px;
+}
+.txt-container
+{
+    float: right;
+    
+}
+.user-img
+{
+    width: 35px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.cart-img
+{
+    width: 35px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.wishlist-img
+{
+    width: 35px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+
+  .topnav {
+    overflow: hidden;
+    background-color:#242424;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+  }
+  
+  .topnav a{
+    float: left;
+    display: block;
+    color: rgb(141 141 141);
+    text-align: center;
+    padding: 11px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .topnav a.active {
+    
+    color: white;
+  }
+  
+  .topnav .search-container {
+    float: right;
+    
+  }
+  
+  .topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+    border-radius: 20px;
+  }
+  
+  .topnav .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: rgb(68, 68, 68);
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+margin-left: -19px;
+border-radius: 10px;
+padding-left: 25px;
+  }
+  
+  .topnav .search-container button:hover {
+    background: rgb(90, 90, 90);
+  }
+  
+ 
+
+  .fa-search
+  {
+    color: #9e9c9c;
+  }
+   @media (min-width: 320px) and ( max-width: 690px) {
+     .topnav .home-txt
+  {
+display: none;
+  }
+  .topnav .prodect-txt
+{
+    display: none;
+}
+ .txt-container
+{
+    display: none;
+} 
+ .search-container
+{
+    display: none;
+} 
+
+  }
+ 
+
+
+
+
+
+
+  /* top nav end */
+
+/* left slider */
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #242424;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #858484;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #ffffff;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  #main {
+    transition: margin-left .5s;
+    padding: 16px;
+    float: right;
+    /* margin-top: -3.33%; */
+    
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+  }
+  @media (min-width: 690px) and ( max-width: 2560px) {
+    #main {
+      display: none;
+      /* margin-top: -3.33%; */
+    }
+  }  
+  @media (min-width: 320px) and ( max-width: 690px) {
+    #main {
+      /* display: none; */
+      margin-top: -62px;
+    }
+  }  
+  /* left slider end */
+  .lines
+  {
+    color: rgb(161, 156, 156);
+  }

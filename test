@@ -1,0 +1,7 @@
+<td>    
+                        
+    <a class="btn btn-warning btn-sm" href="#" role="button">Cancel</a>
+
+    <a class="btn btn-success btn-sm" href="#" role="button">Delivered</a>
+
+           </td>

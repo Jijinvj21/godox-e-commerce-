@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Otp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="/public/fonts//material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="/public/stylesheet/adminlogin.css">
+</head>
+<body>
+
+
+<div class="containe">
+
+    <section class="sign-in">
+        <div class="container box-fom" >
+            <div class="signin-content " style="    margin-right: 20px;">
+                <div class="signin-image signup-img">
+                    <figure><img src="/public/images/otp.jpg" alt="sing up image"></figure>
+                    <!-- <a href="#" class="signup-image-link">Create an account</a> -->
+                </div>
+
+                <div class="signin-form">
+                    <h2 class="form-title formotp">OTP</h2>
+                    <div class="w-100">
+                        <!-- <h3 class="mb-4">Sign Up</h3> -->
+                       
+                        
+                    </div>
+                    <form action="/otp" method="POST" class="register-form" id="login-form">
+                        <div class="form-group">
+                            <label for="your_name"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="number" name="otp" id="your_name" placeholder=" Check Your Mail & Enter OTP"/>
+                        </div>
+                       
+                        <div class="form-group form-button">
+                            <input type="submit" name="signin" id="signin" class="form-submit" value="Verify"/>
+                        </div>
+                    </form>
+                    <form action="/resendotp"  method="post">
+
+                        <button class="btn btn-danger mt-2 " id="resend-button" btn btn-dark>Resend OTP</button>
+                        <!-- <span id="timer" class="ms-3">15</span> -->
+                       </form>
+
+
+
+
+
+
+
+                       <script>
+
+                        function disable(){
+                        
+                            const resend_button= document.getElementById("resend-button")
+                            resend_button.disabled = true;
+                        
+                        }
+                        disable()
+                        
+                        setTimeout(function(){
+                            const resend_button= document.getElementById("resend-button")
+                            resend_button.disabled = false;
+                        },15000)
+                        
+                        let count =15
+                        const timerDiv = document.getElementById('resend-button');
+                        
+                        const timer = setInterval(function() {
+                          count--;
+                          if(count>0){
+                            timerDiv.textContent = 'Resend OTP in '+count+'s';
+                          }
+                          else{
+                            timerDiv.textContent='Resend OTP'
+                          }
+                         
+                        }, 1000);
+                        
+                        setTimeout(function() {
+                          clearInterval(timer);
+                        }, 15000);
+                        </script>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+</div>
+
+
+</body>
+</html>  

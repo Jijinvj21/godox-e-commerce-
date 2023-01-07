@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+	<link rel="stylesheet" href="/public/stylesheet/wishlist.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+
+<%- include('../partials/user-header')%>
+<!------ Include the above in your HEAD tag ---------->
+
+	<div class="cart-wrap">
+		<div class="container">
+	        <div class="row">
+			    <div class="col-md-12">
+			        <div class="main-heading mb-10">My wishlist</div>
+			        <div class="table-wishlist">
+				        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+				        	<thead>
+					        	<tr>
+					        		<th width="45%">Product Name</th>
+					        		<th width="15%">Unit Price</th>
+					        		<!-- <th width="15%">Stock Status</th> -->
+					        		<th width="15%"></th>
+					        		<th width="10%"></th>
+					        	</tr>
+					        </thead>
+					        <tbody>
+					        	
+								<% for (let i = 0; i < wishlistdata.products.length; i++) { %>
+					        	<tr>
+					        		<td width="45%">
+					        			<div class="display-flex align-center">
+		                                    <div class="img-product">
+		                                        <img src="/public/databaseimg/<%=wishlistdata.products[i].image[0]%>" alt="" class="mCS_img_loaded">
+		                                    </div>
+		                                    <div class="name-product">
+		                                        <%=wishlistdata.products[i].name%>
+		                                    </div>
+	                                    </div>
+	                                </td>
+					        		<td width="15%" class="price">$<%=wishlistdata.products[i].price%></td>
+					        		<!-- <td width="15%"><span class="in-stock-box">In Stock</span></td> -->
+									<td width="15%"><button class=" btn btn-dark btn-sm mr-1"  ><a href="/wishlistremove?productId=<%=wishlistdata.products[i]._id%>" class="text-white" style="text-decoration: none;">Remove</a></button></td>
+
+					        		<td width="15%"><button class=" btn btn-dark btn-sm"  ><a href="/addcartwishlist?productId=<%=wishlistdata.products[i]._id%>" class="text-white" style="text-decoration: none;">Add to Cart</a></button></td>
+					        		<td width="10%" class="text-center"><a href="#" class="trash-icon"><i class="far fa-trash-alt"></i></a></td>
+					        	</tr>
+					        	<% } %>
+				        	</tbody>
+				        </table>
+				    </div>
+					
+			    </div>
+			</div>
+			<div class="back-to-shop" ><a href="/productpage" style="text-decoration: none;">&leftarrow;<span class="text-muted" > Back to shop</span></a></div>
+		</div>
+		
+
+	</div>
+	<div class="container-fluid">
+		<div class="row" style="height: 31px;">
+
+		</div>
+	</div>
+	
+	<%- include('../partials/user-footer')%>
+</body>
+</html>

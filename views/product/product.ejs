@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>product list</title>
+  </head>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+    crossorigin="anonymous"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+  />
+
+  <body>
+    <style>
+      /* @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"); */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #fafafa;
+        padding: 0;
+      
+      }
+      h1 {
+        text-align: center;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+      }
+
+      /********************************/
+      .product-item {
+        margin-bottom: 10px;
+        text-align: center;
+        border: 1px solid #f5f5f5;
+        border-bottom: 2px solid #f5f5f5;
+        background: white;
+        transition: 0.4s linear;
+      }
+      .product-item:hover {
+        border-bottom: 2px solid #fc5a5a;
+      }
+      .product-item:hover .button {
+        background: #fc5a5a;
+      }
+      .product-item img {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+      }
+      .product-list {
+        padding: 15px 0;
+      }
+      .product-list h3 {
+        font-family: "Open Sans";
+        font-size: 18px;
+        font-weight: 400;
+        color: #444444;
+        margin: 0 0 10px 0;
+      }
+      .price {
+        font-family: "Open Sans";
+        font-size: 16px;
+        color: #fc5a5a;
+        display: block;
+        margin-bottom: 12px;
+      }
+      .button {
+        font-family: "Open Sans";
+        display: inline-block;
+        padding: 1px 12px 0;
+        margin: 0 auto;
+        background: #cccccc;
+        color: white;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 12px;
+        line-height: 28px;
+        transition: 0.4s linear;
+      }
+      /***********способ 2*******************/
+      .columns:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      .columns .product-item {
+        width: 31.333%;
+        float: left;
+        margin: 0 1% 2%;
+      }
+      @media (max-width: 768px) {
+        .container {
+          width: 100%;
+        }
+        .columns .product-item {
+          width: 48%;
+        }
+      }
+      @media (max-width: 500px) {
+        .columns .product-item {
+          width: 98%;
+          float: none;
+        }
+      }
+
+      /* search */
+      .searchinput {
+        padding: 0.5%;
+
+        border-radius: 10px;
+        width: 25%;
+        background-color: #242424;
+        margin-bottom: 2%;
+        margin-top: 2%;
+        color: #f5f5f5;
+      }
+      ::placeholder {
+        color: #f5f5f5;
+      }
+      .productimage
+      {
+        height: 1000px;
+      }
+    </style>
+
+    <%- include('../partials/user-header')%>
+    
+
+    <!-- <h1>product</h1> -->
+    <!-- <%=productdata %> -->
+   
+    <form action="" class="text-center">
+      <input
+        type="text"
+        name="search"
+        class="searchinput"
+        placeholder="Search"
+      />
+
+      <button type="submit" class="btn btn-none">
+        <i class="bi bi-search text-light" style="margin-left: -90px"></i>
+      </button>
+    </form>
+   
+    
+
+    <div class="container columns">
+      <div class="filter-sort d-flex justify-content-between m-2">
+        <div class="dropdown">
+          <button
+            class="btn btn-dark dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            FILTER
+          </button>
+          <ul class="dropdown-menu">
+            <% if(categorylist!=null){%> 
+              <%categorylist.forEach((category)=>{%>
+
+            <li>
+              <a class="dropdown-item" href="?category=<%=category.name%>"
+                ><%=category.name%></a
+              >
+            </li>
+
+            <% })%> <%}%>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button
+            class="btn btn-dark dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            SORT
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="?sort=asort"
+                >Price -- High to Low</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="?sort=dsort"
+                >Price -- Low to High</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+        <% for (let i = 0; i < productdata.length ; i++) { %>
+      <div class="product-item productimag">
+        <img src="/public/databaseimg/<%=productdata[i].image[0]%> " height="100px">
+        
+        <div class="product-list">
+          <h3><%=productdata[i].name%></h3>
+          <span class="price">$<%=productdata[i].price%></span
+          ><a href="/singleproduct?id=<%=productdata[i]._id%>" class="button">View Product</a>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="pagnition">
+      <nav
+        aria-label="Page navigation example"
+        class="d-flex justify-content-center"
+      >
+        <ul class="pagination">
+          <% for(let j = 1; j <= totalpage; j++){ %>
+          <li class="page-item">
+            <a class="page-link text-dark" href="?page=<%= j %>"><%= j %></a>
+          </li>
+
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+    <%if(productdata.length != 0){%>
+      <p style="display: flex; justify-content: center;" ></p>
+      <%} else{%>
+        <div class="errordiv" style="height: 55.4vh;">
+        <h4 class=" d-flex justify-content-center  text-danger"> NO RESULT FOUND</h4>
+        <!-- <div class="p-3 mb-2 bg-danger text-white d-flex justify-content-center" style="width: 50%;">.bg-danger</div> -->
+      </div>
+  
+      <%}%>
+<div class="container-fluid">
+<div class="row">
+  <%- include('../partials/user-footer')%>
+</div>
+</div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+ 
+</html>
