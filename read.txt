@@ -1,5 +1,5 @@
-git add .
+git add .  //after edit any thing if you need to add that all thing you need to add this line first  
  git status
- git commit -m "2:09 pm /7:1:23"
+ git commit -m "info about it  2:09 pm /7:1:23"
  git push -u origin master
  git push -u origin master

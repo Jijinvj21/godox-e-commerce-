@@ -7,8 +7,10 @@ const categorymodel = require("../models/categorymodel");
 const bannermodel = require("../models/bannermodel");
 const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
+// const userdatause = require("../controller/usercontroller");
+const excelJS = require('exceljs');
+const { vendor } = require("sharp");
 
-const userdatause = require("../controller/usercontroller");
 
 const adminlogin = (req, res) => {
   res.render("../views/admin/adminlogin");
@@ -440,6 +442,12 @@ const couponblock=async(req,res)=>{
 //   product:"SKILLVSeries",
 //   address:"vazhappilly,house,chowwannur,po,kunnamkulam,thrissur",
 //   payment:"COD"});
+const orderstatus = async(req,res)=>{
+let status=req.body.select
+let id = req.body.proid
+await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
+res.redirect('/adminorder')
+}
 
 // display order
 const adminorder = async(req, res) => {
@@ -475,6 +483,9 @@ console.log(error.message);
 
 
 
+
+
+
 module.exports = {
   admindashboard,
 
@@ -487,7 +498,10 @@ module.exports = {
   adminboarddata,
   // admincustomer,
   admincategory,
+  // order
+  orderstatus,
   adminorder,
+  // coupon
   admincoupon,
   // user
   userdata,
@@ -510,4 +524,5 @@ module.exports = {
   //coupons
   couponsdata,
   couponblock
+
 };

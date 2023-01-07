@@ -23,11 +23,12 @@
               <li class="list-group-item d-flex justify-content-between lh-condensed">
             
 
-                <div class=" ">
+                <div class="w-100">
                   <%for(let i=0;i< usercart.cartItems.length;i++){%>
-                  <small class="text-muted"><%=usercart.cartItems[i].productId.name%></small>
+                  <div class="d-flex justify-content-between">
+                    <span class="text-muted"><%=usercart.cartItems[i].productId.name%></span>
                   <div class="text-muted " style="float: right; " >$<%=usercart.cartItems[i].productId.price%></div>
-                    <br>
+                  </div>
                     <%}%>
                 </div>
                 <%for(let i=0;i< usercart.cartItems.length;i++){%>

@@ -23,12 +23,18 @@
       
         
 
-
+        <div class="container-fluid px-4">
+          <h1 class="mt-4">Order</h1>
+          <a href="/exportorder"><button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Downlod csv
+          </button></a>
+        </div>
         <div class="card mb-4">
        
 
-          <div class="card-body">
+          <div class="card-body">  
             <% if(order!=null) { %>
+              
               <table id="datatablesSimple" style="min-height: 35vh;">
                 <thead>
                   <tr>
@@ -60,18 +66,19 @@
                       <td><%=orderData.addresses[0].name%></td>
                       <td><%=orderData. payment%></td>
                       
-                      <td> <div class="dropdown" >
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >
-                          Order status
-                        </button>
-                        <ul class="dropdown-menu"  aria-labelledby="dropdownMenuButton1" >
-                          <li style="height: 25px;"><a class="dropdown-item"  href="#">Cancel</a></li>
-                          <li style="height: 25px;"><a class="dropdown-item" href="#">Shipping</a></li>
-                          <li style="height: 25px;"><a class="dropdown-item" href="#">Placed</a></li>
-                          <li style="height: 25px;"><a class="dropdown-item" href="#">Pending</a></li>
-                          <li style="height: 25px;"><a class="dropdown-item" href="#">Delivered</a></li>
-                        </ul>
-                      </div>
+                      <td> 
+                        <form action="/orderstatus" method="post" class="d-flex ">
+                        <select class="form-select form-select-lg mb-3 " name="select" aria-label=".form-select-lg example" style="width: 200px; " >
+                          <option selected><%=orderData. status%></option>
+                          <option value="cancel">Cancel</option>
+                          <option value="shipping">Shipping</option>
+                          <option value="Placed">Placed</option>
+                          <option value="delivered">Delivered</option>
+                          <input type="text" name="proid" value="<%=orderData._id%>"  class="d-none">
+
+                        </select>
+                        <button class=" btn btn-dark mx-2"  style="height: 50px; padding-top: 10px;" type="submit"  >Update</button>
+                      </form>
                     </td>
                      
                       <td><%=orderData.product.length%></td>

@@ -5,6 +5,7 @@ const router = express.Router();
 const adminController = require("../controller/admincontroller");
 const upload = require("../utility/multer");
 const adminSession = require("../middleware/adminSession");
+const salesReport =require("../utility/export")
 
 
 const adminSessionMW=adminSession.adminSession
@@ -79,5 +80,12 @@ router.get("/admincoupons",adminSessionMW, adminController.admincoupon);
 router.post("/admincoupons", adminController.couponsdata);
 // block coupon
 router.get("/couponblock",adminSessionMW, adminController.couponblock);
+
+
+// orderstatus
+router.post("/orderstatus", adminController.orderstatus);
+
+router.get("/exportorder", salesReport.exportorder);
+
 
 module.exports = router;

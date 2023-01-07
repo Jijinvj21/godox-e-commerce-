@@ -14,7 +14,10 @@ const orderSchema = new Schema({
         name:String,
         pincode:String,
         }],
-    status:String,
+    status:{
+        type:String,
+        default:'Placed',
+    },
     payment:String,
     date:{
         type:Date,
