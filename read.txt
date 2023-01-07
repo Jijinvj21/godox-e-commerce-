@@ -1,3 +1,5 @@
 git add .
  git status
- 
+ git commit -m "2:09 pm /7:1:23"
+ git push -u origin master
+ git push -u origin master
