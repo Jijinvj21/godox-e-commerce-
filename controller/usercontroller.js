@@ -1,5 +1,7 @@
 const express = require("express");
 const User = require("../models/userModel");
+const ordermodel = require("../models/ordermodel");
+
 var nodemailer = require("nodemailer");
 const { use } = require("../routes/adminrout");
 
@@ -276,6 +278,74 @@ const forgotnewpasword = async (req, res) => {
   };
 
 
+  // userprofile
+  const viewuserdata= async(req,res)=>{
+    let email=req.session.userEmail
+    const userdatas = await User.findOne({ email: email });
+    let userid = userdatas._id
+    const order = await ordermodel.find({userId:userid});
+        // console.log(orderdata);
+     
+    res.render("../views/user/userprofile.ejs",{userdatas,order})
+  }
+
+  
+//add address
+const addadderss= async(req,res)=>{
+  
+ let email=req.session.userEmail
+  await User.updateOne({ email:email},{$push:{addresses:{address:req.body.address,phone:req.body.phone,name:req.body.name,pincode:req.body.pincode,}}})
+  res.redirect('/viewuserdata')
+}
+// edit user data
+const edituserdata = async (req,res)=>{
+
+let email=req.session.userEmail
+await User.updateOne({ email:email},{ $set: {name : req.body.name }})
+
+res.redirect('/viewuserdata')
+}
+// edit user password
+const edituserpass = async (req,res)=>{
+// console.log(req.body.current);
+// console.log(req.body.new);
+// console.log(req.body.confirm);
+let email=req.session.userEmail
+const userdatas = await User.findOne({ email: email });
+let password=userdatas.password
+console.log(password);
+if (password ===req.body.current)
+{
+
+  if(req.body.new===req.body.confirm)
+  {
+    await User.updateOne({ email:email},{ $set: {password : req.body.new}})
+
+  }
+  else{
+    console.log('new password and confirm password is not same');
+  }
+}
+else{
+  console.log('current password is error');
+
+}
+
+
+res.redirect('/viewuserdata')
+
+
+}
+// // update order stayus
+const updateorder = async (req,res)=>{
+ console.log(req.body.select);
+ console.log(req.body.proid);
+ let status=req.body.select
+let id = req.body.proid
+await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
+res.redirect('/viewuserdata')
+}
+
 
 
 
@@ -308,7 +378,14 @@ forgototp,
 forgotpassword,
 forgotemailcheck,
 forgototpckeck,
-forgotnewpasword
+forgotnewpasword,
+// userprofil
+viewuserdata,
+addadderss,
+edituserdata,
+edituserpass,
+updateorder
+
 
 };
 

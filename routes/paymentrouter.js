@@ -8,8 +8,7 @@ const sessionMV=require('../middleware/userSession')
 
 
 
-router.get('/address',userSessionMV,paymentController.address)
-router.post('/addadderss',userSessionMV,paymentController.addadderss)
+
 router.get('/checkout',userSessionMV,paymentController.checkout)
 router.post('/checkoutform',userSessionMV,paymentController.checkoutform)
 router.post('/checkoutdata',userSessionMV,paymentController.checkoutdata)

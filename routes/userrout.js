@@ -40,6 +40,19 @@ router.post('/forgototpckeck',userController.forgototpckeck )
 
 router.post('/forgotnewpasword',userController.forgotnewpasword)
 
+// user data display
+
+router.get('/viewuserdata',userSessionMV,userController.viewuserdata)
+router.post('/addadderss',userSessionMV,userController.addadderss)
+router.post('/edituserdata',userSessionMV,userController.edituserdata)
+
+router.post('/edituserpass',userSessionMV,userController.edituserpass)
+
+router.post('/userorderstatus',userSessionMV,userController.updateorder)
+
+
+
+
 
 
 

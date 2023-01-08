@@ -8,21 +8,7 @@ const mongoose=require("mongoose")
 
 
 
-//adress
-const address=async(req,res)=>{
-    let useremail=req.session.userEmail
-    const address = await User.findOne({email:useremail});
-res.render("../views/payment/addadderss.ejs",{address});
 
-}
-//add address
-const addadderss= async(req,res)=>{
-    
-
-   let email=req.session.userEmail
-    await User.updateOne({ email:email},{$push:{addresses:{address:req.body.address,phone:req.body.phone,name:req.body.name,pincode:req.body.pincode,}}})
-    res.redirect('/address')
-}
 
 
 // checkout
@@ -116,8 +102,7 @@ res.redirect('/checkout')
 
 module.exports = {
     // address
-    address,
-    addadderss,
+   
 // checkout
     checkout,
     checkoutform,

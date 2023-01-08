@@ -5,3 +5,93 @@
     <a class="btn btn-success btn-sm" href="#" role="button">Delivered</a>
 
            </td>
+
+
+
+
+
+
+
+
+
+
+<div class="row mb-3">
+    <div class="col-sm-3">
+        <h6 class="mb-0">Address</h6>
+    </div>
+    <div class="col-sm-9 text-secondary">
+        <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-3">
+        <h6 class="mb-0">Address</h6>
+    </div>
+    <div class="col-sm-9 text-secondary">
+        <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-3">
+        <h6 class="mb-0">Address</h6>
+    </div>
+    <div class="col-sm-9 text-secondary">
+        <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9 text-secondary">
+        <input type="button" class="btn btn-primary px-4" value="Save Changes">
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% orderdata.forEach((orderData)=>{ %>
+    <%let date =orderData.date %>
+          <%let isoString = date.toISOString()%>
+          <%let newDate = isoString.split('T')[0]%>
+         
+    <tr>
+      <td> <%=newDate%></td>
+      <td><%=orderData.addresses[0].name%></td>
+      <td><%=orderData. payment%></td>
+    <td><select class="form-select form-select-sm" aria-label=".form-select-sm example">
+        <option selected>wefjjwefjh</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      
+      <td ><%=orderData.total%> </td>
+    </td>
+  </tr>
+  <%})%>
