@@ -26,7 +26,9 @@
     margin-right: .5rem!important;
 }
     </style>
-    
+    <%- include('../partials/user-header')%>
+   
+
     <div class="container my-5">
 		<div class="main-body">
 			<div class="row">
@@ -61,22 +63,25 @@
                       <h6 class="mb-2 mx-2"><%=userdatas.email%></h6>
                     </div>
                 </div>
+              
                 <div class="row mb-3">
                   <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
+                      <h6 class="mb-0">Name</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                    <h6 class="mb-2 mx-2"><%=userdatas.phone%></h6>
+                      <input type="text" class="form-control"  name="name" value="<%=userdatas.name%>">
                   </div>
               </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Name</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control"  name="name" value="<%=userdatas.name%>">
-                                    </div>
-                                </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" class="form-control"  name="phone" value="<%=userdatas.phone%>">
+                </div>
+            </div>
+                              
                                
                                
                              
@@ -129,6 +134,36 @@
                                 </div>
                               </form>
                             </div>
+
+
+
+
+
+
+                            <div class="container text-secondary d-flex justify-content-end">
+                              <div class="row  my-2 ">
+                               
+                               
+                                  <div class="col-sm-3 ">
+                                  <div class="col-sm-9 ">
+                                
+                                      <a href="/logout" class="btn btn-dark ">Logout</a>
+                                  </div>
+                              
+                              </div>
+                            </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
 						</div>
 					</div>
 				</div>
@@ -229,12 +264,25 @@
 
                                       </tr>
                                     </thead>
-                                    <tbody>
+   
+                                   <tbody>
+
                                       
                                       <% order.forEach((orderData)=>{ %>
                                         <%let date =orderData.date %>
                                               <%let isoString = date.toISOString()%>
                                               <%let newDate = isoString.split('T')[0]%>
+
+
+
+
+                                              <%const returnPeriod = 5%>
+                                              <%const purchaseDate = new Date( newDate);%>
+                                              <%const expirationDate = new Date(purchaseDate);%>
+                                              <%expirationDate.setDate(expirationDate.getDate() + returnPeriod);%>
+                                              <%=console.log(expirationDate)%>
+
+
                                              
                                         <tr>
                                           <td> <%=newDate%></td>
@@ -246,21 +294,25 @@
                                             <select class="form-select form-select-lg mb-3 "  name="select" aria-label=".form-select-lg example" style="width: 200px; " >
                                             
                                               <option  selected><%=orderData. status%></option>
-                                              <%if(orderData.status === 'delivered'){%>
-                                              <option  value="return" >Return</option>
+                                              
+                                              <%if(orderData.status === 'delivered' && purchaseDate < expirationDate){%>
+                                              <option   value="return" >Return</option>
+                                              <%}else if(orderData.status === 'delivered'  && purchaseDate > expirationDate ){%>
+                                                <option disabled   value="return" >Return</option>
                                            
                                             <%}else if(orderData.status === 'cancel'){%>
                                               <option disabled value="cancel">Cancel</option>
-                                              <% } else { %>
+                                              <% } else  { %>
                                                 <option   value="cancel" >Cancel</option>
                                               <%}%>
                                               
                                               <input type="text" name="proid" value="<%=orderData._id%>"  class="d-none">
                     
                                             </select>
-                                            <%if(orderData.status === 'delivered'){%>
+                                            <%if(orderData.status === 'delivered' && purchaseDate < expirationDate){%>
                                               <button class=" btn btn-dark mx-2"  style="height: 50px; padding-top: 10px;" type="submit"  >Update</button>
-                                           
+                                              <%}else if(orderData.status === 'delivered'  && purchaseDate > expirationDate ){%>
+                                                <input type="hidden" name="" id="">
                                             <%}else if(orderData.status === 'cancel'){%>
                                               <input type="hidden" name="" id="">
                                               <% } else { %>
@@ -287,7 +339,7 @@
 			</div>
 		</div>
 	</div>
-
+  <%- include('../partials/user-footer')%>
  
 
 
@@ -296,3 +348,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+

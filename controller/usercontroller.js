@@ -301,7 +301,7 @@ const addadderss= async(req,res)=>{
 const edituserdata = async (req,res)=>{
 
 let email=req.session.userEmail
-await User.updateOne({ email:email},{ $set: {name : req.body.name }})
+await User.updateOne({ email:email},{ $set: {name : req.body.name , phone :req.body.phone}})
 
 res.redirect('/viewuserdata')
 }
@@ -345,6 +345,7 @@ let id = req.body.proid
 await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
 res.redirect('/viewuserdata')
 }
+
 
 
 
