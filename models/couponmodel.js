@@ -11,16 +11,7 @@ const couponSchema = new Schema({
     status:{
         type:Boolean,
         default:true
-    },
-    userdata:[{
-        userId:{
-            type:mongoose.SchemaTypes.ObjectId,
-            ref:'User'
-        },
-    
-    }],
-  
-    
+    }
 });
 const coupon = mongoose.model('coupon', couponSchema);
 

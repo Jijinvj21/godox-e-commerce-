@@ -8,6 +8,7 @@
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <body>
+ 
     <div class="container">
         <div class="py-5 text-center">
          </div>
@@ -64,7 +65,7 @@
             <h4 class="mb-3">Billing address</h4>
             <form class="needs-validation" novalidate action="/checkoutdata" method="post">
                 <!-- <span>$<section value="total"  id="discount"><%=usercart.totalPrice%></section></span> -->
-              <input type="text" name="total"  id="discoun"  value=" <%=usercart.totalPrice%>">
+              <input type="text" name="total"  id="discoun"  value=" <%=usercart.totalPrice%>" hidden>
               <div class="row">
                 <div class="mb-3">
                     <!-- <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>

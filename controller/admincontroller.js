@@ -1,5 +1,5 @@
 const express = require("express");
-const sharp =require("sharp")
+const sharp = require("sharp")
 const admindatamodel = require("../models/adminmodel");
 const Product = require("../models/adminproductmodel");
 const Userdatamodel = require("../models/userModel");
@@ -9,7 +9,10 @@ const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
 // const userdatause = require("../controller/usercontroller");
 const excelJS = require('exceljs');
-const { vendor } = require("sharp");
+// const { vendor } = require("sharp");
+
+
+
 
 
 const adminlogin = (req, res) => {
@@ -32,7 +35,7 @@ const adminlogdata = async (req, res) => {
     let user = await admindatamodel.findOne({ email: email });
     if (user) {
       if (email === user.email && password === user.password) {
-        req.session.email=email
+        req.session.email = email
         // res.send('ok')
         res.redirect("/admindashboard");
       } else {
@@ -61,27 +64,27 @@ const userdata = async (req, res) => {
   try {
     const userdetail = await Userdatamodel.find();
     res.render("../views/admin/customer.ejs", { userdatashow: userdetail });
-  } catch (err) {}
+  } catch (err) { }
 };
 // dashboard
-const admindashboard = async(req, res) => {
+const admindashboard = async (req, res) => {
   // find user data
   const boarduserdata = await Userdatamodel.find();
   // find product  data
   // flash count
-  const flashcount = await Product.find({category:"Flash"});
+  const flashcount = await Product.find({ category: "Flash" });
   // Continuous Light
-  const  continuouslight= await Product.find({category:"Continuous Light"});
+  const continuouslight = await Product.find({ category: "Continuous Light" });
   // Monitor
-  const  monitor= await Product.find({category:"Monitor"});
+  const monitor = await Product.find({ category: "Monitor" });
   // Audio
-  const  audio= await Product.find({category:"Audio"});
+  const audio = await Product.find({ category: "Audio" });
   // Light Shaper
-  const  lightshaper= await Product.find({category:"Light Shaper"});
+  const lightshaper = await Product.find({ category: "Light Shaper" });
   // Accessories
-  const accessories= await Product.find({category:"Accessories"});
+  const accessories = await Product.find({ category: "Accessories" });
   // find order
-  const order= await Product.find();
+  const order = await Product.find();
 
 
 
@@ -89,9 +92,9 @@ const admindashboard = async(req, res) => {
   const boardorderdata = await ordermodel.find();
 
 
-  res.render("../views/admin/admindashboard",{boarduserdata,boardorderdata,flashcount,continuouslight,monitor,audio,lightshaper,accessories,order});
+  res.render("../views/admin/admindashboard", { boarduserdata, boardorderdata, flashcount, continuouslight, monitor, audio, lightshaper, accessories, order });
 };
-const adminboarddata =(req,res)=>{
+const adminboarddata = (req, res) => {
 
 
   res.redirect('/admindashboard')
@@ -151,44 +154,55 @@ const blockuser = async (req, res) => {
 };
 // insert image
 const insertProduct = async (req, res) => {
-
-
-
-
-
-
-//   const croppedImage = await sharp(req.files[0])
-//   .resize({ width: 200, height: 200 })
-
- 
-
-// const product  = product ({
-//   cropedimg: croppedImage
-// });
-// await product .save();
-
-
-
-
-
+  if(req.files){
+    console.log(req.files)
   try {
+   
+  let name = Date.now() + '-' + req.files[0].originalname;
 
-    let product =  new Product({
+  await sharp(req.files[0].buffer)
+  .resize({ width: 485, height: 485 })
+  .toFile('public/databaseimg/' + name)
+  await Product.insertMany(
+    [{
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
-      image: [req.files[0].filename,req.files[1].filename,req.files[2].filename,req.files[3].filename],// req.file.filename
+      image: name,// req.file.filename
       // cropedimg: await sharp(req.files[0]).resize(300,200),
       price: req.body.price,
       quantity: req.body.quantity,
-    });
-  //  console.log(req.files.buffer);
-    product.save();
-    res.redirect("/adminproducts");
-    console.log(product.cropedimg);
-  } catch (error) {
-    console.log(error.message);
+    }]
+  )
+
+  for (let i = 1; i < req.files.length; i++) {
+    name = Date.now() + '-' + req.files[i].originalname;
+    await sharp(req.files[i].buffer).resize({ width: 485, height: 485 }).toFile('public/databaseimg/' + name)
+    await Product.updateOne({ name: req.body.name }, { $push: { image: name } })
   }
+
+
+  //   let product =  new Product({
+  //     name: req.body.name,
+  //     description: req.body.description,
+  //     category: req.body.category,
+  //     image: name,// req.file.filename
+  //     // cropedimg: await sharp(req.files[0]).resize(300,200),
+  //     price: req.body.price,
+  //     quantity: req.body.quantity,
+  //   });
+  // //  console.log(req.files.buffer);
+  //   product.save();
+  res.redirect("/adminproducts");
+  // console.log(product.cropedimg);
+  } catch (error) {
+  // console.log(error.message);
+  // console.log('kkkkkkkkkkk');
+  }
+}
+else{
+    res.redirect('/admin/products/categorymangement?message=Select jpeg format')
+}
 };
 
 // display image
@@ -200,7 +214,7 @@ const displayimage = async (req, res) => {
       product: detail,
       catData: catData,
     }); //../views/admin/display.ejs
-  } catch (err) {}
+  } catch (err) { }
 };
 
 //   blockproduct
@@ -285,7 +299,7 @@ const categorydata = async (req, res) => {
     res.render("../views/admin/admincategory.ejs", {
       category: userdetaicategory,
     });
-  } catch (err) {}
+  } catch (err) { }
   console.log("reach");
 };
 // add category
@@ -354,7 +368,7 @@ const banner = async (req, res) => {
     res.render("../views/admin/banner.ejs", {
       bannerimg: bannerimg,
     });
-  } catch (err) {}
+  } catch (err) { }
   console.log("reach");
 };
 // block banner image
@@ -380,23 +394,23 @@ const bannerblock = async (req, res) => {
 };
 // coupon inasert
 const couponsdata = async (req, res) => {
- 
+
 
   try {
-    
-const name=req.body.name;
+
+    const name = req.body.name;
     var couponexist = await couponmodel.findOne({ name: name });
     if (couponexist) {
       console.log('exist');
       res.redirect("/admincoupons");
     } else {
       let coupon = new couponmodel({
-        name:req.body.name,
-        discount:req.body.discount ,
-        maxdiscount:req.body.maxdiscount ,
-        minpurchaseamount:req.body.minpurchase ,
-        createddate:req.body.crearedate,
-        expiredate:req.body.expiredate,
+        name: req.body.name,
+        discount: req.body.discount,
+        maxdiscount: req.body.maxdiscount,
+        minpurchaseamount: req.body.minpurchase,
+        createddate: req.body.crearedate,
+        expiredate: req.body.expiredate,
 
       });
       coupon.save();
@@ -409,14 +423,14 @@ const name=req.body.name;
 
 
 // display coupon
-const admincoupon = async(req, res) => {
-  try{
+const admincoupon = async (req, res) => {
+  try {
     const coupon = await couponmodel.find({});
-    
-    res.render("../views/admin/admincoupon",{coupondata:coupon});
+
+    res.render("../views/admin/admincoupon", { coupondata: coupon });
 
   }
-  catch (error){
+  catch (error) {
 
     console.log(error.message);
   }
@@ -444,30 +458,30 @@ const admincoupon = async(req, res) => {
 // }
 
 // order
- 
+
 // ordermodel.insertMany({name:"jijin",
 //   product:"SKILLVSeries",
 //   address:"vazhappilly,house,chowwannur,po,kunnamkulam,thrissur",
 //   payment:"COD"});
-const orderstatus = async(req,res)=>{
-let status=req.body.select
-let id = req.body.proid
-await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
-res.redirect('/adminorder')
+const orderstatus = async (req, res) => {
+  let status = req.body.select
+  let id = req.body.proid
+  await ordermodel.updateOne({ _id: id }, { $set: { status: status } })
+  res.redirect('/adminorder')
 }
 
 // display order
-const adminorder = async(req, res) => {
-  try{
+const adminorder = async (req, res) => {
+  try {
     const order = await ordermodel.find({});
-   
 
-    res.render("../views/admin/adminorder",{order:order});
+
+    res.render("../views/admin/adminorder", { order: order });
   }
-  catch(error){
-console.log(error.message);
+  catch (error) {
+    console.log(error.message);
   }
- 
+
 };
 
 

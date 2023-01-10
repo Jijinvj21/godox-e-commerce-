@@ -1,6 +1,6 @@
 const express = require("express");
 const router=express.Router();
-const paymentController=require('../controller/paymentcontroller')
+// const paymentController=require('../controller/paymentcontroller')
 var paypal = require('paypal-rest-sdk');
 const User = require("../models/userModel");
 const cartmodel = require("../models/cartmodel")
@@ -30,19 +30,25 @@ paypal.configure({
     //     payment: req.body.paymentMethod,
     //     total: req.body.total
 
-console.log(req.body.address);
-console.log(req.body.mobile);
-console.log(req.body.name);
-console.log(req.body.zip);
+// console.log(req.body.address);
+// console.log(req.body.mobile);
+// console.log(req.body.name);
+// console.log(req.body.zip);
 console.log(req.body.paymentMethod);
-console.log(req.body.total);
+// console.log(req.body.total);
 price=parseInt(req.body.total);
-console.log('*********');
-console.log(price);
+// console.log('*********');
+// console.log(price);
 
-console.log('*********');
+// console.log('*********');
 
+// console.log(req.body.paymentMethod);
 
+if('COD' === req.body.paymentMethod){
+console.log("cod");
+}
+else{
+  console.log("paypal");
 
 
 
@@ -55,8 +61,8 @@ console.log('*********');
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:8080/",
-            "cancel_url": "http://localhost:8080/"
+            "return_url": "http://localhost:8080/successpay",
+            "cancel_url": "http://localhost:8080/checkout"
         },
         "transactions": [{
             "item_list": {
@@ -110,42 +116,42 @@ const usercheckout = await User.findOne({ email: req.session.userEmail });
           }
         }
       });
-
+    }
   }
 
   
 
-router.get("/success", (req, res) => {
-    const payerId = req.query.PayerID;
-    const paymentId = req.query.paymentId;
+// router.get("/success", (req, res) => {
+//     const payerId = req.query.PayerID;
+//     const paymentId = req.query.paymentId;
   
-    const execute_payment_json = {
-      payer_id: payerId,
-      transactions: [
-        {
-          amount: {
-            currency: "USD",
-            total: "25.00",
-          },
-        },
-      ],
-    };
+//     const execute_payment_json = {
+//       payer_id: payerId,
+//       transactions: [
+//         {
+//           amount: {
+//             currency: "USD",
+//             total: "25.00",
+//           },
+//         },
+//       ],
+//     };
   
-    paypal.payment.execute(
-      paymentId,
-      execute_payment_json,
-      function (error, payment) {
-        if (error) {
-          console.log(error.response);
-          throw error;
-        } else {
-          console.log(JSON.stringify(payment));
-          res.send("Success");
-        }
-      }
-    );
-  });
-  router.get('/cancel', (req, res) => res.send('Cancelled'));
+//     paypal.payment.execute(
+//       paymentId,
+//       execute_payment_json,
+//       function (error, payment) {
+//         if (error) {
+//           console.log(error.response);
+//           throw error;
+//         } else {
+//           console.log(JSON.stringify(payment));
+//           res.send("Success");
+//         }
+//       }
+//     );
+//   });
+//   router.get('/cancel', (req, res) => res.send('Cancelled'));
 
 
 

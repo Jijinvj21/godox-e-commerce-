@@ -20,6 +20,7 @@ router.post('/checkout',userSessionMV,paymentController.checkouttot)
 
 
 router.post("/checkoutdata",userSessionMV, paypalController.paypalgate);
+router.get('/successpay',userSessionMV,paymentController.success)
 
 
 

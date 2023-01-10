@@ -176,15 +176,13 @@ a:hover{
                 <div class="title">
                     <div class="row">
                         <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                        <%=console.log("ejsejsejs")%>
-                        <%=console.log(proimg.cartItems[0].productId.image[0])%>
-                        <%=console.log("ejsejsejs")%>
+                       
 
                        
                         <div class="col align-self-center text-right text-muted"><%=proimg.cartItems.length%> items</div>
                       
                     </div>
-                </div> 
+                </div> <%if(proimg.cartItems[0]!=null){%>
                  <% var subtot=0%>
                 <div class="row border-top border-bottom">
                     <%for(let i=0;i< proimg.cartItems.length;i++){%>
@@ -214,7 +212,11 @@ a:hover{
 
 
                 </div>
-               
+               <%}else{%>
+                <div class="row">
+                    <h1>no items evailable</h1>
+                </div>
+                <%}%>
                
                 <div class="back-to-shop"><a href="/productpage" style="text-decoration: none; color: gray;">&leftarrow;<span class="text-muted" > Back to shop</span></a></div>
             </div>

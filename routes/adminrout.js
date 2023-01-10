@@ -4,6 +4,7 @@ const router = express.Router();
 
 const adminController = require("../controller/admincontroller");
 const upload = require("../utility/multer");
+const uploadbuffer =require("../utility/multerbuffer")
 const adminSession = require("../middleware/adminSession");
 const salesReport =require("../utility/export")
 
@@ -34,7 +35,7 @@ router.get("/adminproducts",adminSessionMW, adminController.displayimage);
 // insert data
 router.post(
   "/adminproducts",
-  upload.array("image", 12),
+  uploadbuffer.array("image", 12),
   adminController.insertProduct
 );
 // blockproduct

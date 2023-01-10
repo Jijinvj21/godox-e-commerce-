@@ -299,7 +299,7 @@ const addadderss= async(req,res)=>{
 }
 // edit user data
 const edituserdata = async (req,res)=>{
-
+console.log(req.body.img);
 let email=req.session.userEmail
 await User.updateOne({ email:email},{ $set: {name : req.body.name , phone :req.body.phone}})
 
