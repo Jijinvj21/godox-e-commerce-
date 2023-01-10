@@ -40,14 +40,19 @@
                 <form action="/admincoupons" method="post"  >
                   <div class="form-group">
                    
-                    <label for="file-upload" class="form-label">Name</label>
+                    <label  class="form-label">Coupon</label>
                     <input class="form-control" type="text"  name="name">
-                    <label for="file-upload" class="form-label">Discount %</label>
+                    <label  class="form-label">Discount %</label>
                     <input class="form-control" type="number"  name="discount">
-                    <label for="file-upload" class="form-label">No of coupons/User</label>
+                    <label  class="form-label">Min purchase amount</label>
+                    <input class="form-control" type="number"  name="minpurchase">
+                    <label  class="form-label">Max Discount amount</label>
                     <input class="form-control" type="number"  name="maxdiscount">
-                    <label for="file-upload" class="form-label">Status</label>
-                    <input class="form-control" type="number"  name="minamount">
+                    <label  class="form-label">Created date</label>
+                    <input class="form-control" type="date"  name="crearedate">
+                    <label  class="form-label">Expire date</label>
+                    <input class="form-control" type="date"  name="expiredate">
+                    
                    
                     
                   </div>
@@ -75,41 +80,42 @@
                     <!-- <th>No.</th> -->
                     <th>Coupon</th>
                     <th>Discount(%)</th>
-                    <th>No of coupons/User</th>
-                   
+                    <th>Min purchase amount</th>
+                    <th>Max discound amount</th>
+                    <th>Created date</th>
+                    <th>Expire date</th>
                     <th>Status</th>
-
-                    <th>Action</th>
+                    <th>User</th>
+                    <th>Discounted total</th>
 
 
                   </tr>
                 </thead>
                 <tbody>
                   <% coupondata.forEach((coupondata)=>{ %>
+                    <!-- created date -->
+                    <%let date = coupondata.createddate %>
+                    <%=console.log(date)%>
+                    <%let isoString = date.toISOString()%>
+                    <%let createddate = isoString.split('T')[0]%>
+                   <!-- expired date -->
+                   <%let dat = coupondata.expiredate %>
+                   <%=console.log(dat)%>
+                   <%let isoStrin = dat.toISOString()%>
+                   <%let expiredate = isoStrin.split('T')[0]%>
+                   
+                    
                     <tr>
                      
-                      <td>
-                        <%=coupondata.name%>
-                      </td>
-                      <td>
-                        10%
-                      </td>
-                      <td>
-                        2 nos
-                      </td>
-                      <td>
-                        Expare
-                      </td>
-                      <td>
-                        <% if(coupondata.status==true) {%>
-                          <a class="btn btn-warning btn-sm" href="/couponblock?id=<%= coupondata._id%>"
-                            role="button">Block</a>
-                          <%}else{%>
-                            <a class="btn btn-success btn-sm" href="/couponblock?id=<%= coupondata._id%>"
-                              role="button">Unblock</a>
-                            <%}%>
-                              
-                      </td>
+                      <td><%=coupondata.name%></td>
+                      <td><%=coupondata.discount%></td>
+                      <td><%=coupondata.minpurchaseamount%></td>
+                      <td><%=coupondata.maxdiscount%></td>
+                      <td><%=createddate %></td>
+                      <td><%=expiredate %></td>
+                      <td><%=coupondata.status%></td>
+                      <td><%=coupondata.userId%></td>
+                      <td><%=coupondata.discountedtotal%></td>
 
 
                     </tr>

@@ -21,7 +21,11 @@ const cartSchema = new mongoose.Schema({
                 type:Number
             }
         }],
-        // totalPrice:Number
+        totalPrice:Number,
+        discoundamount:{
+            type:Number
+        }
+
 
 })
 

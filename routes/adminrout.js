@@ -79,7 +79,7 @@ router.get("/admincoupons",adminSessionMW, adminController.admincoupon);
 // add coupons
 router.post("/admincoupons", adminController.couponsdata);
 // block coupon
-router.get("/couponblock",adminSessionMW, adminController.couponblock);
+// router.get("/couponblock",adminSessionMW, adminController.couponblock);
 
 
 // orderstatus

@@ -11,7 +11,7 @@
     <div class="container">
         <div class="py-5 text-center">
          </div>
-         <%=usercart.cartItems[0].productId.name%>
+         
       
         <div class="row">
           <div class="col-md-4 order-md-2 mb-4">
@@ -20,6 +20,7 @@
               <span class="badge badge-secondary badge-pill">3</span>
             </h4>
             <ul class="list-group mb-3">
+              
               <li class="list-group-item d-flex justify-content-between lh-condensed">
             
 
@@ -31,33 +32,39 @@
                   </div>
                     <%}%>
                 </div>
-                <%for(let i=0;i< usercart.cartItems.length;i++){%>
-              
-                <br>
-                <%}%>
+               
               </li>
              
              
              
               <li class="list-group-item d-flex justify-content-between">
                 <span>Total (USD)</span>
-                <strong>$<%=totprice%></strong>
+                <strong>$<%=usercart.totalPrice%></strong>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Discount Total (USD)</span>
+                <!-- <strong id="discount">$</strong> -->
+                <span>$<span id="discount"><%=usercart.totalPrice%></span></span>
               </li>
             </ul>
       
             <form class="card p-2">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Promo code">
+                <input type="text" class="form-control" id="couponCode" placeholder="Promo code">
                 <div class="input-group-append">
-                  <button type="submit" class="btn btn-secondary">Redeem</button>
+                  <button  class="btn btn-secondary" id="coupon_button" onclick="couponapplied()">Redeem</button>
                 </div>
               </div>
             </form>
+            
           </div>
+
+
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Billing address</h4>
             <form class="needs-validation" novalidate action="/checkoutdata" method="post">
-              <input type="text" name="total" value="<%=totprice%>" style="display: none;">
+                <!-- <span>$<section value="total"  id="discount"><%=usercart.totalPrice%></section></span> -->
+              <input type="text" name="total"  id="discoun"  value=" <%=usercart.totalPrice%>">
               <div class="row">
                 <div class="mb-3">
                     <!-- <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
@@ -166,6 +173,30 @@
 
     })
 }
+  </script>
+  <script>
+  //  $("#coupon_button").click(function(event) {
+    function couponapplied(){
+    // prevent the form from being submitted
+    event.preventDefault();
+  
+    // get the value of the input field
+    var inputValue = $("#couponCode").val();
+  console.log(inputValue);
+    $.ajax({
+      method: "post",
+      url: "/couponcheck",
+      data: { inputValue },
+      success: (res)=> {
+        let b=res.dis
+        console.log(b);
+        $('#discount').html(b)
+        $('#discoun').val(b)
+      }
+
+    })
+    }
+
   </script>
   
   <!-- ajax -->

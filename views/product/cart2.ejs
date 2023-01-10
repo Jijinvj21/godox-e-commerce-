@@ -230,8 +230,10 @@ a:hover{
                     <div class="col">TOTAL PRICE</div>
                     <div class="col text-right">&dollar;<%=subtot%> </div>
                 </div>
-               
-                <button class="btn btn-light text-dark" type="submit"> <a href="/checkout?sub=<%=subtot%>">CHECKOUT</a>  </button>
+               <form action="/checkout" method="post">
+<input type="number" name="subtot" value="<%=subtot%>" hidden>
+                <button class="btn btn-light text-dark" type="submit"> CHECKOUT</a>  </button>
+            </form>
             </div>
            
         </div>

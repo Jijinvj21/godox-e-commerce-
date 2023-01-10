@@ -25,7 +25,8 @@ const orderSchema = new Schema({
     },
     total:{
         type:String
-    }
+    },
+   
   
 });
 

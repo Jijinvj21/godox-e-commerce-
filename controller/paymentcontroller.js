@@ -2,8 +2,10 @@ const express = require("express");
 const User = require("../models/userModel");
 const cartmodel = require("../models/cartmodel")
 const ordermodel = require("../models/ordermodel")
+const couponmodel = require("../models/couponmodel")
 
-const mongoose=require("mongoose")
+const mongoose = require("mongoose");
+const { updateMany } = require("../models/userModel");
 
 
 
@@ -13,99 +15,211 @@ const mongoose=require("mongoose")
 
 // checkout
 
-const checkout = async (req,res)=>{
-    const useraddress = await User.findOne({email:req.session.userEmail});
-    let userdatas=useraddress._id
-    const usercart = await cartmodel.findOne({userId:userdatas}).populate('cartItems.productId');
-    let totprice =req.query.sub
+const checkout = async (req, res) => {
+  const useraddress = await User.findOne({ email: req.session.userEmail });
+  let userdatas = useraddress._id
+  const usercart = await cartmodel.findOne({ userId: userdatas }).populate('cartItems.productId');
+  let totprice = req.query.sub
+  const discoundtotal = await couponmodel.findOne({ email: req.session.userEmail });
 
-    res.render('../views/payment/checkout.ejs',{useraddress,usercart,totprice})
+
+  res.render('../views/payment/checkout.ejs', { useraddress, usercart, totprice })
 }
-// carttotel
+// carttot
+const checkouttot = async (req, res) => {
+  console.log('reach don');
+
+  const userid = await User.findOne({ email: req.session.userEmail });
+  let user = userid._id
+  let a = await cartmodel.updateOne({ userId: user },
+    {
+
+      $set: { totalPrice: req.body.subtot }
+    }
+  )
+  console.log(req.body.subtot);
+  res.redirect('/checkout')
+}
 
 //form data display
-const checkoutform = async(req,res)=>{
+const checkoutform = async (req, res) => {
 
 
+
+  try {
+    const data = req.body
+    const id = data.addresId
+
+    const address = await User.aggregate([
+
+
+      { $match: { email: req.session.userEmail } },
+      { $unwind: "$addresses" },
+      {
+        $project: {
+          address: "$addresses.address",
+          phone: "$addresses.phone",
+          name: "$addresses.name",
+          pincode: "$addresses.pincode",
+          id: "$addresses._id",
+
+        },
+      },
+
+      { $match: { id: new mongoose.Types.ObjectId(id) } },
+
+    ]);
+
+
+    res.json({ data: address })
+  } catch (error) {
+    console.log(error);
+
+  }
+
+
+}
+// checkoutdata
+// const checkoutdata = async (req, res) => {
+//   const usercheckout = await User.findOne({ email: req.session.userEmail });
+//   const usercheckoutcart = await cartmodel.findOne({ userId: usercheckout._id });
+//   orderdata = {
+//     userId: usercheckout._id,
+//     product: usercheckoutcart.cartItems,
+//     addresses: [{
+//       address: req.body.address,
+//       phone: req.body.mobile,
+//       name: req.body.name,
+//       pincode: req.body.zip,
+//     }],
+//     payment: req.body.paymentMethod,
+//     total: req.body.total
+//   }
+//   const order = new ordermodel(orderdata);
+//   order.save();
+
+//   res.redirect('/checkout')
+// }
+
+// coupon_check
+const couponcheck = async (req, res) => {
+  
+  console.log(req.body.inputValue);
+  const userdata = await User.findOne({ email: req.session.userEmail });
+  let userid = userdata._id
+  const cartdata = await cartmodel.findOne({ userId: userid });
+  const checkcoupon = await couponmodel.findOne({ name: req.body.inputValue });
+  const checkcouponused = await couponmodel.findOne({ name: req.body.inputValue ,"userdata":{$elemMatch:{
+    userId:userid}} })
+
+//     const finded = await couponmodel.find({
+      
+// userdata: { $elemMatch: {  userId:userid } }
+//    })
    
-        try{
-            const data=req.body
-    const id=data.addresId
-    
-         const address = await User.aggregate([
 
 
-          { $match: { email:req.session.userEmail } },
-          { $unwind: "$addresses" },
-          {
-            $project: {
-                address: "$addresses.address",
-                phone: "$addresses.phone",
-              name: "$addresses.name",
-              pincode: "$addresses.pincode",
-              id: "$addresses._id",
-             
-            },
-          },
+console.log(checkcouponused + 'jijin');
 
-          { $match: { id: new mongoose.Types.ObjectId(id)} },
 
-        ]);
+
+
+ 
+ 
+  let exp =checkcoupon.expiredate
+  const datee = new Date(exp  );
+  const expdate = datee.toLocaleDateString();
+
+  let date = Date.now()
+  const dgfate = new Date(date  );
+  const todate = dgfate.toLocaleDateString();
+
+
+  // console.log(checkcoupon.createddate +','+ date +','+ checkcoupon.expiredate);
+
+  if (checkcoupon != null ) {
+    console.log('iam in');
+    if (todate >expdate) {
+      console.log("date is not expire");
+      // if (checkcouponused  == null) {
+
+
+        if(cartdata.status == true){
+          if (cartdata.totalPrice > checkcoupon.minpurchaseamount) {
        
+            // if (cartdata.totalPrice > 50000) {
+            //   console.log('iam morethan 50000');
+            //    let less= parseInt(cartdata.totalPrice) - parseInt(checkcoupon.maxdiscount)
+            //    console.log(less);
+            //    await couponmodel.updateOne({ name: req.body.inputValue },
+            //     {
+            //       $push: { userdata: { userId:userdata._id,discountedtotal:less} }
+            //     }
+            //   )
+            // }
+            // else {
+            //   console.log('iam lessthan'  );
+            // }
+          }
+          
+          else {
+            console.log('lesser than min amound' + cartdata.totalPrice * checkcoupon.discount/ 100);
+           let discoun=parseInt(cartdata.totalPrice) * parseInt(checkcoupon.discount)/ 100
+          let  discount=parseInt(cartdata.totalPrice)-parseInt(discoun)
+            console.log(discount);
+            await couponmodel.updateOne({ name: req.body.inputValue },
+              {
+                $push: { userdata: { userId:userdata._id} }
+              }
+            )
+           console.log(userdata._id);
+           
+            await cartmodel.updateOne({ userId:userdata._id},{ $set: {discoundamount:discount}})
+          }
 
-        res.json({data:address})
-        }catch(error){
-          console.log(error);
+        // }
+        // else{
+        //   console.log('couponblocked');
+        // }
 
-        }
-       
+      }
     
+   
+
+      else {
+        console.log('coupon is used');
+      }
+    }
+    else {
+      console.log('created date is not reach');
+    }
+  }
+  else {
+    console.log('ther is no coupon');
+  }
+let a=10
+if(a===a){
+
+  let dis =cartdata.discoundamount
+  res.json({dis})
 }
- // checkoutdata
- const checkoutdata = async(req,res)=>{
-const usercheckout = await User.findOne({email:req.session.userEmail});
-const usercheckoutcart = await cartmodel.findOne({userId:usercheckout._id});
-orderdata = {
-  userId: usercheckout._id,
-  product:  usercheckoutcart.cartItems,
-  addresses: [{
-    address:req.body.address,
-    phone:req.body.mobile,
-    name:req.body.name,
-    pincode:req.body.zip,
-    }],
-  payment: req.body.paymentMethod,
-  total:req.body.total
+else{
+  let dis =cartdata.totalPrice
+  res.json({dis})
 }
-const order = new ordermodel(orderdata);
-order.save();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-res.redirect('/checkout')
- }
-
+}
 
 
 
 
 module.exports = {
-    // address
-   
-// checkout
-    checkout,
-    checkoutform,
-    checkoutdata
+  // address
+
+  // checkout
+  checkout,
+  checkoutform,
+  // checkoutdata, it is nessory
+  couponcheck,
+  checkouttot
 
 }

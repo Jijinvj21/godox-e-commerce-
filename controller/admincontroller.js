@@ -80,13 +80,16 @@ const admindashboard = async(req, res) => {
   const  lightshaper= await Product.find({category:"Light Shaper"});
   // Accessories
   const accessories= await Product.find({category:"Accessories"});
+  // find order
+  const order= await Product.find();
+
 
 
   // find order
   const boardorderdata = await ordermodel.find();
 
 
-  res.render("../views/admin/admindashboard",{boarduserdata,boardorderdata,flashcount,continuouslight,monitor,audio,lightshaper,accessories});
+  res.render("../views/admin/admindashboard",{boarduserdata,boardorderdata,flashcount,continuouslight,monitor,audio,lightshaper,accessories,order});
 };
 const adminboarddata =(req,res)=>{
 
@@ -377,23 +380,24 @@ const bannerblock = async (req, res) => {
 };
 // coupon inasert
 const couponsdata = async (req, res) => {
-  try {
-    const name = req.body.name;
-    const discount = req.body.discount;
-    const maxdiscount = req.body.maxdiscount;
-    const minamount = req.body.minamount;
-    const date = req.body.date;
+ 
 
-    let coupondata = await admindatamodel.findOne({ name: name });
-    if (coupondata) {
-      console.log(exist);
+  try {
+    
+const name=req.body.name;
+    var couponexist = await couponmodel.findOne({ name: name });
+    if (couponexist) {
+      console.log('exist');
+      res.redirect("/admincoupons");
     } else {
       let coupon = new couponmodel({
-        name: name,
-        discount: discount,
-        maxdiscount: maxdiscount,
-        minamount: minamount,
-        date: date,
+        name:req.body.name,
+        discount:req.body.discount ,
+        maxdiscount:req.body.maxdiscount ,
+        minpurchaseamount:req.body.minpurchase ,
+        createddate:req.body.crearedate,
+        expiredate:req.body.expiredate,
+
       });
       coupon.save();
       res.redirect("/admincoupons");
@@ -402,10 +406,13 @@ const couponsdata = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 // display coupon
 const admincoupon = async(req, res) => {
   try{
     const coupon = await couponmodel.find({});
+    
     res.render("../views/admin/admincoupon",{coupondata:coupon});
 
   }
@@ -414,27 +421,27 @@ const admincoupon = async(req, res) => {
     console.log(error.message);
   }
 };
-// coupon block unblock
-const couponblock=async(req,res)=>{
-  try {
-    const check = await couponmodel.findById({ _id: req.query.id });
+// // coupon block unblock
+// const couponblock=async(req,res)=>{
+//   try {
+//     const check = await couponmodel.findById({ _id: req.query.id });
 
-    if (check.status == true) {
-      await couponmodel.findByIdAndUpdate(
-        { _id: req.query.id },
-        { $set: { status: false } }
-      );
-    } else {
-      await couponmodel.findByIdAndUpdate(
-        { _id: req.query.id },
-        { $set: { status: true } }
-      );
-    }
-    res.redirect("/admincoupons");
-  } catch (error) {
-    console.log(error.message);
-  }
-}
+//     if (check.status == true) {
+//       await couponmodel.findByIdAndUpdate(
+//         { _id: req.query.id },
+//         { $set: { status: false } }
+//       );
+//     } else {
+//       await couponmodel.findByIdAndUpdate(
+//         { _id: req.query.id },
+//         { $set: { status: true } }
+//       );
+//     }
+//     res.redirect("/admincoupons");
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// }
 
 // order
  
@@ -523,6 +530,6 @@ module.exports = {
   bannerblock,
   //coupons
   couponsdata,
-  couponblock
+  // couponblock
 
 };

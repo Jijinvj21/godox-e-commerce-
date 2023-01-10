@@ -134,12 +134,9 @@ barChart.render();
 
 // AREA CHART
 var areaChartOptions = {
-  series: [{
-    name: 'Customers',
-    data: [31, 40, 28, 51, 42, 109, 120, 110, 150, 115, 180, 200]
-  }, {
+  series: [ {
     name: 'Sales Orders',
-    data: [11, 32, 45, 32, 34, 52, 41, 71, 81, 101, 91, 110]
+    data: [<%=order.length%>]
   }],
   chart: {
     height: 350,
@@ -148,23 +145,19 @@ var areaChartOptions = {
       show: false,
     },
   },
-  colors: [" #c9835b", "#5bc980"],
+  colors: ["#5bc980"],
   dataLabels: {
     enabled: false,
   },
   stroke: {
     curve: 'smooth'
   },
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  labels: ["Jan"],
   markers: {
     size: 0
   },
   yaxis: [
-    {
-      title: {
-        text: 'Customers',
-      },
-    },
+   
     {
       opposite: true,
       title: {
