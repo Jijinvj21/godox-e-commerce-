@@ -9,6 +9,7 @@ const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
 // const userdatause = require("../controller/usercontroller");
 const excelJS = require('exceljs');
+const User = require("../models/userModel");
 // const { vendor } = require("sharp");
 
 
@@ -68,31 +69,63 @@ const userdata = async (req, res) => {
 };
 // dashboard
 const admindashboard = async (req, res) => {
-  // find user data
-  const boarduserdata = await Userdatamodel.find();
-  // find product  data
-  // flash count
-  const flashcount = await Product.find({ category: "Flash" });
-  // Continuous Light
-  const continuouslight = await Product.find({ category: "Continuous Light" });
-  // Monitor
-  const monitor = await Product.find({ category: "Monitor" });
-  // Audio
-  const audio = await Product.find({ category: "Audio" });
-  // Light Shaper
-  const lightshaper = await Product.find({ category: "Light Shaper" });
-  // Accessories
-  const accessories = await Product.find({ category: "Accessories" });
+
+ 
   // find order
   const order = await Product.find();
-
-
-
   // find order
   const boardorderdata = await ordermodel.find();
+  // user
+  const userdata = await User.find();
+  // product count
+  const productcount = await Product.find();
+  // Return','Shipped', 'Placed', 'Delivered', 'Cancelled
+const ordePending = await ordermodel.find({status:'pending'}).count()
+const Return = await ordermodel.find({status:'return'}).count()
+const shipped = await ordermodel.find({status:'shippid'}).count()
+const Delivered = await ordermodel.find({status:'delivered'}).count()
+const Cancelled = await ordermodel.find({status:'cancel'}).count()
+const hai = await ordermodel.find({})
+
+// let numder =tot *1
+// console.log(numder);
+// let month=[],barchartData,j=0
+// for(i=1;i<=12;i++){
+
+//   barchartData= await ordermodel.aggregate([{$project:{total:1,delivereddate:{$month:'$delivereddate'}}},
+//  {$match:{delivereddate:i}},{$group:{_id:{sum:{$sum:parseInt("$total*1")}}}} ])
+
+//  console.log(barchartData);
+//  month[j]=0
+//  barchartData.forEach(function(bar){
+//   month[j]=month[j]+bar._id.sum
+//  })
+//  j++
+ 
+// }
+// console.log(month);
+  // barchartData= await ordermodel.aggregate([{$project:{total:1,delivereddate:{$month:'$delivereddate'}}},
+//   const month = new Date('2023-02-10T13:27:04.086+00:00').getMonth();
+// console.log(month);
+// abcde=await ordermodel.aggregate([{$match:{date:{$month:'$1'}}}])
+// console.log(abcde);
+
+let orderPerMonth=[]
+    for (let i=0;i<12;i++){
+        let numberOfOrders=await ordermodel.find({month:i}).count()
+        orderPerMonth.push(numberOfOrders)
+    }
+console.log(orderPerMonth);
 
 
-  res.render("../views/admin/admindashboard", { boarduserdata, boardorderdata, flashcount, continuouslight, monitor, audio, lightshaper, accessories, order });
+
+
+
+
+
+
+
+  res.render("../views/admin/admindashboard", {  boardorderdata, order,userdata,productcount,ordePending,Return,shipped,Delivered,Cancelled,orderPerMonth })
 };
 const adminboarddata = (req, res) => {
 
@@ -467,6 +500,10 @@ const orderstatus = async (req, res) => {
   let status = req.body.select
   let id = req.body.proid
   await ordermodel.updateOne({ _id: id }, { $set: { status: status } })
+  const date = new Date();
+  const month = date.getMonth();
+  await ordermodel.updateOne({ _id: id }, { $set: { month:  month } })
+
   res.redirect('/adminorder')
 }
 

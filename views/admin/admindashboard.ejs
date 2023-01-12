@@ -14,6 +14,12 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/public/stylesheet/userheader.css">
+
+
+
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   </head>
   <body>
     <%- include('../partials/admin-header')%>
@@ -26,24 +32,66 @@
       <!-- Main -->
       <main class="main-container">
         <div class="main-title">
-          <p class="font-weight-bold" style=" font-size: 180%;">DASHBOARD</p>
+          <!-- <p class="font-weight-bold" style=" font-size: 180%;">DASHBOARD</p> -->
+          <h1 class="mt-4">Dashboard</h1>
         </div>
 
-        <div class="main-cards">
-           
-        </div> 
+       
+
+  <div class="container my-5 ">
+    <div class="row d-flex ">
+<div class="col-lg-4">
+
+  <div class="card text-center">
+    
+      <span class="text-dark text-center">USER</span>
+      <span class="material-icons-outlined text-blue text-center">inventory_2</span>
+  
+    <span class="text-dark font-weight-bold text-center"><%=userdata.length%></span>
+  </div>
+</div>
+<div class="col-lg-4">
+  
+  <div class="card">
+  
+      <span class="text-dark text-center text-center">PRODUCT</span>
+      <span class="material-icons-outlined text-orange text-center">add_shopping_cart</span>
+   
+    <span class="text-dark font-weight-bold text-center"><%=productcount.length%></span>
+  </div>
+</div>
+      <div class="col-lg-4">
+  
+        <div class="card">
+          
+            <span  class="text-dark  text-center">ORDERS</span>
+            <span class="material-icons-outlined text-green text-center">shopping_cart</span>
+         
+          <span class="text-dark font-weight-bold text-center"><%=order.length%></span>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+
+
+    
+ 
+        
+
+
+
+
 
         <!-- <div class="charts"> -->
 
-          <div class="charts-card">
-            <p class="chart-title" style="text-align: center; font-size: 130%;">Category Data</p>
-            <div id="bar-chart"></div>
-          </div>
 
-          <div class="charts-card">
-            <p class="chart-title"style="text-align: center; font-size: 130%;">Purchase and Sales Orders</p>
-            <div id="area-chart"></div>
-          </div>
+          <!-- <div class="charts-card">
+            <p class="chart-title" style="text-align: center; font-size: 130%;"> Data</p>
+            <div id="bar-chart"></div>
+          </div>-->
+
+          
 
         </div>
       </main>
@@ -51,128 +99,202 @@
      
 
     </div>
-     
+    <div class="container-fluid">   
+      <div class="row ">
+         <div class="col-xl-6">
+             <div class="card mb-4">
+                 <div class="card-header">
+                     <i class="fas fa-chart-area me-1"></i>
+                     
+                 </div>
+                 <div class="card-body"><canvas id="myBarChart" width="100%" height="60"></canvas></div>
+             </div>
+         </div>
+         <div class="col-xl-6">
+             <div class="card mb-4">
+                 <div class="card-header">
+                     <i class="fas fa-chart-bar me-1">Order</i>
+                     
+                 </div>
+                 <div class="card-body"><canvas id="myPieChart" width="100%" height="60"></canvas></div>
+             </div>
+         </div>
+     </div>
+   </div>
 
+    <script>
+
+      // Set new default font family and font color to mimic Bootstrap's default styling
+  Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#292b2c';
+  
+  // Bar Chart Example
+  var ctx = document.getElementById("myBarChart");
+  var myLineChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June","July","August","September","October","Novembor","Decomber"],
+      datasets: [{
+        label: "Order",
+        backgroundColor: "rgba(2,117,216,1)",
+        borderColor: "rgba(2,117,216,1)",
+        data: ['<%= orderPerMonth[0] %>',
+                    '<%= orderPerMonth[1] %>',
+                    '<%= orderPerMonth[2] %>',
+                    '<%= orderPerMonth[3] %>',
+                    '<%= orderPerMonth[4] %>',
+                    '<%= orderPerMonth[5] %>',
+                    '<%= orderPerMonth[6] %>',
+                    '<%= orderPerMonth[7] %>',
+                    '<%= orderPerMonth[8] %>',
+                    '<%= orderPerMonth[9] %>',
+                    '<%= orderPerMonth[10] %>',
+                    '<%= orderPerMonth[11] %>',
+                    '<%= orderPerMonth[12] %>',
+                ],
+      }],
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          time: {
+            unit: 'month'
+          },
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            maxTicksLimit: 12
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: 10,
+            maxTicksLimit: 5
+          },
+          gridLines: {
+            display: true
+          }
+        }],
+      },
+      legend: {
+        display: false
+      }
+    }
+  });
+  
+  </script>
+  
+  <script>
+    const cty = document.getElementById('myPieChart');
+      
+      new Chart(cty, {
+        type: 'pie',
+        data: {
+          labels: ['Pending','Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'],
+          datasets: [{
+            label: 'Revenue',
+            backgroundColor: ['#007bff', '#C8CDD1', '#ffc107', '#133122','#AD2633'],
+            data: [<%=ordePending%>,<%=Return%>,<%=shipped%>,<%=Delivered,%><%=Cancelled%>],
+          //  borderWidth: 1
+          }]
+        }
+      });
+
+</script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <!-- Scripts -->
     <!-- ApexCharts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script> -->
     <!-- Custom JS -->
     <!-- <script src="/public/javascript/admindashboard.js"></script> -->
     
 <script>
 
-// SIDEBAR TOGGLE
-
-var sidebarOpen = false;
-var sidebar = document.getElementById("sidebar");
-
-function openSidebar() {
-  if(!sidebarOpen) {
-    sidebar.classList.add("sidebar-responsive");
-    sidebarOpen = true;
-  }
-}
-
-function closeSidebar() {
-  if(sidebarOpen) {
-    sidebar.classList.remove("sidebar-responsive");
-    sidebarOpen = false;
-  }
-}
 
 
 
-// ---------- CHARTS ----------
 
-// BAR CHART
-var barChartOptions = {
-  series: [{
-    data: [<%=flashcount.length%>,<%=audio.length%>,<%=monitor.length%>,<%=lightshaper.length%>,<%=accessories.length%>,<%=continuouslight.length%> ]
-  }],
-  chart: {
-    type: 'bar',
-    height: 350,
-    toolbar: {
-      show: false
-    },
-  },
-  colors: [
-    "#6c6c6c",
-    "#5b9ec9",
-    "#5bc980",
-    "#c9c25b",
-    "#c9835b",
-    "#c95bb1"
-  ],
-  plotOptions: {
-    bar: {
-      distributed: true,
-      borderRadius: 4,
-      horizontal: false,
-      columnWidth: '25%',
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  legend: {
-    show: false
-  },
-  xaxis: {
-    categories: ["Flash", "Audio", "Moniter", "Light shaper", "Accessories", "Continuous Light" ],
-  },
-  yaxis: {
-    title: {
-      text: "Count"
-    }
-  }
-};
 
-var barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
-barChart.render();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // AREA CHART
-var areaChartOptions = {
-  series: [ {
-    name: 'Sales Orders',
-    data: [<%=order.length%>]
-  }],
-  chart: {
-    height: 350,
-    type: 'area',
-    toolbar: {
-      show: false,
-    },
-  },
-  colors: ["#5bc980"],
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
-    curve: 'smooth'
-  },
-  labels: ["Jan"],
-  markers: {
-    size: 0
-  },
-  yaxis: [
+// var areaChartOptions = {
+//   series: [ {
+//     name: 'Sales Orders',
+//     data: [<%=order.length%>]
+//   }],
+//   chart: {
+//     height: 350,
+//     type: 'area',
+//     toolbar: {
+//       show: false,
+//     },
+//   },
+//   colors: ["#5bc980"],
+//   dataLabels: {
+//     enabled: false,
+//   },
+//   stroke: {
+//     curve: 'smooth'
+//   },
+//   labels: ["Jan"],
+//   markers: {
+//     size: 0
+//   },
+//   yaxis: [
    
-    {
-      opposite: true,
-      title: {
-        text: 'Sales Orders',
-      },
-    },
-  ],
-  tooltip: {
-    shared: true,
-    intersect: false,
-  }
-};
+//     {
+//       opposite: true,
+//       title: {
+//         text: 'Sales Orders',
+//       },
+//     },
+//   ],
+//   tooltip: {
+//     shared: true,
+//     intersect: false,
+//   }
+// };
 
-var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
-areaChart.render();
+// var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+// areaChart.render();
 
 
 
@@ -183,7 +305,34 @@ areaChart.render();
 
 
 </script>
-
+<script>
+  var xValues = ["Deliver", "placed", "cancell", "Return"];
+  var yValues = [2,6,1,3,5];
+  var barColors = [
+    "#cdd377",
+    "#77d37e",
+    "#77cbd3",
+    "#d377cc",
+    "#779cd3"
+  ];
+  
+  new Chart("myChart", {
+    type: "pie",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: ""
+      }
+    }
+  });
+  </script>
 
 
 

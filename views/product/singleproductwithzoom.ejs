@@ -58,8 +58,8 @@
 						<h4 class="mt-3"> $<%=productimg[i].price%> </h4>
 						<h5 class="mt-2"> PRODUCT DETAILS </h5>
 						<h6><%=productimg[i].description%></h6>
-						<a href="/cartpage?userid=<%=user._id%>&productid=<%=productimg[i]._id%>" class="btn"> Add To Cart </a>
-						<a href="/wishlistdat?productId=<%=productimg[i]._id%>&userid=<%=user._id%>" class="btn"> Add to wishlist </a>
+						<a href="/cartpage?%>productid=<%=productimg[i]._id%>" class="btn"> Add To Cart </a>
+						<a href="/wishlistdat?productId=<%=productimg[i]._id%>" class="btn"> Add to wishlist </a>
 					</div>
 				</div>
 			</div>
@@ -83,6 +83,8 @@
 			<%- include('../partials/user-footer')%>
 		</div>
 		</div>
+
+		
 	
 	<!-- ==========  X Zoom  = (End) ======================================================= -->
 	<!-- ======================================================= -->

@@ -259,8 +259,10 @@ let userid = await userdata.findOne({ email:email})
 }
 // remove from wishlist
 const removeFromWishlist=async(req,res)=>{
+  const email = req.session.userEmail
+let userid = await userdata.findOne({ email:email})
 
-  await wishlistmodel.updateOne({userId:req.session.addwishlistuserid},{$pull:{products:req.query.productId}})
+  await wishlistmodel.updateOne({userId:userid},{$pull:{products:req.query.productId}})
   res.redirect('/wishlistdata')
 
 }

@@ -21,11 +21,13 @@ const orderSchema = new Schema({
     payment:String,
     date:{
         type:Date,
-        default:Date.now
+        default:Date.now()
     },
     total:{
         type:String
     },
+   
+    month:Number
    
   
 });

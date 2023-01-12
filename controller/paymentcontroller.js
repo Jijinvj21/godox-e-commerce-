@@ -208,17 +208,17 @@ if ( finded == '') {
 
 
 
-let a=10
-if(a===a){
+// let a=10
+// if(a===a){
 
   let dis =cartdata.discoundamount
   res.json({dis})
 }
-else{
-  let dis =cartdata.totalPrice
-  res.json({dis})
-}
-}
+// else{
+//   let dis =cartdata.totalPrice
+//   res.json({dis})
+// }
+// }
 const success= (req,res)=>{
 res.render('../views/payment/sucess.ejs')
 }

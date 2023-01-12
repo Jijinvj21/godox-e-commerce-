@@ -10,9 +10,9 @@ const sessionMV=require('../middleware/userSession')
 
 
 
-router.get('/',userSessionMV,productController.landing)
-router.get('/productpage',userSessionMV,productController.product)
-router.get('/singleproduct',userSessionMV,productController.singleproduct)
+router.get('/',productController.landing)
+router.get('/productpage',productController.product)
+router.get('/singleproduct',productController.singleproduct)
 
 
 router.get('/cartpage',userSessionMV,productController.userAddToCart)
