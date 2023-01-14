@@ -8,7 +8,6 @@ const userSchema = new Schema({
     default:true
 },
 });
-
 //3rd make a model
 const category = mongoose.model('Category', userSchema);
 

@@ -28,7 +28,6 @@ router.post("/adminlogin", adminController.adminlogdata);
 // logout  
 router.get("/adminlogout", adminController.adminlogout);
 
-// router.post('/adminlogins',adminController.adminlogins)
 
 // display products
 router.get("/adminproducts",adminSessionMW, adminController.displayimage);
@@ -40,8 +39,6 @@ router.post(
 );
 // blockproduct
 router.get("/adminproductsshow",adminSessionMW, adminController.blockproduct);
-// deleteproduct
-// router.get("/adminproductsdelete",adminSessionMW, adminController.deleteproduct);
 // get product id
 router.get("/adminproductgetid",adminSessionMW, adminController.adminproductgetid);
 // edit product data
@@ -80,7 +77,6 @@ router.get("/admincoupons",adminSessionMW, adminController.admincoupon);
 // add coupons
 router.post("/admincoupons", adminController.couponsdata);
 // block coupon
-// router.get("/couponblock",adminSessionMW, adminController.couponblock);
 
 
 // orderstatus

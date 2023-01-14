@@ -45,7 +45,7 @@
               </li>
               <li class="list-group-item d-flex justify-content-between">
                 <span>Discount Total (USD)</span>
-                <!-- <strong id="discount">$</strong> -->
+                
                 <span>$<span id="discount"><%=usercart.totalPrice%></span></span>
               </li>
             </ul>
@@ -69,9 +69,7 @@
               <input type="text" name="total"  id="discoun"  value=" <%=usercart.totalPrice%>" hidden>
               <div class="row">
                 <div class="mb-3">
-                    <!-- <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address2" placeholder="Name"> -->
-                    <!-- <select class="custom-select d-block w-100 py-2"  required> -->
+
                       <select  class="custom-select d-block w-100 py-2" onchange=" setaddress(this.value)">
                         <option value="">Select an option</option>
                         <%for(let i=0;i< useraddress.addresses.length;i++){%>
@@ -132,10 +130,7 @@
                   <input id="credit" name="paymentMethod" value="COD" type="radio" class="custom-control-input" checked required>
                   <label class="custom-control-label" for="credit">COD</label>
                 </div>
-                <!-- <div class="custom-control custom-radio">
-                  <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
-                  <label class="custom-control-label" for="debit">Debit card</label>
-                </div> -->
+
                 <div class="custom-control custom-radio">
                   <input id="paypal" name="paymentMethod" type="radio" value="PayPal"class="custom-control-input" required>
                   <label class="custom-control-label" for="paypal">PayPal</label>
@@ -177,12 +172,9 @@
 }
   </script>
   <script>
-  //  $("#coupon_button").click(function(event) {
-    function couponapplied(){
-    // prevent the form from being submitted
-    event.preventDefault();
   
-    // get the value of the input field
+    function couponapplied(){
+    event.preventDefault();
     var inputValue = $("#couponCode").val();
   console.log(inputValue);
     $.ajax({

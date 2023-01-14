@@ -1,11 +1,11 @@
-const express = require("express");
+// const express = require("express");
 const mongoose = require("mongoose")
 const Product = require("../models/adminproductmodel");
 const categorylist = require("../models/categorymodel");
 const bannermodel = require("../models/bannermodel")
 const userdata = require("../models/userModel");
 const cartmodel = require("../models/cartmodel")
-const wishlistmodel=require('../models/wishlistmodel')
+const wishlistmodel = require('../models/wishlistmodel')
 
 
 // render landing page
@@ -24,13 +24,11 @@ const landing = async (req, res) => {
     console.log(error);
   }
 }
-
 // display, search, pagination, sort, filter
 const product = async (req, res) => {
   try {
     // sort
     let sort;
-
     if (req.query.sort == "asor") {
       sort = { price: -1 };
     } else if (req.query.sort == "dsort") {
@@ -40,10 +38,8 @@ const product = async (req, res) => {
     }
     // get data from categorylist
     let category = await categorylist.find({});
-
     // filter
     let filter;
-
     if (req.query.category) {
       filter = { category: req.query.category };
     } else {
@@ -66,8 +62,6 @@ const product = async (req, res) => {
         { category: { $regex: ".*" + search + ".*", $options: "i" } },
       ],
     })
-
-
       //.filter(filter)
       .find(filter)
       .sort(sort)
@@ -91,14 +85,12 @@ const product = async (req, res) => {
     console.log(error.message);
   }
 };
-
 // single product page
 const singleproduct = async (req, res) => {
   try {
     const productimg = await Product.find({ _id: req.query.id });
     email = req.session.userEmail
     const user = await userdata.findOne({ email: email });
-
     res.render("../views/product/singleproductwithzoom.ejs", { productimg: productimg, user })
   }
   catch (error) {
@@ -107,24 +99,15 @@ const singleproduct = async (req, res) => {
 }
 const cartdataprint = async (req, res) => {
   const email = req.session.userEmail
-  let userid = await userdata.findOne({ email:email})
+  let userid = await userdata.findOne({ email: email })
   const proimg = await cartmodel.findOne({ userId: userid }).populate('cartItems.productId');
-  console.log("sanan1");
-  console.log("sanan2");
-  console.log(proimg);
-  console.log("sanan3");
-
   res.render("../views/product/cart2.ejs", { proimg: proimg })
 }
-
 // add to cart
 async function userAddToCart(req, res) {
   // req.session.cartuserid = req.query.userid 
-
   const email = req.session.userEmail
-  let userid = await userdata.findOne({ email:email})
-
-
+  let userid = await userdata.findOne({ email: email })
   let userCart = await cartmodel.findOne({ userId: userid })
   console.log(userCart);
   if (!userCart) {
@@ -135,29 +118,27 @@ async function userAddToCart(req, res) {
     return cartItems.productId == req.query.productid
   })
   if (itemIndex > -1) {//-1 if no item matches
-    let a = await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.productid },
+    await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.productid },
       {
         $inc: { 'cartItems.$.qty': 1 }
       }
     )
   }
   else {
-    await cartmodel.updateOne({ userId: userid},
+    await cartmodel.updateOne({ userId: userid },
       {
         $push: { cartItems: { productId: req.query.productid, qty: 1 } }
       }
     )
   }
   res.redirect('/cartdataprint')
-  
-
 }
 
 // increment
 async function userAddFromCart(req, res) {
   const email = req.session.userEmail
-  let userid = await userdata.findOne({ email:email})
-  let a = await cartmodel.updateOne({ userId:userid , 'cartItems.productId': req.query.id },
+  let userid = await userdata.findOne({ email: email })
+   await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
     {
       $inc: { 'cartItems.$.qty': 1 }
     }
@@ -168,7 +149,7 @@ async function userAddFromCart(req, res) {
 // decrement
 async function userDeductFromCart(req, res) {
   const email = req.session.userEmail
-  let userid = await userdata.findOne({ email:email})
+  let userid = await userdata.findOne({ email: email })
   const qtyChech = await cartmodel.aggregate([{ $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
   { $unwind: "$cartItems" },
   { $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
@@ -178,190 +159,93 @@ async function userDeductFromCart(req, res) {
   if (productqty - 1 <= 0) {
     await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { productId: req.query.id } } })
   } else {
-    let a = await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
+     await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
       {
         $inc: { 'cartItems.$.qty': -1 }
       })
   }
   res.redirect('/cartdataprint')
 }
-
-
 // wishlist
-const  userWishlist=async(req,res)=>{
-//   let wishlistdata=await wishlistmodel.aggregate([
-//     {$match:{userId:mongoose.Types.ObjectId(req.session.cartuserid)}},//to object id defined by me look above
-//     {
-//         $lookup:{
-//             from:'product',
-//             let:{productList:'$products'},
-//             pipeline:[
-//                 {
-//                     $match:{
-//                         $expr:{
-//                             $in:['$_id','$$productList']
-//                         }
-//                     }
-//                 }
-//             ],
-//             as:'wishlistProducts'
-//         }
-//     }
-// ])
-
-// console.log(userWishlist);
-
-// if(!userWishlist){
-//     await wishlistmodel.insertMany([{userId:req.query.userId}])
-// }
-const email = req.session.userEmail
-let userid = await userdata.findOne({ email:email})
-
-
-
-const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
-console.log(wishlistdata);
-
-res.render('../views/product/wishlist.ejs',{wishlistdata:wishlistdata})
+const userWishlist = async (req, res) => {
+  const email = req.session.userEmail
+  let userid = await userdata.findOne({ email: email })
+  const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
+  console.log(wishlistdata);
+  res.render('../views/product/wishlist.ejs', { wishlistdata: wishlistdata })
 }
-
 // add to wishlist
-const userAddToWishlist=async(req,res)=>{
-
-//  req.session.addwishlistuserid=req.query.userid
-const email = req.session.userEmail
-let userid = await userdata.findOne({ email:email})
-
-  let userWishlist=await wishlistmodel.findOne({userId:userid})
-
-  if(!userWishlist){
-      await wishlistmodel.insertMany([{userId:userid}])
-      userWishlist=await wishlistmodel.findOne({userId:userid})
+const userAddToWishlist = async (req, res) => {
+  //  req.session.addwishlistuserid=req.query.userid
+  const email = req.session.userEmail
+  let userid = await userdata.findOne({ email: email })
+  let userWishlist = await wishlistmodel.findOne({ userId: userid })
+  if (!userWishlist) {
+    await wishlistmodel.insertMany([{ userId: userid }])
+    userWishlist = await wishlistmodel.findOne({ userId: userid })
   }
-
-  let itemIndex=userWishlist.products.findIndex((products)=>{
-      return products==req.query.productId
+  let itemIndex = userWishlist.products.findIndex((products) => {
+    return products == req.query.productId
   })
-
-  if(itemIndex>-1){//-1 if no item matches
-
-      console.log('product alredy exist');
+  if (itemIndex > -1) {//-1 if no item matches
+    console.log('product alredy exist');
   }
-  else{
-      await wishlistmodel.updateOne({userId:userid},
-          {
-              $push:{products:req.query.productId}
-          }
-      )
+  else {
+    await wishlistmodel.updateOne({ userId: userid },
+      {
+        $push: { products: req.query.productId }
+      }
+    )
   }
-  
   res.redirect('/wishlistdata')
 }
 // remove from wishlist
-const removeFromWishlist=async(req,res)=>{
+const removeFromWishlist = async (req, res) => {
   const email = req.session.userEmail
-let userid = await userdata.findOne({ email:email})
-
-  await wishlistmodel.updateOne({userId:userid},{$pull:{products:req.query.productId}})
+  let userid = await userdata.findOne({ email: email })
+  await wishlistmodel.updateOne({ userId: userid }, { $pull: { products: req.query.productId } })
   res.redirect('/wishlistdata')
-
 }
-
-
-
-
-
-
-
-
-
-
 // removefrom wishlist add to cart
-
-const  addcartwishlist = async(req,res)=>{
+const addcartwishlist = async (req, res) => {
   // find user id
-  let userid = await userdata.find({email:req.session.userEmail});
-  let user_id =userid[0]._id
- 
-
+  let userid = await userdata.find({ email: req.session.userEmail });
+  let user_id = userid[0]._id
   // delete from wishlist
-
   // add to cart
-  
-  let userCart = await cartmodel.findOne({ userId: user_id})
-
+  let userCart = await cartmodel.findOne({ userId: user_id })
   let itemIndex = userCart.cartItems.findIndex((cartItems) => {
     return cartItems.productId == req.query.productId
   })
   if (itemIndex > -1) {//-1 if no item matches
-    let a = await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
+     await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
       {
-      
-         $inc: {  'cartItems.$.qty': 1}
 
-
-
-
-
+        $inc: { 'cartItems.$.qty': 1 }
       }
     )
-//     itemIndex
-//      console.log('321321');
-//        console.log(userCart);
-//  console.log( itemIndex );
-//  console.log('123123');
-    await wishlistmodel.updateOne({userId:user_id},{$pull:{products:req.query.productId}})
+    await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
 
   }
-
-
-
-
-
-//  let userCart = await cartmodel.findOne({ userId: user_id})
-//  console.log('321321');
-//  console.log(userCart.cartItems[0].productId );
-//  console.log('123123');
-
-// if(userCart.productId === req.query.productId ){
-//   console.log("iam in database");
-//   console.log('321321');
-//  console.log(userCart.userId);
-//  console.log('123123');
-//  console.log(user_id);
-//  console.log('321321');
-
-// }
-
-
-
-
-
   else {
     await cartmodel.updateOne({ userId: user_id },
       {
         $push: { cartItems: { productId: req.query.productId, qty: 1 } }
       }
     )
-    await wishlistmodel.updateOne({userId:user_id},{$pull:{products:req.query.productId}})
-   
+    await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
   }
-  
-
-  
-
- 
   res.redirect('/wishlistdata')
 
 }
 
-  
-      
 
 
- 
 
- 
+
+
+
+
 
 
 
@@ -369,13 +253,10 @@ module.exports = {
   landing,
   product,
   singleproduct,
-  // usercartpage,
-  // cartpage,
   cartdataprint,
   userAddToCart,
   userAddFromCart,
   userDeductFromCart,
-  
   userWishlist,
   userAddToWishlist,
   removeFromWishlist,

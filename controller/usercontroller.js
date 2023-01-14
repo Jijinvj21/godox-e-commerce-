@@ -1,8 +1,9 @@
-const express = require("express");
+
 const User = require("../models/userModel");
 const ordermodel = require("../models/ordermodel");
+require('dotenv').config()
 
-var nodemailer = require("nodemailer");
+let nodemailer = require("nodemailer");
 const { use } = require("../routes/adminrout");
 
 const userlogin = (req, res) => {
@@ -14,14 +15,11 @@ const usersignup = (req, res) => {
 const userotp = (req, res) => {
   res.render("../views/user/userotp");
 };
-
 let regData;
 // console.log(regData)
-
 let otpgen;
 // get data from signup
 const insertUser = async (req, res) => {
-  let user1;
   try {
     regData = {
       name: req.body.name,
@@ -29,7 +27,6 @@ const insertUser = async (req, res) => {
       phone: req.body.phone,
       password: req.body.password,
     };
-    // console.log(req.session.regData);
     const email = req.body.email;
     const user = await User.findOne({ email: email });
     if (email === user.email) {
@@ -37,24 +34,21 @@ const insertUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    // res.render('../views/User/userotp', { succ: "Registration Success Please Sign In" });
     res.redirect("/userotp");
   }
   // otpgenerate
   otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
-
   console.log(otpgen);
   // email
-  var transporter = nodemailer.createTransport({
+  let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "Jijinvjinfo@gmail.com",
-      pass: "gbwljrmvapabqigh", // pass:'gbwljrmvapabqigh'
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD, // pass:'gbwljrmvapabqigh'
     },
   });
-
-  var mailOptions = {
-    from: "Jijinvjinfo@gmail.com",
+  let mailOptions = {
+    from: process.env.EMAIL,
     to: regData.email, //doseje1135@bitvoo.com
     subject: "YOUR OTP",
     //   text: `enterotp`
@@ -68,21 +62,17 @@ const insertUser = async (req, res) => {
     }
   });
 };
-
 // otp
 // let enterotp
 const otp = async (req, res) => {
   let enterotp = req.body.otp;
   console.log(req.body.otp);
-  // console.log(req.session.otpgen);
-  // otpgen=req.session.otpgen
   if (enterotp === otpgen) {
     await User.insertMany([regData]);
     res.redirect("/userlogin");
   } else {
     res.redirect("/userotp");
   }
- 
 };
 // login to home
 const userverification = async (req, res) => {
@@ -90,7 +80,6 @@ const userverification = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     let user = await User.findOne({ email: email });
-
     if (user) {
       if (
         email === user.email &&
@@ -114,30 +103,23 @@ const userverification = async (req, res) => {
     console.log(error.message);
   }
 };
-
 const userProfile = async (req, res) => {
-  let userData = await User.findOne({ email: req.session.userEmail });
+  // let userData = await User.findOne({ email: req.session.userEmail });
 
   res.send("userHomePage");
 };
-
 const logout = async (req, res) => {
   req.session.destroy();
 
   res.redirect("/");
- 
 };
-
 // resend otp
-
 const resendotp = (req,res)=>{
-  
 // otpgenerate
 otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
-
 console.log(otpgen);
 // email
-var transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "Jijinvjinfo@gmail.com",
@@ -145,7 +127,7 @@ var transporter = nodemailer.createTransport({
   },
 });
 console.log(regData.email + 'reg data');
-var mailOptions = {
+let mailOptions = {
   from: "Jijinvjinfo@gmail.com",
   to: regData.email, //doseje1135@bitvoo.com
   subject: "YOUR OTP",
@@ -159,28 +141,17 @@ transporter.sendMail(mailOptions, function (error, info) {
     console.log("Email sent: " + info.response);
   }
 });
-
-
 res.redirect("/userotp");
-
-
-  
 }
-
 // forgotpassword
-
 const forgotemail=(req,res)=>{
-    res.render("../views/user/forgotemail.ejs");
-  
+    res.render("../views/user/forgotemail.ejs"); 
 }
-
 const forgototp=(req,res)=>{
-    res.render("../views/user/forgototp.ejs");
-   
+    res.render("../views/user/forgototp.ejs"); 
 }
 const forgotpassword=(req,res)=>{
-    res.render("../views/user/forgotpassword.ejs");
-    
+    res.render("../views/user/forgotpassword.ejs"); 
 }
 // find the email in database (forgotpassword)
 let forgotEmail;
@@ -197,19 +168,16 @@ const forgotemailcheck = async (req, res) => {
 
  // otpgenerate
  otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
-
  console.log(otpgen);
  // email
- var transporter = nodemailer.createTransport({
+ let transporter = nodemailer.createTransport({
    service: "gmail",
    auth: {
      user: "Jijinvjinfo@gmail.com",
      pass: "gbwljrmvapabqigh", // pass:'gbwljrmvapabqigh'
    },
  });
-
- var mailOptions = {
-    
+ let mailOptions = {
    from: "Jijinvjinfo@gmail.com",
    to:req.body.email,// req.session.regData.email, //doseje1135@bitvoo.com
    subject: "YOUR OTP",
@@ -217,18 +185,15 @@ const forgotemailcheck = async (req, res) => {
    html: `<p>${otpgen}</p>`,
  };
  console.log(req.body.email);
-
  transporter.sendMail(mailOptions, function (error, info) {
    if (error) {
      console.log(error);
    } else {
      console.log("Email sent: " + info.response);
    }
- });
-          
+ });   
         }
-        else{
-            
+        else{    
             res.render("../views/user/forgotemail.ejs", {
                 wrong: "Invalid Credentials",
               });
@@ -241,28 +206,19 @@ const forgotemailcheck = async (req, res) => {
     } catch (error) {
       console.log(error.message);
     }
-
   };
-
 //   otp checking(forgotpassword)
-
 const forgototpckeck = async (req, res) => {
     let checkotp = req.body.otp;
     console.log(req.body.otp);
-    // console.log(req.session.otpgen);
-    // otpgen=req.session.otpgen
+
     if (checkotp === otpgen) {
       res.redirect("/forgotpassword");
-    // res.send('ok')
     } else {
       res.redirect("/forgototp");
-    // res.send('notok')
     }
-
   };
-
 //   create new password(forgotpassword)
-
 const forgotnewpasword = async (req, res) => {
     let newpassword = req.body.password;
     let confirmpassword = req.body.cpassword;
@@ -274,10 +230,7 @@ const forgotnewpasword = async (req, res) => {
     } else {
       res.redirect("/forgotpassword");
     }
-   
   };
-
-
   // userprofile
   const viewuserdata= async(req,res)=>{
     let email=req.session.userEmail
@@ -288,11 +241,31 @@ const forgotnewpasword = async (req, res) => {
      
     res.render("../views/user/userprofile.ejs",{userdatas,order})
   }
-
+  // addaddress
+  const addaddress= async(req,res)=>{
   
+     
+    res.render("../views/user/address.ejs")
+  }
+  // views address
+  const displayaddress= async(req,res)=>{
+    let email=req.session.userEmail
+    const userdatas = await User.findOne({ email: email });
+     
+    res.render("../views/user/viewaddress.ejs",{userdatas})
+  }
+  // view orderdata
+  const displayorder= async(req,res)=>{
+   
+    let email=req.session.userEmail
+    const userdatas = await User.findOne({ email: email });
+    let userid = userdatas._id
+    const order = await ordermodel.find({userId:userid});
+    res.render("../views/user/vieworder.ejs",{userdatas,order})
+  }
+
 //add address
 const addadderss= async(req,res)=>{
-  
  let email=req.session.userEmail
   await User.updateOne({ email:email},{$push:{addresses:{address:req.body.address,phone:req.body.phone,name:req.body.name,pincode:req.body.pincode,}}})
   res.redirect('/viewuserdata')
@@ -302,25 +275,19 @@ const edituserdata = async (req,res)=>{
 console.log(req.body.img);
 let email=req.session.userEmail
 await User.updateOne({ email:email},{ $set: {name : req.body.name , phone :req.body.phone}})
-
 res.redirect('/viewuserdata')
 }
 // edit user password
 const edituserpass = async (req,res)=>{
-// console.log(req.body.current);
-// console.log(req.body.new);
-// console.log(req.body.confirm);
 let email=req.session.userEmail
 const userdatas = await User.findOne({ email: email });
 let password=userdatas.password
 console.log(password);
 if (password ===req.body.current)
 {
-
   if(req.body.new===req.body.confirm)
   {
     await User.updateOne({ email:email},{ $set: {password : req.body.new}})
-
   }
   else{
     console.log('new password and confirm password is not same');
@@ -328,13 +295,8 @@ if (password ===req.body.current)
 }
 else{
   console.log('current password is error');
-
 }
-
-
 res.redirect('/viewuserdata')
-
-
 }
 // // update order stayus
 const updateorder = async (req,res)=>{
@@ -345,23 +307,6 @@ let id = req.body.proid
 await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
 res.redirect('/viewuserdata')
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = {
   userlogin,
@@ -385,7 +330,10 @@ viewuserdata,
 addadderss,
 edituserdata,
 edituserpass,
-updateorder
+updateorder,
+addaddress,
+displayaddress,
+displayorder
 
 
 };

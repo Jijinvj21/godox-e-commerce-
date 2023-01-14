@@ -25,8 +25,6 @@ const cartSchema = new mongoose.Schema({
         discoundamount:{
             type:Number
         }
-
-
 })
 
 

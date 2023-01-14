@@ -43,6 +43,10 @@ router.post('/forgotnewpasword',userController.forgotnewpasword)
 // user data display
 
 router.get('/viewuserdata',userSessionMV,userController.viewuserdata)
+router.get('/addaddress',userSessionMV,userController.addaddress)
+router.get('/displayaddress',userSessionMV,userController.displayaddress)
+router.get('/displayorder',userSessionMV,userController.displayorder)
+
 router.post('/addadderss',userSessionMV,userController.addadderss)
 router.post('/edituserdata',userSessionMV,userController.edituserdata)
 

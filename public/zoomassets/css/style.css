@@ -121,10 +121,18 @@ p {
 .xzoom{
 	height: 460px;
 	width: 100%;
-	box-shadow: 1px 4px 8px #aaa;
+	/* box-shadow: 1px 4px 8px #aaa; */
+  border-radius: 20px;
+background: #ffffff;
+box-shadow:  9px 9px 18px #bababa,
+             -9px -9px 18px #ffffff;
 }
 .xzoom-gallery{
 	border: 1px solid #aaa;
+  border-radius: 10px;
+background: #ffffff;
+box-shadow:  -5px -5px 10px #bababa,
+             5px 5px 10px #ffffff;
 }
 .xzoom-gallery:hover{
 	border: 1px solid #8b2525;

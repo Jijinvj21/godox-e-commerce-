@@ -163,26 +163,28 @@ a:hover{
     background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: center;
-}</style>
-<body>
+}
+</style>
+<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+</style>
+<body style="min-height: 100vh;">
   
-   
+   <div class="container-fluid ">
+    <div class="row mt-5 mb-5  " >
+        <h1 class="text-center py-4 text-secondary " style="  text-shadow: 3px 3px #ffffff8e;background-color:#dddddd; font: bolder; font-family: 'Bebas Neue', cursive; font-size: 500;  letter-spacing: 10px;" >ShOPPING CART</h1>
+    </div>
+   </div>
        
-    <div class="card mt-5 mb-5">
+    <div class="card " style="margin-top: 15vh;"  >
         <div class="row">
            
                                 
-            <div class="col-md-8 cart">
+            <div class="col-md-8 cart " >
                 <div class="title">
-                    <div class="row">
-                        <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                       
-
-                       
-                        <div class="col align-self-center text-right text-muted"><%=proimg.cartItems.length%> items</div>
-                      
-                    </div>
-                </div> <%if(proimg.cartItems[0]!=null){%>
+               
+                </div> 
+                <%if( proimg!=null){%>
+                <%if(proimg.cartItems[0]!=null ){%>
                  <% var subtot=0%>
                 <div class="row border-top border-bottom">
                     <%for(let i=0;i< proimg.cartItems.length;i++){%>
@@ -201,10 +203,9 @@ a:hover{
                         </div>
                         <div class="col">
                             <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;" >-</a><a href="#" class="border" style="text-decoration: none; color: #000;"><%=proimg.cartItems[i].qty%></a><a href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;">+</a>
-                             <!-- <button class="d-inline p-1" style=" padding: 0 1vh; background: none; color: inherit; border: none;padding: 0;font: inherit;cursor: pointer;outline: inherit">-</button><a href="#" class="border">1</a><button class="d-inline p-1" style=" padding: 0 1vh;background: none; color: inherit; border: none;padding: 0;font: inherit;cursor: pointer;outline: inherit">+</button> -->
                         </div>
                         <%var totprice= proimg.cartItems[0].productId.price * proimg.cartItems[i].qty %>
-                        <div class="col">&dollar; <%=totprice%><span class="close"><a href="delete"></a></span></div> <!--&#10005; -->
+                        <div class="col d-flex justify-content-center">&dollar; <%=totprice%><span class="close"><a href="delete">&#10005;</a></span></div> <!-- -->
                     <%subtot += totprice %>
                     </div>
                     <%}%>
@@ -214,20 +215,20 @@ a:hover{
                 </div>
                <%}else{%>
                 <div class="row">
-                    <h1>no items evailable</h1>
+                    <h1 class="text-center">no items Available</h1>
                 </div>
                 <%}%>
+                <%}else{%>
+                    <div class="row">
+                        <h1 class="text-center">You have no cart</h1>
+                    </div>
+                    <%}%>
                
                 <div class="back-to-shop"><a href="/productpage" style="text-decoration: none; color: gray;">&leftarrow;<span class="text-muted" > Back to shop</span></a></div>
             </div>
             <div class="col-md-4 summary">
                 <div><h5><b>Summary</b></h5></div>
-                <!-- <hr> -->
-                <!-- <form>
-                   
-                    <p>GIVE CODE</p>
-                    <input id="code" placeholder="Enter your code">
-                </form>-->
+
                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
                     <div class="col text-right">&dollar;<%=subtot%> </div>
@@ -250,13 +251,18 @@ a:hover{
    
 
 </body>
-</html>
-<div class="container-fluid">
-    <div class="row">
-        <div class="dummybox" style="height: 281px;">
 
+
+<div class="container-fluid h">
+    <div class="row">
+    
+  
+        <div class="dummybox" style="height: 12.25vh;">
         </div>
     </div>
-</div>
-<%- include('../partials/user-footer')%>
+  </div>
+  
+  <%- include('../partials/user-footer')%>
+  </html>
+
 

@@ -19,7 +19,6 @@ pincode:String,
 coupondata:[{
  coupons:String
 }],
-
 });
 
 //3rd make a model

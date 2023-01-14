@@ -1,28 +1,19 @@
-const express = require("express");
+// const express = require("express");
 const User = require("../models/userModel");
 const cartmodel = require("../models/cartmodel")
-const ordermodel = require("../models/ordermodel")
+// const ordermodel = require("../models/ordermodel")
 const couponmodel = require("../models/couponmodel")
 
 const mongoose = require("mongoose");
 const { updateMany } = require("../models/userModel");
 
-
-
-
-
-
-
 // checkout
-
 const checkout = async (req, res) => {
   const useraddress = await User.findOne({ email: req.session.userEmail });
   let userdatas = useraddress._id
   const usercart = await cartmodel.findOne({ userId: userdatas }).populate('cartItems.productId');
   let totprice = req.query.sub
   const discoundtotal = await couponmodel.findOne({ email: req.session.userEmail });
-
-
   res.render('../views/payment/checkout.ejs', { useraddress, usercart, totprice })
 }
 // carttot
@@ -43,16 +34,11 @@ const checkouttot = async (req, res) => {
 
 //form data display
 const checkoutform = async (req, res) => {
-
-
-
   try {
     const data = req.body
     const id = data.addresId
 
     const address = await User.aggregate([
-
-
       { $match: { email: req.session.userEmail } },
       { $unwind: "$addresses" },
       {
@@ -62,44 +48,17 @@ const checkoutform = async (req, res) => {
           name: "$addresses.name",
           pincode: "$addresses.pincode",
           id: "$addresses._id",
-
         },
       },
 
       { $match: { id: new mongoose.Types.ObjectId(id) } },
 
     ]);
-
-
     res.json({ data: address })
   } catch (error) {
     console.log(error);
-
   }
-
-
 }
-// checkoutdata
-// const checkoutdata = async (req, res) => {
-//   const usercheckout = await User.findOne({ email: req.session.userEmail });
-//   const usercheckoutcart = await cartmodel.findOne({ userId: usercheckout._id });
-//   orderdata = {
-//     userId: usercheckout._id,
-//     product: usercheckoutcart.cartItems,
-//     addresses: [{
-//       address: req.body.address,
-//       phone: req.body.mobile,
-//       name: req.body.name,
-//       pincode: req.body.zip,
-//     }],
-//     payment: req.body.paymentMethod,
-//     total: req.body.total
-//   }
-//   const order = new ordermodel(orderdata);
-//   order.save();
-
-//   res.redirect('/checkout')
-// }
 
 // coupon_check
 const couponcheck = async (req, res) => {
@@ -111,32 +70,13 @@ const couponcheck = async (req, res) => {
   const checkcoupon = await couponmodel.findOne({ name: req.body.inputValue });
   const checkcouponused = await couponmodel.findOne({ name: req.body.inputValue ,"userdata":{$elemMatch:{
     userId:userid}} })
-
     const finded = await User.find({
-      
       coupondata : { $elemMatch: {  coupons:req.body.inputValue } }
    })
-   
-
-
-console.log(checkcouponused + 'jijin');
-
-
-console.log(finded);
-
- 
   let exp =checkcoupon.expiredate
-
-
   let date = new Date().toJSON()
   let total = parseInt(cartdata.totalPrice)
   let minamound = parseInt(checkcoupon.minpurchaseamount)
-    
- 
- 
-
-
- 
   if (checkcoupon != null ) {
     console.log('iam in');
 
@@ -186,16 +126,10 @@ if ( finded == '') {
     // else{
     //   console.log('couponblocked');
     // }
-
   }
   else {
     console.log('coupon is used');
   }
-
-
-
-
-
     }
     else {
       console.log('created date is not reach');
@@ -205,20 +139,11 @@ if ( finded == '') {
   else {
     console.log('ther is no coupon');
   }
-
-
-
 // let a=10
 // if(a===a){
-
   let dis =cartdata.discoundamount
   res.json({dis})
 }
-// else{
-//   let dis =cartdata.totalPrice
-//   res.json({dis})
-// }
-// }
 const success= (req,res)=>{
 res.render('../views/payment/sucess.ejs')
 }

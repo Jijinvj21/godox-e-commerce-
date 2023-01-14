@@ -7,7 +7,6 @@ function adminSession(req,res,next){
         res.redirect('/adminlogin')
     }
 }
-
 function withOutAdminSession(req,res,next){
     if(!req.session.email){
         next()

@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-var paypal = require('paypal-rest-sdk');
+let paypal = require('paypal-rest-sdk');
 const User = require("../models/userModel");
 const cartmodel = require("../models/cartmodel")
 const ordermodel = require("../models/ordermodel")
-
+require('dotenv').config()
 
 
 
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'AXJ2gf4VKCTSW-eqlxpNjWV1zP7vPBouC-bzkCPEK0h-e5Ck_Xmd5O0c7kqxI9XriJEvXihZ7tTlN8j8',
-  'client_secret': 'EEDN41yQAplOjv1_sY0VynTy5CUPllS3c144rtRQa8XgVpk0O6khNALSQWGUZ0q8kQ_9aRcMCNvm6lwL'
+  'client_id': process.env.CLINT_ID,
+  'client_secret': process.env.SECRET
 });
 
 const paypalgate = async (req, res) => {

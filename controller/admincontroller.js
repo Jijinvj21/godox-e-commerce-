@@ -1,4 +1,3 @@
-const express = require("express");
 const sharp = require("sharp")
 const admindatamodel = require("../models/adminmodel");
 const Product = require("../models/adminproductmodel");
@@ -7,13 +6,7 @@ const categorymodel = require("../models/categorymodel");
 const bannermodel = require("../models/bannermodel");
 const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
-// const userdatause = require("../controller/usercontroller");
-const excelJS = require('exceljs');
 const User = require("../models/userModel");
-// const { vendor } = require("sharp");
-
-
-
 
 
 const adminlogin = (req, res) => {
@@ -23,8 +16,6 @@ const adminlogin = (req, res) => {
 const admincategory = (req, res) => {
   res.render("../views/admin/admincategory");
 };
-
-
 
 // admin login
 
@@ -37,7 +28,6 @@ const adminlogdata = async (req, res) => {
     if (user) {
       if (email === user.email && password === user.password) {
         req.session.email = email
-        // res.send('ok')
         res.redirect("/admindashboard");
       } else {
         res.render("../views/admin/adminlogin.ejs", {
@@ -65,7 +55,9 @@ const userdata = async (req, res) => {
   try {
     const userdetail = await Userdatamodel.find();
     res.render("../views/admin/customer.ejs", { userdatashow: userdetail });
-  } catch (err) { }
+  } catch (err) { 
+    console.log(err.message);
+  }
 };
 // dashboard
 const admindashboard = async (req, res) => {
@@ -85,30 +77,8 @@ const Return = await ordermodel.find({status:'return'}).count()
 const shipped = await ordermodel.find({status:'shippid'}).count()
 const Delivered = await ordermodel.find({status:'delivered'}).count()
 const Cancelled = await ordermodel.find({status:'cancel'}).count()
-const hai = await ordermodel.find({})
 
-// let numder =tot *1
-// console.log(numder);
-// let month=[],barchartData,j=0
-// for(i=1;i<=12;i++){
 
-//   barchartData= await ordermodel.aggregate([{$project:{total:1,delivereddate:{$month:'$delivereddate'}}},
-//  {$match:{delivereddate:i}},{$group:{_id:{sum:{$sum:parseInt("$total*1")}}}} ])
-
-//  console.log(barchartData);
-//  month[j]=0
-//  barchartData.forEach(function(bar){
-//   month[j]=month[j]+bar._id.sum
-//  })
-//  j++
- 
-// }
-// console.log(month);
-  // barchartData= await ordermodel.aggregate([{$project:{total:1,delivereddate:{$month:'$delivereddate'}}},
-//   const month = new Date('2023-02-10T13:27:04.086+00:00').getMonth();
-// console.log(month);
-// abcde=await ordermodel.aggregate([{$match:{date:{$month:'$1'}}}])
-// console.log(abcde);
 
 let orderPerMonth=[]
     for (let i=0;i<12;i++){
@@ -118,13 +88,6 @@ let orderPerMonth=[]
 console.log(orderPerMonth);
 
 
-
-
-
-
-
-
-
   res.render("../views/admin/admindashboard", {  boardorderdata, order,userdata,productcount,ordePending,Return,shipped,Delivered,Cancelled,orderPerMonth })
 };
 const adminboarddata = (req, res) => {
@@ -132,32 +95,6 @@ const adminboarddata = (req, res) => {
 
   res.redirect('/admindashboard')
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // blockuser
 const blockuser = async (req, res) => {
@@ -187,9 +124,104 @@ const blockuser = async (req, res) => {
 };
 // insert image
 const insertProduct = async (req, res) => {
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
   if(req.files){
     console.log(req.files)
   try {
+
+    // cloudnarry
+    const cloudinary = require('cloudinary').v2;
+
+// Configuration 
+cloudinary.config({
+  cloud_name: "dczou8g32",
+  api_key: "634374197678664",
+  api_secret: "bT83DQmDOjNOnRPcK8zQqWF6DQU"
+});
+
+
+// Upload
+let filenamesss = req.files[0].originalname;
+console.log(filenamesss + 'jijin');
+const resp = cloudinary.uploader.upload(filenamesss,{ transformation: [
+  { width: 485, height: 485, gravity: "face", crop: "fill" },
+]})
+// const resp = cloudinary.url(filenamesss,{ transformation: [
+//   { width: 485, height: 485, gravity: "face", crop: "fill" },
+// ]})
+
+resp.then((data) => {
+  console.log('------------------------------');
+  console.log(data);
+  console.log('------------------------------');
+  console.log(data.secure_url);
+}).catch((err) => {
+  console.log(err);
+});
+
+
+// Generate 
+// const url = cloudinary.url("uplode_img", {
+//   width: 10,
+//   height: 15,
+//   Crop: 'fill'
+// });
+
+
+
+// The output url
+// console.log(url);
+console.log(resp);
+
+// https://res.cloudinary.com/<cloud_name>/image/upload/h_150,w_100/olympic_flag
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
   let name = Date.now() + '-' + req.files[0].originalname;
 
@@ -201,8 +233,7 @@ const insertProduct = async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
-      image: name,// req.file.filename
-      // cropedimg: await sharp(req.files[0]).resize(300,200),
+      image: name,// 
       price: req.body.price,
       quantity: req.body.quantity,
     }]
@@ -215,22 +246,9 @@ const insertProduct = async (req, res) => {
   }
 
 
-  //   let product =  new Product({
-  //     name: req.body.name,
-  //     description: req.body.description,
-  //     category: req.body.category,
-  //     image: name,// req.file.filename
-  //     // cropedimg: await sharp(req.files[0]).resize(300,200),
-  //     price: req.body.price,
-  //     quantity: req.body.quantity,
-  //   });
-  // //  console.log(req.files.buffer);
-  //   product.save();
   res.redirect("/adminproducts");
-  // console.log(product.cropedimg);
   } catch (error) {
-  // console.log(error.message);
-  // console.log('kkkkkkkkkkk');
+  console.log(error.message);
   }
 }
 else{
@@ -246,8 +264,10 @@ const displayimage = async (req, res) => {
     res.render("../views/admin/display.ejs", {
       product: detail,
       catData: catData,
-    }); //../views/admin/display.ejs
-  } catch (err) { }
+    }); 
+  } catch (err) { 
+    console.log(err.message);
+  }
 };
 
 //   blockproduct
@@ -277,18 +297,6 @@ const blockproduct = async (req, res) => {
   }
 };
 
-// // deleteproduct
-// const deleteproduct = async (req, res) => {
-//   try {
-//     console.log("reach");
-//     const checks = await Product.findById({ _id: req.query.id });
-//     await Product.findByIdAndDelete({ _id: req.query.id });
-//     console.log(checks);
-//     res.redirect("/adminproducts");
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 
 //   get  productid
 let editid;
@@ -332,7 +340,9 @@ const categorydata = async (req, res) => {
     res.render("../views/admin/admincategory.ejs", {
       category: userdetaicategory,
     });
-  } catch (err) { }
+  } catch (err) { 
+    console.log(err.message);
+  }
   console.log("reach");
 };
 // add category
@@ -385,7 +395,7 @@ const categoryblock = async (req, res) => {
 const insertbanner = (req, res) => {
   try {
     let banner = new bannermodel({
-      image: req.file.filename, //it is for add multiple image insted of req.files write req.file,filename
+      image: req.file.filename, 
     });
     banner.save();
     res.redirect("/adminbanner");
@@ -401,7 +411,9 @@ const banner = async (req, res) => {
     res.render("../views/admin/banner.ejs", {
       bannerimg: bannerimg,
     });
-  } catch (err) { }
+  } catch (err) { 
+    console.log(err.message);
+  }
   console.log("reach");
 };
 // block banner image
@@ -432,7 +444,7 @@ const couponsdata = async (req, res) => {
   try {
 
     const name = req.body.name;
-    var couponexist = await couponmodel.findOne({ name: name });
+    let couponexist = await couponmodel.findOne({ name: name });
     if (couponexist) {
       console.log('exist');
       res.redirect("/admincoupons");
@@ -468,34 +480,7 @@ const admincoupon = async (req, res) => {
     console.log(error.message);
   }
 };
-// // coupon block unblock
-// const couponblock=async(req,res)=>{
-//   try {
-//     const check = await couponmodel.findById({ _id: req.query.id });
 
-//     if (check.status == true) {
-//       await couponmodel.findByIdAndUpdate(
-//         { _id: req.query.id },
-//         { $set: { status: false } }
-//       );
-//     } else {
-//       await couponmodel.findByIdAndUpdate(
-//         { _id: req.query.id },
-//         { $set: { status: true } }
-//       );
-//     }
-//     res.redirect("/admincoupons");
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// }
-
-// order
-
-// ordermodel.insertMany({name:"jijin",
-//   product:"SKILLVSeries",
-//   address:"vazhappilly,house,chowwannur,po,kunnamkulam,thrissur",
-//   payment:"COD"});
 const orderstatus = async (req, res) => {
   let status = req.body.select
   let id = req.body.proid
@@ -520,28 +505,6 @@ const adminorder = async (req, res) => {
   }
 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = {

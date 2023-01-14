@@ -9,10 +9,7 @@ const storage=multer.diskStorage({
         const name=Date.now()+'-'+file.originalname;
         cb(null,name);
     }
-    // filename1:(req,file,cb)=>{
-    //     const name=Date.now()+'-'+file.originalname;
-    //     cb(null,name);
-    // }
+   
 })
 
 const upload=multer({storage:storage})

@@ -1,6 +1,6 @@
 const express = require("express"),
   app = express();
-
+require('./config/Connection')
 // const morgan = require("morgan")
 
   const bodyParser = require('body-parser'); 
@@ -12,16 +12,7 @@ const express = require("express"),
   app.use('/public',express.static(__dirname+'/public'))
 app.set("view engine", "ejs");
 
-const mongoose=require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/Store');
-mongoose.connection.on("connected",(err)=>{  
-    if(err){
-        console.log('error'); 
-    }
-    else{
-        console.log("mongodb connected successfuly");
-    }
-})
+
 // session
 const sessions=require('express-session')
 app.use(sessions({//setup session
