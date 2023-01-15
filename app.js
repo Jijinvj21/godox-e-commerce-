@@ -44,5 +44,5 @@ app.use('/',paymentRoute)
 
 
 app.listen(8348, function () {
-  console.log("Server is running on port 2001 ");
+  console.log("Server is running on port 8348 ");
 });
