@@ -4,7 +4,7 @@ const productController=require('../controller/productcontroller')
 
 const sessionMV=require('../middleware/userSession')
  const userSessionMV=sessionMV.userSession
- const noSession=sessionMV.noSession
+//  const noSession=sessionMV.noSession
 
 
 

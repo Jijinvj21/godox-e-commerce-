@@ -89,7 +89,7 @@ const product = async (req, res) => {
 const singleproduct = async (req, res) => {
   try {
     const productimg = await Product.find({ _id: req.query.id });
-    email = req.session.userEmail
+   const email = req.session.userEmail
     const user = await userdata.findOne({ email: email });
     res.render("../views/product/singleproductwithzoom.ejs", { productimg: productimg, user })
   }

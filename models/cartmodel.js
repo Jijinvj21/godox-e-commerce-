@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { userAddToCart } = require('../controller/productcontroller');
+// const { userAddToCart } = require('../controller/productcontroller');
 
-const Adminproduct=require('./adminproductmodel');
+// const Adminproduct=require('./adminproductmodel');
 const cartSchema = new mongoose.Schema({
     userId:{
         type:mongoose.SchemaTypes.ObjectId,
