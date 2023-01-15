@@ -268,7 +268,7 @@ const forgotnewpasword = async (req, res) => {
 const addadderss= async(req,res)=>{
  let email=req.session.userEmail
   await User.updateOne({ email:email},{$push:{addresses:{address:req.body.address,phone:req.body.phone,name:req.body.name,pincode:req.body.pincode,}}})
-  res.redirect('/viewuserdata')
+  res.redirect('/displayaddress')
 }
 // edit user data
 const edituserdata = async (req,res)=>{
@@ -305,7 +305,7 @@ const updateorder = async (req,res)=>{
  let status=req.body.select
 let id = req.body.proid
 await ordermodel.updateOne({ _id:id},{ $set: { status: status }})
-res.redirect('/viewuserdata')
+res.redirect('/displayorder')
 }
 
 module.exports = {

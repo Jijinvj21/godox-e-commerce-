@@ -80,33 +80,18 @@ const paypalgate = async (req, res) => {
         "description": "This is the payment description."
       }]
     };
-    paypal.payment.create(create_payment_json, async function (error, payment) {
+    let a=paypal.payment.create(create_payment_json, async function (error, payment) {
+      
+
       if (error) {
         throw error;
       } else {
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === "approval_url") {
             res.redirect(payment.links[i].href);
+            // console.log(payment.links[i].rel);
 
-
-            // save data
-            const usercheckout = await User.findOne({ email: req.session.userEmail });
-            const usercheckoutcart = await cartmodel.findOne({ userId: usercheckout._id });
-            orderdata = {
-              userId: usercheckout._id,
-              product: usercheckoutcart.cartItems,
-              addresses: [{
-                address: req.body.address,
-                phone: req.body.mobile,
-                name: req.body.name,
-                pincode: req.body.zip,
-              }],
-              payment: req.body.paymentMethod,
-              total: req.body.total
-            }
-            const order = new ordermodel(orderdata);
-            order.save();
-            await cartmodel.updateOne({ userId: usercheckout._id }, { $pull: { "cartItems": {} } })
+           
 
 
 
@@ -121,8 +106,41 @@ const paypalgate = async (req, res) => {
 }
 
 
+const success= async(req,res)=>{
+  console.log(req.query);
+  if(req.query === null){
+res.send('cancel')
+  }else{
+
+
+ // save data
+ const usercheckout = await User.findOne({ email: req.session.userEmail });
+ const usercheckoutcart = await cartmodel.findOne({ userId: usercheckout._id });
+ orderdata = {
+   userId: usercheckout._id,
+   product: usercheckoutcart.cartItems,
+   addresses: [{
+     address: req.body.address,
+     phone: req.body.mobile,
+     name: req.body.name,
+     pincode: req.body.zip,
+   }],
+   payment: req.body.paymentMethod,
+   total: req.body.total
+ }
+ const order = new ordermodel(orderdata);
+ order.save();
+ await cartmodel.updateOne({ userId: usercheckout._id }, { $pull: { "cartItems": {} } })
+
+
+console.log("nooooooo");
+  }
+ 
+res.render('../views/payment/sucess.ejs')
+}
 
 
 module.exports = {
-  paypalgate
+  paypalgate,
+  success,
 }

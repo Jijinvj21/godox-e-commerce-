@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const Product = require("../models/adminproductmodel");
 const categorylist = require("../models/categorymodel");
 const bannermodel = require("../models/bannermodel")
-const userdata = require("../models/userModel");
+const userdata = require("../models/usermodel");
 const cartmodel = require("../models/cartmodel")
 const wishlistmodel = require('../models/wishlistmodel')
 
@@ -98,10 +98,13 @@ const singleproduct = async (req, res) => {
   }
 }
 const cartdataprint = async (req, res) => {
+  
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   const proimg = await cartmodel.findOne({ userId: userid }).populate('cartItems.productId');
-  res.render("../views/product/cart2.ejs", { proimg: proimg })
+
+  const product = await Product.find({});
+  res.render("../views/product/cart2.ejs", { proimg: proimg, product })
 }
 // add to cart
 async function userAddToCart(req, res) {
@@ -138,7 +141,7 @@ async function userAddToCart(req, res) {
 async function userAddFromCart(req, res) {
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
-   await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
+  await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
     {
       $inc: { 'cartItems.$.qty': 1 }
     }
@@ -157,22 +160,53 @@ async function userDeductFromCart(req, res) {
   ])
   let productqty = parseInt(qtyChech[0].cartItems.qty)
   if (productqty - 1 <= 0) {
-    await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { productId: req.query.id } } })
+    await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: req.query.id } } })
   } else {
-     await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
+    await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
       {
         $inc: { 'cartItems.$.qty': -1 }
       })
   }
   res.redirect('/cartdataprint')
 }
-// wishlist
-const userWishlist = async (req, res) => {
+// remove from cart
+const removeFromCart = async (req, res) => {
+  console.log(req.query);
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
-  const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
-  console.log(wishlistdata);
-  res.render('../views/product/wishlist.ejs', { wishlistdata: wishlistdata })
+  let productid=req.query.productId
+  await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: productid} } })
+  res.redirect('/cartdataprint')
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// wishlist
+const userWishlist = async (req, res) => {
+
+
+
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
+    console.log(wishlistdata);
+    res.render('../views/product/wishlist.ejs', { wishlistdata: wishlistdata })
+  
 }
 // add to wishlist
 const userAddToWishlist = async (req, res) => {
@@ -218,7 +252,7 @@ const addcartwishlist = async (req, res) => {
     return cartItems.productId == req.query.productId
   })
   if (itemIndex > -1) {//-1 if no item matches
-     await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
+    await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
       {
 
         $inc: { 'cartItems.$.qty': 1 }
@@ -249,14 +283,20 @@ const addcartwishlist = async (req, res) => {
 
 
 
+
 module.exports = {
   landing,
+
   product,
+
   singleproduct,
+
   cartdataprint,
   userAddToCart,
   userAddFromCart,
   userDeductFromCart,
+  removeFromCart,
+
   userWishlist,
   userAddToWishlist,
   removeFromWishlist,

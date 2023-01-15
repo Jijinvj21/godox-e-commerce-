@@ -1,12 +1,12 @@
 const sharp = require("sharp")
 const admindatamodel = require("../models/adminmodel");
 const Product = require("../models/adminproductmodel");
-const Userdatamodel = require("../models/userModel");
+const Userdatamodel = require("../models/usermodel");
 const categorymodel = require("../models/categorymodel");
 const bannermodel = require("../models/bannermodel");
 const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
-const User = require("../models/userModel");
+const User = require("../models/usermodel");
 
 
 const adminlogin = (req, res) => {

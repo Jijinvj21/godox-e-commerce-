@@ -1,20 +1,33 @@
 // const express = require("express");
-const User = require("../models/userModel");
+const User = require("../models/usermodel");
 const cartmodel = require("../models/cartmodel")
 // const ordermodel = require("../models/ordermodel")
 const couponmodel = require("../models/couponmodel")
-
+const ordermodel =require("../models/ordermodel")
 const mongoose = require("mongoose");
-const { updateMany } = require("../models/userModel");
+const { updateMany } = require("../models/usermodel");
 
 // checkout
+
 const checkout = async (req, res) => {
+  const useraddress = await User.findOne({ email: req.session.userEmail });
+  let userdatas = useraddress._id
+  const cartdatas = await cartmodel.find({userId:userdatas})
+  console.log('abdu');
+console.log(cartdatas[0].cartItems);
+console.log('abdu');
+if (cartdatas[0].cartItems.length == 0) {
+  res.redirect('/cartdataprint')
+
+}
+else {
   const useraddress = await User.findOne({ email: req.session.userEmail });
   let userdatas = useraddress._id
   const usercart = await cartmodel.findOne({ userId: userdatas }).populate('cartItems.productId');
   let totprice = req.query.sub
   const discoundtotal = await couponmodel.findOne({ email: req.session.userEmail });
-  res.render('../views/payment/checkout.ejs', { useraddress, usercart, totprice })
+  res.render('../views/payment/checkout.ejs', { useraddress, usercart, totprice,discoundtotal })
+}
 }
 // carttot
 const checkouttot = async (req, res) => {
@@ -22,7 +35,7 @@ const checkouttot = async (req, res) => {
 
   const userid = await User.findOne({ email: req.session.userEmail });
   let user = userid._id
-  let a = await cartmodel.updateOne({ userId: user },
+ await cartmodel.updateOne({ userId: user },
     {
 
       $set: { totalPrice: req.body.subtot }
@@ -133,7 +146,7 @@ if ( finded == '') {
     }
     else {
       console.log('created date is not reach');
-      console.log(expdate);
+      
     }
   }
   else {
@@ -144,9 +157,7 @@ if ( finded == '') {
   let dis =cartdata.discoundamount
   res.json({dis})
 }
-const success= (req,res)=>{
-res.render('../views/payment/sucess.ejs')
-}
+
 
 
 
@@ -160,6 +171,6 @@ module.exports = {
   // checkoutdata, it is nessory
   couponcheck,
   checkouttot,
-  success
+  // success
 
 }

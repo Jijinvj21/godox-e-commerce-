@@ -35,9 +35,15 @@
           <div class="col">
 
 
-
-
             <%if( wishlistdata!=null){%>
+
+
+              <%if(wishlistdata.products.length <= 0 ){%>
+                <div class="row">
+                  <h1 class="text-center">No items in wishlist</h1>
+              </div>
+                <%}else{%>
+
               <% for (let i=0; i < wishlistdata.products.length; i++) { %>
 
 
@@ -97,15 +103,19 @@
 
                   </div>
                 </div>
+                
 
                 <% } %>
-                  <%}else{%>
-                    <div class="row">
-                      <h1 class="text-center">You have no Wishlist</h1>
-                    </div>
-                    <%}%>
+                <%}%>
 
+                <%}else{%>
+                  <div class="row">
+                    <h1 class="text-center">You have no Wishlist</h1>
+                  </div>
+                  <%}%>
+                 
 
+                    
 
 
 

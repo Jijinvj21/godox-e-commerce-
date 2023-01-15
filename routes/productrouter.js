@@ -19,13 +19,14 @@ router.get('/cartpage',userSessionMV,productController.userAddToCart)
 router.get('/cartimc',userSessionMV,productController.userAddFromCart)
 router.get('/cartdec',userSessionMV,productController.userDeductFromCart)
 router.get('/cartdataprint',userSessionMV,productController.cartdataprint)
+router.get('/productId',userSessionMV,productController.removeFromCart)
+
 
 
 
 router.get('/wishlistdata',userSessionMV,productController.userWishlist)
 router.get('/wishlistdat',userSessionMV,productController.userAddToWishlist)
 router.get('/wishlistremove',userSessionMV,productController.removeFromWishlist)
-
 router.get('/addcartwishlist',userSessionMV,productController.addcartwishlist)
 
 

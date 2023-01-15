@@ -183,6 +183,15 @@ a:hover{
                 <div class="title">
                
                 </div> 
+                
+
+                <%if( product=null){%>
+                    <div class="row">
+                        <h1 class="text-center">Product is not listed yet</h1>
+                    </div>
+                    <%}else{%>
+                       
+
                 <%if( proimg!=null){%>
                 <%if(proimg.cartItems[0]!=null ){%>
                  <% var subtot=0%>
@@ -205,7 +214,7 @@ a:hover{
                             <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;" >-</a><a href="#" class="border" style="text-decoration: none; color: #000;"><%=proimg.cartItems[i].qty%></a><a href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;">+</a>
                         </div>
                         <%var totprice= proimg.cartItems[0].productId.price * proimg.cartItems[i].qty %>
-                        <div class="col d-flex justify-content-center">&dollar; <%=totprice%><span class="close"><a href="delete">&#10005;</a></span></div> <!-- -->
+                        <div class="col d-flex justify-content-center">&dollar; <%=totprice%><span class="close" ><a href="/productId?id=<%=proimg.cartItems[i].productId._id%>" class="mx-auto" style="text-decoration: none; color: #000;" >&#10005;</a></span></div> <!-- -->
                     <%subtot += totprice %>
                     </div>
                     <%}%>
@@ -223,6 +232,12 @@ a:hover{
                         <h1 class="text-center">You have no cart</h1>
                     </div>
                     <%}%>
+                    
+                        <%}%>
+
+                   
+                
+
                
                 <div class="back-to-shop"><a href="/productpage" style="text-decoration: none; color: gray;">&leftarrow;<span class="text-muted" > Back to shop</span></a></div>
             </div>
@@ -233,10 +248,43 @@ a:hover{
                     <div class="col">TOTAL PRICE</div>
                     <div class="col text-right">&dollar;<%=subtot%> </div>
                 </div>
+
+                <%if( product=null){%>
+                    <form action="/checkout" method="post">
+                        <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                        <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT  </button>
+                  
+                    <%}else{%>
+                       
+
+                <%if( proimg!=null){%>
+                <%if(proimg.cartItems[0]!=null ){%>
+
+
+
                <form action="/checkout" method="post">
 <input type="number" name="subtot" value="<%=subtot%>" hidden>
-                <button class="btn btn-light text-dark" type="submit"> CHECKOUT</a>  </button>
+                <button class="btn btn-light text-dark" type="submit"> CHECKOUT  </button>
             </form>
+
+            <%}else{%>
+                <form action="/checkout" method="post">
+                    <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                    <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT   </button>
+                                </form>
+               
+                <%}%>
+                <%}else{%>
+                    <form action="/checkout" method="post">
+                        <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                        <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT  </button>
+                                    </form>
+                   
+                    <%}%>
+                    
+                        <%}%>
+
+
             </div>
            
         </div>
