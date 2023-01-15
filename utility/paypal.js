@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 let paypal = require('paypal-rest-sdk');
-const User = require("../models/userModel");
+const User = require("../models/usermodel");
 const cartmodel = require("../models/cartmodel")
 const ordermodel = require("../models/ordermodel")
 require('dotenv').config()
