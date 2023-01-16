@@ -69,73 +69,76 @@
         </div>
 
 
-        <div class="card mb-4">
-       
+       <div class="container">
+        <% if(coupondata!=null) { %>
 
-          <div class="card-body">
-            <% if(coupondata!=null) { %>
-              <table id="datatablesSimple">
-                <thead>
-                  <tr>
-                    <!-- <th>No.</th> -->
-                    <th>Coupon</th>
-                    <th>Discount(%)</th>
-                    <th>Min purchase amount</th>
-                    <th>Max discound amount</th>
-                    <th>Created date</th>
-                    <th>Expire date</th>
-                    <th>Status</th>
-                    <!-- <th>User</th>
-                    <th>Discounted total</th> -->
+          <table id="example" class="table table-bordered table-striped ">
+            <thead>
+            <tr>
+              <!-- <th>No.</th> -->
+              <th>Coupon</th>
+              <th>Discount(%)</th>
+              <th>Min purchase amount</th>
+              <th>Max discound amount</th>
+              <th>Created date</th>
+              <th>Expire date</th>
+              <th>Status</th>
+              <!-- <th>User</th>
+              <th>Discounted total</th> -->
+    
+    
+            </tr>
+          </thead>
+          <tbody>
+            <% coupondata.forEach((coupondata)=>{ %>
+              <!-- created date -->
+              <%let date = coupondata.createddate %>
+              <%=console.log(date)%>
+              <%let isoString = date.toISOString()%>
+              <%let createddate = isoString.split('T')[0]%>
+             <!-- expired date -->
+             <%let dat = coupondata.expiredate %>
+             <%=console.log(dat)%>
+             <%let isoStrin = dat.toISOString()%>
+             <%let expiredate = isoStrin.split('T')[0]%>
+             
+              
+              <tr>
+               
+                <td><%=coupondata.name%></td>
+                <td><%=coupondata.discount%></td>
+                <td><%=coupondata.minpurchaseamount%></td>
+                <td><%=coupondata.maxdiscount%></td>
+                <td><%=createddate %></td>
+                <td><%=expiredate %></td>
+                <td><%=coupondata.status%></td>
+                <!-- <td><%=coupondata.userId%></td>
+                <td><%=coupondata.discountedtotal%></td> -->
+    
+    
+              </tr>
+              <%})%>
+        </tbody>
+        </table>
+        <%}%>
 
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <% coupondata.forEach((coupondata)=>{ %>
-                    <!-- created date -->
-                    <%let date = coupondata.createddate %>
-                    <%=console.log(date)%>
-                    <%let isoString = date.toISOString()%>
-                    <%let createddate = isoString.split('T')[0]%>
-                   <!-- expired date -->
-                   <%let dat = coupondata.expiredate %>
-                   <%=console.log(dat)%>
-                   <%let isoStrin = dat.toISOString()%>
-                   <%let expiredate = isoStrin.split('T')[0]%>
-                   
-                    
-                    <tr>
-                     
-                      <td><%=coupondata.name%></td>
-                      <td><%=coupondata.discount%></td>
-                      <td><%=coupondata.minpurchaseamount%></td>
-                      <td><%=coupondata.maxdiscount%></td>
-                      <td><%=createddate %></td>
-                      <td><%=expiredate %></td>
-                      <td><%=coupondata.status%></td>
-                      <!-- <td><%=coupondata.userId%></td>
-                      <td><%=coupondata.discountedtotal%></td> -->
-
-
-                    </tr>
-                    <%})%>
-                </tbody>
-              </table>
-              <%}%>
-
-          </div>
+       </div>
         </div>
 
       </div>
     </div>
+       <script>
+      $(document).ready(function () {
+        var table = $('#example').DataTable({
+          rowReorder: {
+            selector: 'td:nth-child(2)'
+          },
+          responsive: true
+        });
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/javascript/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/public/assets/demo/chart-area-demo.js"></script>
-    <script src="/public/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/public/javascript/js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

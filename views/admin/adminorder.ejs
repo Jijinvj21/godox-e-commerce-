@@ -8,9 +8,16 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-  <link href="/public/stylesheet/css/productccss.css" rel="stylesheet" />
-  <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.1/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -29,85 +36,85 @@
             Downlod csv
           </button></a>
         </div>
-        <div class="card mb-4">
+        
        
-
-          <div class="card-body">  
-            <% if(order!=null) { %>
-              
-              <table id="datatablesSimple" style="min-height: 35vh;">
-                <thead>
-                  <tr>
-                    <!-- <th>No.</th> -->
-                    <th>Data</th>
-                    <th>User</th>
-                    <th>paymentType</th>
-                    <th>Status</th>
-                    <th>items</th>
-                    <th>Total</th>
-
-                   
-                    
-                   
-                    
-                    
+<div class="container-fluid">
+  <% if(order!=null) { %>
 
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <% order.forEach((orderData)=>{ %>
-                    <%let date =orderData.date %>
-                          <%let isoString = date.toISOString()%>
-                          <%let newDate = isoString.split('T')[0]%>
-                         
-                    <tr>
-                      <td> <%=newDate%></td>
-                      <td><%=orderData.addresses[0].name%></td>
-                      <td><%=orderData. payment%></td>
-                      
-                      <td> 
-                        <form action="/orderstatus" method="post" class="d-flex ">
-                        <select class="form-select form-select-lg mb-3 " name="select" aria-label=".form-select-lg example" style="width: 200px; " >
-                          <option selected><%=orderData. status%></option>
-                          <option value="cancel">Cancel</option>
-                          <option value="shipping">Shipping</option>
-                          <option value="Placed">Placed</option>
-                          <option value="delivered">Delivered</option>
-                          <input type="text" name="proid" value="<%=orderData._id%>"  class="d-none">
+    <table id="example" class="table table-bordered table-striped ">
+      <thead>
+        <tr>
+          <!-- <th>No.</th> -->
+          <th>Data</th>
+          <th>User</th>
+          <th>paymentType</th>
+          <th>Status</th>
+          <th>items</th>
+          <th>Total</th>
 
-                        </select>
-                        <button class=" btn btn-dark mx-2"  style="height: 50px; padding-top: 10px;" type="submit"  >Update</button>
-                      </form>
-                    </td>
-                     
-                      <td><%=orderData.product.length%></td>
-                      <td ><%=orderData.total%> </td>
-                     
+         
+          
+         
+          
+          
 
 
-                    </tr>
-                    <%})%>
-                  
-                    
-                </tbody>
-              </table>
-              
-              <%}%>
+        </tr>
+    </thead>
+    <tbody>
+      <% order.forEach((orderData)=>{ %>
+        <%let date =orderData.date %>
+              <%let isoString = date.toISOString()%>
+              <%let newDate = isoString.split('T')[0]%>
+             
+        <tr>
+          <td> <%=newDate%></td>
+          <td><%=orderData.addresses[0].name%></td>
+          <td><%=orderData. payment%></td>
+          
+          <td> 
+            <form action="/orderstatus" method="post" class="d-flex ">
+            <select class="form-select form-select-lg mb-3 " name="select" aria-label=".form-select-lg example" style="width: 200px; " >
+              <option selected><%=orderData. status%></option>
+              <option value="cancel">Cancel</option>
+              <option value="shipping">Shipping</option>
+              <option value="Placed">Placed</option>
+              <option value="delivered">Delivered</option>
+              <input type="text" name="proid" value="<%=orderData._id%>"  class="d-none">
 
-          </div>
+            </select>
+            <button class=" btn btn-dark mx-2"  style="height: 50px; padding-top: 10px;" type="submit"  >Update</button>
+          </form>
+        </td>
+         
+          <td><%=orderData.product.length%></td>
+          <td ><%=orderData.total%> </td>
+         
+
+
+        </tr>
+        <%})%>
+</tbody>
+<%}%>
+
+</div>
         </div>
 
       </div>
-    </div>
     
+    
+    <script>
+      $(document).ready(function () {
+        var table = $('#example').DataTable({
+          rowReorder: {
+            selector: 'td:nth-child(2)'
+          },
+          responsive: true
+        });
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/javascript/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/public/assets/demo/chart-area-demo.js"></script>
-    <script src="/public/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/public/javascript/js/datatables-simple-demo.js"></script>
 </body>
 
 </html>
