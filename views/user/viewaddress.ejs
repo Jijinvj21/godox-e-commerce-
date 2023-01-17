@@ -24,11 +24,11 @@
   </div>
   </div>
 
-  <div class="container">
+  <div class="container" style="min-height: 60.3vh;">
     <div class="row">
 
 
-      <div class="col-lg-3 my-5">
+      <div class="col-lg-3 my-3 d-flex flex-column align-items-center">
         <div class="card" style="width: 18rem; border-radius: 15px;
                 background: #ffffff;
                 box-shadow:  10px 10px 20px #5a5a5a81,
@@ -60,44 +60,57 @@
 
           <div class="card-body p-4">
 
-            <% for (let i=0; i < userdatas.addresses.length; i++) { %>
-              <div class="row align-items-center">
 
-                <div class="col-md-2 d-flex justify-content-center">
-                  <div>
-                    <p class="lead fw-normal mb-0">
-                      <%=userdatas.addresses[i].name%>
-                    </p>
-                  </div>
-                </div>
-                <div class="col-md-4 d-flex justify-content-center">
-                  <div>
-                    <p class="lead fw-normal mb-0">
-                      <%=userdatas.addresses[i].address%>
-                    </p>
-                  </div>
-                </div>
-                <div class="col-md-2 d-flex justify-content-center">
-                  <div>
-                    <p class="lead fw-normal mb-0">
-                      <%=userdatas.addresses[i].phone%>
-                    </p>
-                  </div>
-                </div>
-                <div class="col-md-2 d-flex justify-content-center">
-                  <div>
-                    <p class="lead fw-normal mb-0">
-                      <%=userdatas.addresses[i].pincode%>
-                    </p>
-                  </div>
-                </div>
 
-                <div class="col-md-2 d-flex justify-content-center">
-                  <i class="bi bi-trash text-dark"></i>
-                </div>
 
-              </div>
-              <% } %>
+
+
+
+
+            <table class="table table-border">
+              
+              <thead>
+                
+
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Pincode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let i=0; i < userdatas.addresses.length; i++) { %>
+                <tr>
+                  <td><%=userdatas.addresses[i].name%></td>
+                  <td><%=userdatas.addresses[i].address%></td>
+                  <td><%=userdatas.addresses[i].phone%></td>
+                  <td><%=userdatas.addresses[i].pincode%></td>
+                </tr>
+                <% } %>
+              </tbody>
+              
+            </table>
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
           </div>
         </div>
@@ -115,3 +128,15 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

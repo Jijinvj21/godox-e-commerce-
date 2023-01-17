@@ -21,6 +21,9 @@ let otpgen;
 // get data from signup
 const insertUser = async (req, res) => {
   try {
+    
+
+  try {
     regData = {
       name: req.body.name,
       email: req.body.email,
@@ -61,6 +64,9 @@ const insertUser = async (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
+} catch (error) {
+    console.log(error.message);
+}
 };
 // otp
 // let enterotp
@@ -100,6 +106,8 @@ const userverification = async (req, res) => {
       });
     }
   } catch (error) {
+    res.redirect('/error')
+
     console.log(error.message);
   }
 };
@@ -204,6 +212,8 @@ const forgotemailcheck = async (req, res) => {
         });
       }
     } catch (error) {
+      res.redirect('/error')
+
       console.log(error.message);
     }
   };

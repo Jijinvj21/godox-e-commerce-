@@ -7,6 +7,7 @@ const sessionMV=require('../middleware/userSession')
 //  const noSession=sessionMV.noSession
 
 
+router.get('/error',productController.error)
 
 
 

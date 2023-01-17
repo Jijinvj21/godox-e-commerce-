@@ -6,7 +6,10 @@ const bannermodel = require("../models/bannermodel")
 const userdata = require("../models/usermodel");
 const cartmodel = require("../models/cartmodel")
 const wishlistmodel = require('../models/wishlistmodel')
+const error = async (req, res) => {
+  res.render("../views/partials/error.ejs");
 
+}
 
 // render landing page
 const landing = async (req, res) => {
@@ -22,6 +25,8 @@ const landing = async (req, res) => {
   }
   catch (error) {
     console.log(error);
+    res.redirect('/error')
+
   }
 }
 // display, search, pagination, sort, filter
@@ -83,6 +88,7 @@ const product = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
   }
 };
 // single product page
@@ -95,9 +101,13 @@ const singleproduct = async (req, res) => {
   }
   catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 }
 const cartdataprint = async (req, res) => {
+  try {
+    
   
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
@@ -105,10 +115,16 @@ const cartdataprint = async (req, res) => {
 
   const product = await Product.find({});
   res.render("../views/product/cart2.ejs", { proimg: proimg, product })
+
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
 }
 // add to cart
 async function userAddToCart(req, res) {
-  // req.session.cartuserid = req.query.userid 
+  try{
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   let userCart = await cartmodel.findOne({ userId: userid })
@@ -135,10 +151,19 @@ async function userAddToCart(req, res) {
     )
   }
   res.redirect('/cartdataprint')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
+
 }
 
 // increment
 async function userAddFromCart(req, res) {
+  try {
+    
+
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
@@ -147,10 +172,17 @@ async function userAddFromCart(req, res) {
     }
   )
   res.redirect('/cartdataprint')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+    
+}
 }
 
 // decrement
 async function userDeductFromCart(req, res) {
+  try{
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   const qtyChech = await cartmodel.aggregate([{ $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
@@ -168,15 +200,26 @@ async function userDeductFromCart(req, res) {
       })
   }
   res.redirect('/cartdataprint')
+} catch (error) {
+  res.redirect('/error')
+
+  console.log(error.message);
+}
 }
 // remove from cart
 const removeFromCart = async (req, res) => {
+  try{
   console.log(req.query);
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   let productid=req.query.productId
   await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: productid} } })
   res.redirect('/cartdataprint')
+} catch (error) {
+  res.redirect('/error')
+
+  console.log(error.message);
+}
 }
 
 
@@ -199,18 +242,22 @@ const removeFromCart = async (req, res) => {
 // wishlist
 const userWishlist = async (req, res) => {
 
-
+try{
 
     const email = req.session.userEmail
     let userid = await userdata.findOne({ email: email })
     const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
     console.log(wishlistdata);
     res.render('../views/product/wishlist.ejs', { wishlistdata: wishlistdata })
-  
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
+
+}
 }
 // add to wishlist
 const userAddToWishlist = async (req, res) => {
-  //  req.session.addwishlistuserid=req.query.userid
+  try{
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   let userWishlist = await wishlistmodel.findOne({ userId: userid })
@@ -232,17 +279,28 @@ const userAddToWishlist = async (req, res) => {
     )
   }
   res.redirect('/wishlistdata')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
 }
 // remove from wishlist
 const removeFromWishlist = async (req, res) => {
+  try{
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
   await wishlistmodel.updateOne({ userId: userid }, { $pull: { products: req.query.productId } })
   res.redirect('/wishlistdata')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
 }
 // removefrom wishlist add to cart
 const addcartwishlist = async (req, res) => {
-  // find user id
+  try{
   let userid = await userdata.find({ email: req.session.userEmail });
   let user_id = userid[0]._id
   // delete from wishlist
@@ -270,7 +328,11 @@ const addcartwishlist = async (req, res) => {
     await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
   }
   res.redirect('/wishlistdata')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
 
+}
 }
 
 
@@ -285,6 +347,7 @@ const addcartwishlist = async (req, res) => {
 
 
 module.exports = {
+  error,
   landing,
 
   product,

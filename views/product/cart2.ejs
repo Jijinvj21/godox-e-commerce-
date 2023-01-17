@@ -1,316 +1,373 @@
 <%- include('../partials/user-header')%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<style>
-body{
-    background: #ddd;
-    min-height: 100vh;
-    vertical-align: middle;
-    /* display: flex; */
-    /* padding-top: 50%;
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            background: #ddd;
+            min-height: 100vh;
+            vertical-align: middle;
+            /* display: flex; */
+            /* padding-top: 50%;
     padding-bottom: 50%; */
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-.title{
-    margin-bottom: 5vh;
-}
-.card{
-    margin: auto;
-    max-width: 950px;
-    width: 90%;
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 1rem;
-    border: transparent;
-}
-@media(max-width:767px){
-    .card{
-        margin: 3vh auto;
-    }
-}
-.cart{
-    background-color: #fff;
-    padding: 4vh 5vh;
-    border-bottom-left-radius: 1rem;
-    border-top-left-radius: 1rem;
-}
-@media(max-width:767px){
-    .cart{
-        padding: 4vh;
-        border-bottom-left-radius: unset;
-        border-top-right-radius: 1rem;
-    }
-}
-.summary{
-    background-color: #ddd;
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-    padding: 4vh;
-    color: rgb(65, 65, 65);
-}
-@media(max-width:767px){
-    .summary{
-    border-top-right-radius: unset;
-    border-bottom-left-radius: 1rem;
-    }
-}
-.summary .col-2{
-    padding: 0;
-}
-.summary .col-10
-{
-    padding: 0;
-}.row{
-    margin: 0;
-}
-.title b{
-    font-size: 1.5rem;
-}
-.main{
-    margin: 0;
-    padding: 2vh 0;
-    width: 100%;
-}
-.col-2, .col{
-    padding: 0 1vh;
-}
-a{
-    padding: 0 1vh;
-}
-.close{
-    margin-left: auto;
-    font-size: 0.7rem;
-}
-img{
-    width: 3.5rem;
-}
-.back-to-shop{
-    margin-top: 4.5rem;
-}
-h5{
-    margin-top: 4vh;
-}
-hr{
-    margin-top: 1.25rem;
-}
-form{
-    padding: 2vh 0;
-}
-select{
-    border: 1px solid rgba(0, 0, 0, 0.137);
-    padding: 1.5vh 1vh;
-    margin-bottom: 4vh;
-    outline: none;
-    width: 100%;
-    background-color: rgb(247, 247, 247);
-}
-input{
-    border: 1px solid rgba(0, 0, 0, 0.137);
-    padding: 1vh;
-    margin-bottom: 4vh;
-    outline: none;
-    width: 100%;
-    background-color: rgb(247, 247, 247);
-}
-input:focus::-webkit-input-placeholder
-{
-      color:transparent;
-}
-.btn{
-    background-color: #000;
-    border-color: #000;
-    color: white;
-    width: 100%;
-    font-size: 0.7rem;
-    margin-top: 4vh;
-    padding: 1vh;
-    border-radius: 0;
-}
-.btn:focus{
-    box-shadow: none;
-    outline: none;
-    box-shadow: none;
-    color: white;
-    -webkit-box-shadow: none;
-    /* -webkit-user-select: none; */
-    transition: none; 
-}
-.btn:hover{
-    color: white;
-}
-a{
-    color: black; 
-    text-decoration: none;
-}
-a:hover{
-    color: black;
-    text-decoration: none;
-}
- #code{
-    background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253) , rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
-    background-repeat: no-repeat;
-    background-position-x: 95%;
-    background-position-y: center;
-}
-</style>
-<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-</style>
-<body style="min-height: 100vh;">
-  
-   <div class="container-fluid ">
-    <div class="row mt-5 mb-5  " >
-        <h1 class="text-center py-4 text-secondary " style="  text-shadow: 3px 3px #ffffff8e;background-color:#dddddd; font: bolder; font-family: 'Bebas Neue', cursive; font-size: 500;  letter-spacing: 10px;" >ShOPPING CART</h1>
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .title {
+            margin-bottom: 5vh;
+        }
+
+        .card {
+            margin: auto;
+            max-width: 950px;
+            width: 90%;
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 1rem;
+            border: transparent;
+        }
+
+        @media(max-width:767px) {
+            .card {
+                margin: 3vh auto;
+            }
+        }
+
+        .cart {
+            background-color: #fff;
+            padding: 4vh 5vh;
+            border-bottom-left-radius: 1rem;
+            border-top-left-radius: 1rem;
+        }
+
+        @media(max-width:767px) {
+            .cart {
+                padding: 4vh;
+                border-bottom-left-radius: unset;
+                border-top-right-radius: 1rem;
+            }
+        }
+
+        .summary {
+            background-color: #ddd;
+            border-top-right-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            padding: 4vh;
+            color: rgb(65, 65, 65);
+        }
+
+        @media(max-width:767px) {
+            .summary {
+                border-top-right-radius: unset;
+                border-bottom-left-radius: 1rem;
+            }
+        }
+
+        .summary .col-2 {
+            padding: 0;
+        }
+
+        .summary .col-10 {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .title b {
+            font-size: 1.5rem;
+        }
+
+        .main {
+            margin: 0;
+            padding: 2vh 0;
+            width: 100%;
+        }
+
+        .col-2,
+        .col {
+            padding: 0 1vh;
+        }
+
+        a {
+            padding: 0 1vh;
+        }
+
+        .close {
+            margin-left: auto;
+            font-size: 0.7rem;
+        }
+
+        img {
+            width: 3.5rem;
+        }
+
+        .back-to-shop {
+            margin-top: 4.5rem;
+        }
+
+        h5 {
+            margin-top: 4vh;
+        }
+
+        hr {
+            margin-top: 1.25rem;
+        }
+
+        form {
+            padding: 2vh 0;
+        }
+
+        select {
+            border: 1px solid rgba(0, 0, 0, 0.137);
+            padding: 1.5vh 1vh;
+            margin-bottom: 4vh;
+            outline: none;
+            width: 100%;
+            background-color: rgb(247, 247, 247);
+        }
+
+        input {
+            border: 1px solid rgba(0, 0, 0, 0.137);
+            padding: 1vh;
+            margin-bottom: 4vh;
+            outline: none;
+            width: 100%;
+            background-color: rgb(247, 247, 247);
+        }
+
+        input:focus::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        .btn {
+            background-color: #000;
+            border-color: #000;
+            color: white;
+            width: 100%;
+            font-size: 0.7rem;
+            margin-top: 4vh;
+            padding: 1vh;
+            border-radius: 0;
+        }
+
+        .btn:focus {
+            box-shadow: none;
+            outline: none;
+            box-shadow: none;
+            color: white;
+            -webkit-box-shadow: none;
+            /* -webkit-user-select: none; */
+            transition: none;
+        }
+
+        .btn:hover {
+            color: white;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+        #code {
+            background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+            background-repeat: no-repeat;
+            background-position-x: 95%;
+            background-position-y: center;
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+    </style>
+
+    <body >
+
+        <div class="container-fluid ">
+            <div class="row mt-4 mb-4  ">
+                <h1 class="text-center py-4 text-secondary "
+                    style="  text-shadow: 3px 3px #ffffff8e;background-color:#dddddd; font: bolder; font-family: 'Bebas Neue', cursive; font-size: 500;  letter-spacing: 10px;">
+                    ShOPPING CART</h1>
+            </div>
+        </div>
+<div class="container"style="min-height: 55.5vh;" >
+        <div class="card mt-5">
+            <div class="row">
+
+
+                <div class="col-md-8 cart ">
+                    <div class="title">
+
+                    </div>
+
+
+                    <%if( product=null){%>
+                        <div class="row">
+                            <h1 class="text-center">Product is not listed yet</h1>
+                        </div>
+                        <%}else{%>
+
+
+                            <%if( proimg!=null){%>
+                                <%if(proimg.cartItems[0]!=null ){%>
+                                    <% var subtot=0%>
+                                        <div class="row border-top border-bottom">
+                                            <%for(let i=0;i< proimg.cartItems.length;i++){%>
+
+
+                                                <div class="row main align-items-center">
+
+                                                    <div class="col-2">
+
+                                                        <img class="img-fluid"
+                                                            src="/public/databaseimg/<%=proimg.cartItems[i].productId.image[0]%>">
+
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row text-muted">
+                                                            <%=proimg.cartItems[i].productId.category%>
+                                                        </div>
+                                                        <div class="row">
+                                                            <%=proimg.cartItems[i].productId.name%>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>"
+                                                            style="text-decoration: none; color: #000;">-</a><a href="#"
+                                                            class="border" style="text-decoration: none; color: #000;">
+                                                            <%=proimg.cartItems[i].qty%>
+                                                        </a><a href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>"
+                                                            style="text-decoration: none; color: #000;">+</a>
+                                                    </div>
+                                                    <%var totprice=proimg.cartItems[0].productId.price *
+                                                        proimg.cartItems[i].qty %>
+                                                        <div class="col d-flex justify-content-center">&dollar;
+                                                            <%=totprice%><span class="close"><a
+                                                                        href="/productId?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                        class="mx-auto"
+                                                                        style="text-decoration: none; color: #000;">&#10005;</a></span>
+                                                        </div> <!-- -->
+                                                        <%subtot +=totprice %>
+                                                </div>
+                                                <%}%>
+
+
+
+                                        </div>
+                                        <%}else{%>
+                                            <div class="row">
+                                                <h1 class="text-center">no items Available</h1>
+                                            </div>
+                                            <%}%>
+                                                <%}else{%>
+                                                    <div class="row">
+                                                        <h1 class="text-center">no items Available</h1>
+                                                    </div>
+                                                    <%}%>
+
+                                                        <%}%>
+
+
+
+
+
+                                                            <div class="back-to-shop"><a href="/productpage"
+                                                                    style="text-decoration: none; color: gray;">&leftarrow;<span
+                                                                        class="text-muted"> Back to shop</span></a>
+                                                            </div>
+                </div>
+                <div class="col-md-4 summary">
+                    <div>
+                        <h5><b>Summary</b></h5>
+                    </div>
+
+                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                        <div class="col">TOTAL PRICE</div>
+                        <div class="col text-right">&dollar;<%=subtot%>
+                        </div>
+                    </div>
+
+                    <%if( product=null){%>
+                        <form action="/checkout" method="post">
+                            <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                            <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT </button>
+
+                            <%}else{%>
+
+
+                                <%if( proimg!=null){%>
+                                    <%if(proimg.cartItems[0]!=null ){%>
+
+
+
+                                        <form action="/checkout" method="post">
+                                            <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                            <button class="btn btn-light text-dark" type="submit"> CHECKOUT </button>
+                                        </form>
+
+                                        <%}else{%>
+                                            <form action="/checkout" method="post">
+                                                <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                                <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT
+                                                </button>
+                                            </form>
+
+                                            <%}%>
+                                                <%}else{%>
+                                                    <form action="/checkout" method="post">
+                                                        <input type="number" name="subtot" value="<%=subtot%>" hidden>
+                                                        <button class="btn btn-light text-dark" type="submit" hidden>
+                                                            CHECKOUT </button>
+                                                    </form>
+
+                                                    <%}%>
+
+                                                        <%}%>
+
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
     </div>
-   </div>
-       
-    <div class="card " style="margin-top: 15vh;"  >
+
+
+
+
+    </body>
+
+
+    <div class="container-fluid h">
         <div class="row">
-           
-                                
-            <div class="col-md-8 cart " >
-                <div class="title">
-               
-                </div> 
-                
-
-                <%if( product=null){%>
-                    <div class="row">
-                        <h1 class="text-center">Product is not listed yet</h1>
-                    </div>
-                    <%}else{%>
-                       
-
-                <%if( proimg!=null){%>
-                <%if(proimg.cartItems[0]!=null ){%>
-                 <% var subtot=0%>
-                <div class="row border-top border-bottom">
-                    <%for(let i=0;i< proimg.cartItems.length;i++){%>
-                        
-                       
-                    <div class="row main align-items-center">
-                        
-                        <div class="col-2">
-                     
-                            <img class="img-fluid" src="/public/databaseimg/<%=proimg.cartItems[i].productId.image[0]%>">
-                               
-                        </div>
-                        <div class="col">
-                            <div class="row text-muted"><%=proimg.cartItems[i].productId.category%></div>
-                            <div class="row"><%=proimg.cartItems[i].productId.name%></div>
-                        </div>
-                        <div class="col">
-                            <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;" >-</a><a href="#" class="border" style="text-decoration: none; color: #000;"><%=proimg.cartItems[i].qty%></a><a href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>" style="text-decoration: none; color: #000;">+</a>
-                        </div>
-                        <%var totprice= proimg.cartItems[0].productId.price * proimg.cartItems[i].qty %>
-                        <div class="col d-flex justify-content-center">&dollar; <%=totprice%><span class="close" ><a href="/productId?id=<%=proimg.cartItems[i].productId._id%>" class="mx-auto" style="text-decoration: none; color: #000;" >&#10005;</a></span></div> <!-- -->
-                    <%subtot += totprice %>
-                    </div>
-                    <%}%>
-                    
 
 
-                </div>
-               <%}else{%>
-                <div class="row">
-                    <h1 class="text-center">no items Available</h1>
-                </div>
-                <%}%>
-                <%}else{%>
-                    <div class="row">
-                        <h1 class="text-center">You have no cart</h1>
-                    </div>
-                    <%}%>
-                    
-                        <%}%>
-
-                   
-                
-
-               
-                <div class="back-to-shop"><a href="/productpage" style="text-decoration: none; color: gray;">&leftarrow;<span class="text-muted" > Back to shop</span></a></div>
+            <div class="dummybox" style="height: 12.25vh;">
             </div>
-            <div class="col-md-4 summary">
-                <div><h5><b>Summary</b></h5></div>
-
-                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                    <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right">&dollar;<%=subtot%> </div>
-                </div>
-
-                <%if( product=null){%>
-                    <form action="/checkout" method="post">
-                        <input type="number" name="subtot" value="<%=subtot%>" hidden>
-                                        <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT  </button>
-                  
-                    <%}else{%>
-                       
-
-                <%if( proimg!=null){%>
-                <%if(proimg.cartItems[0]!=null ){%>
-
-
-
-               <form action="/checkout" method="post">
-<input type="number" name="subtot" value="<%=subtot%>" hidden>
-                <button class="btn btn-light text-dark" type="submit"> CHECKOUT  </button>
-            </form>
-
-            <%}else{%>
-                <form action="/checkout" method="post">
-                    <input type="number" name="subtot" value="<%=subtot%>" hidden>
-                                    <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT   </button>
-                                </form>
-               
-                <%}%>
-                <%}else{%>
-                    <form action="/checkout" method="post">
-                        <input type="number" name="subtot" value="<%=subtot%>" hidden>
-                                        <button class="btn btn-light text-dark" type="submit" hidden> CHECKOUT  </button>
-                                    </form>
-                   
-                    <%}%>
-                    
-                        <%}%>
-
-
-            </div>
-           
-        </div>
-        
-   
-      
-        
-    </div>
-   
-    
-
-   
-
-</body>
-
-
-<div class="container-fluid h">
-    <div class="row">
-    
-  
-        <div class="dummybox" style="height: 12.25vh;">
         </div>
     </div>
-  </div>
-  
-  <%- include('../partials/user-footer')%>
-  </html>
 
+    <%- include('../partials/user-footer')%>
 
+    </html>

@@ -8,6 +8,8 @@
   <title>Document</title>
 </head>
 
+  
+
 <%- include('../partials/admin-header')%>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
@@ -20,8 +22,8 @@
 <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.1/css/rowReorder.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
-<body>
-  <div class="container-fluid px-4">
+<body >
+  <div class="container-fluid ">
     <h1 class="mt-4">Product Management</h1>
     <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
       Add Product
@@ -130,16 +132,17 @@
               <label for="exampleFormControlInput1">Price</label>
               <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price">
               <label for="file-upload" class="form-label">Images to upload</label>
-              <input class="form-control" type="file" name="image">
+              <input class="form-control" type="file" name="image" multiple>
 
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+    
+              </form>
             </div>
-
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-
-          </form>
+        
 
 
 
@@ -151,7 +154,7 @@
 
 
 
-  <div class="container-fluid">
+  <div class="container-fluid "  >
     <% if(product!=null) { %>
       <table id="example" class="table table-bordered table-striped ">
         <thead>
@@ -174,7 +177,15 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody>    
+             
+
+
+          <%     if(product[0].image == null){%>
+<p>hai</p>
+          <%}else{%>
+
+          
           <% for (let i=0; i < product.length ; i++) { %>
             <tr>
 
@@ -217,7 +228,7 @@
                 </div>
               </td>
 
-              <td><img src="/public/databaseimg/<%=product[i].image[0]%>" style="width:50px;height:50px;"></td>
+              <td><img src="<%=product[i].image[0].url%>" style="width:50px;height:50px;"></td>
 
               <td style="width: 100px;">
                 <%=product[i].description%>
@@ -227,6 +238,9 @@
 
             </tr>
             <% } %>
+            <%}%>
+           
+
         </tbody>
       </table>
       <%}%>

@@ -10,6 +10,7 @@ const { updateMany } = require("../models/usermodel");
 // checkout
 
 const checkout = async (req, res) => {
+  try{
   const useraddress = await User.findOne({ email: req.session.userEmail });
   let userdatas = useraddress._id
   const cartdatas = await cartmodel.find({userId:userdatas})
@@ -29,8 +30,15 @@ else {
   res.render('../views/payment/checkout.ejs', { useraddress, usercart, totprice,discoundtotal })
 }
 }
+catch(error){
+console.log(error.message);
+res.redirect('/error')
+
+}
+}
 // carttot
 const checkouttot = async (req, res) => {
+  try{
   console.log('reach don');
 
   const userid = await User.findOne({ email: req.session.userEmail });
@@ -43,6 +51,12 @@ const checkouttot = async (req, res) => {
   )
   console.log(req.body.subtot);
   res.redirect('/checkout')
+}
+catch(error){
+  res.redirect('/error')
+
+  console.log(error.message);
+}
 }
 
 //form data display
@@ -69,13 +83,15 @@ const checkoutform = async (req, res) => {
     ]);
     res.json({ data: address })
   } catch (error) {
+    res.redirect('/error')
+
     console.log(error);
   }
 }
 
 // coupon_check
 const couponcheck = async (req, res) => {
-  
+ try{
   console.log(req.body.inputValue);
   const userdata = await User.findOne({ email: req.session.userEmail });
   let userid = userdata._id
@@ -156,6 +172,13 @@ if ( finded == '') {
 // if(a===a){
   let dis =cartdata.discoundamount
   res.json({dis})
+}
+catch(error){
+  res.redirect('/error')
+
+  console.log(error.message);
+
+}
 }
 
 

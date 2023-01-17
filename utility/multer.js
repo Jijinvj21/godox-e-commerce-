@@ -1,3 +1,4 @@
+const { memoryStorage } = require('multer');
 const multer=require('multer');
 const path=require('path');
 
@@ -12,6 +13,6 @@ const storage=multer.diskStorage({
    
 })
 
-const upload=multer({storage:storage})
+const upload=multer({storage:memoryStorage})
 
 module.exports=upload;

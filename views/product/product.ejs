@@ -152,11 +152,11 @@
 
 
 
-    <form action="" class="text-center w-100 d-flex justify-content-center">
+    <form action="" class="text-center w-100 d-flex justify-content-center align-items-center">
       <input type="text" name="search" class="searchinput" placeholder="Search" style="min-width: 100px;" />
 
-      <button type="submit" class="btn btn-none">
-        <i class="bi bi-search text-dark" style=""></i>
+      <button type="submit" class="btn btn-none bg-dark">
+        <i class="bi bi-search text-light" ></i>
       </button>
     </form>
 
@@ -203,7 +203,7 @@
       background: #e0e0e0;
       box-shadow:  9px 9px 18px #a4a4a4,
                    -9px -9px 18px #ffffff;">
-          <img src="/public/databaseimg/<%=productdata[i].image[0]%> " height="100px" class="rounded-4">
+          <img src="<%=productdata[i].image[0].url%> " height="100px" class="rounded-4">
 
 
           <div class="product-list">

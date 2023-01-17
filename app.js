@@ -26,7 +26,6 @@ app.use((req, res, next) => {//setup cache
 });
 
 
-
 const adminRoute=require('./routes/adminrout')
 app.use('/',adminRoute)
 
@@ -40,6 +39,9 @@ const paymentRoute=require('./routes/paymentrouter')
 app.use('/',paymentRoute)
 
 
+app.all('*',(req,res)=>{
+  res.redirect('/error')
+})
 
 
 

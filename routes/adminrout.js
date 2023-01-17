@@ -44,7 +44,7 @@ router.get("/adminproductgetid",adminSessionMW, adminController.adminproductgeti
 // edit product data
 router.post(
   "/adminproductedit",
-  upload.single("image"),
+  uploadbuffer.array("image", 12),
   adminController.adminproductedit
 );
 

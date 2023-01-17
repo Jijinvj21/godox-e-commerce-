@@ -9,6 +9,28 @@ const ordermodel = require("../models/ordermodel");
 const User = require("../models/usermodel");
 
 
+
+const cloudinary = require('cloudinary').v2;
+
+// Configuration 
+cloudinary.config({
+  cloud_name: "dczou8g32",
+  api_key: "634374197678664",
+  api_secret: "bT83DQmDOjNOnRPcK8zQqWF6DQU"
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 const adminlogin = (req, res) => {
   res.render("../views/admin/adminlogin");
 };
@@ -55,14 +77,14 @@ const userdata = async (req, res) => {
   try {
     const userdetail = await Userdatamodel.find();
     res.render("../views/admin/customer.ejs", { userdatashow: userdetail });
-  } catch (err) { 
+  } catch (err) {
     console.log(err.message);
   }
 };
 // dashboard
 const admindashboard = async (req, res) => {
 
- 
+
   // find order
   const order = await Product.find();
   // find order
@@ -72,23 +94,23 @@ const admindashboard = async (req, res) => {
   // product count
   const productcount = await Product.find();
   // Return','Shipped', 'Placed', 'Delivered', 'Cancelled
-const ordePending = await ordermodel.find({status:'pending'}).count()
-const Return = await ordermodel.find({status:'return'}).count()
-const shipped = await ordermodel.find({status:'shippid'}).count()
-const Delivered = await ordermodel.find({status:'delivered'}).count()
-const Cancelled = await ordermodel.find({status:'cancel'}).count()
+  const ordePending = await ordermodel.find({ status: 'pending' }).count()
+  const Return = await ordermodel.find({ status: 'return' }).count()
+  const shipped = await ordermodel.find({ status: 'shippid' }).count()
+  const Delivered = await ordermodel.find({ status: 'delivered' }).count()
+  const Cancelled = await ordermodel.find({ status: 'cancel' }).count()
 
 
 
-let orderPerMonth=[]
-    for (let i=0;i<12;i++){
-        let numberOfOrders=await ordermodel.find({month:i}).count()
-        orderPerMonth.push(numberOfOrders)
-    }
-console.log(orderPerMonth);
+  let orderPerMonth = []
+  for (let i = 0; i < 12; i++) {
+    let numberOfOrders = await ordermodel.find({ month: i }).count()
+    orderPerMonth.push(numberOfOrders)
+  }
+  console.log(orderPerMonth);
 
 
-  res.render("../views/admin/admindashboard", {  boardorderdata, order,userdata,productcount,ordePending,Return,shipped,Delivered,Cancelled,orderPerMonth })
+  res.render("../views/admin/admindashboard", { boardorderdata, order, userdata, productcount, ordePending, Return, shipped, Delivered, Cancelled, orderPerMonth })
 };
 const adminboarddata = (req, res) => {
 
@@ -136,61 +158,89 @@ const insertProduct = async (req, res) => {
 
 
 
-  
 
-  if(req.files){
+
+  if (req.files) {
     console.log(req.files)
-  try {
+    try {
 
-    // cloudnarry
-    const cloudinary = require('cloudinary').v2;
-
-// Configuration 
-cloudinary.config({
-  cloud_name: "dczou8g32",
-  api_key: "634374197678664",
-  api_secret: "bT83DQmDOjNOnRPcK8zQqWF6DQU"
-});
-
-
-// Upload
-let filenamesss = req.files[0].originalname;
-console.log(filenamesss + 'jijin');
-const resp = cloudinary.uploader.upload(filenamesss,{ transformation: [
-  { width: 485, height: 485, gravity: "face", crop: "fill" },
-]})
-// const resp = cloudinary.url(filenamesss,{ transformation: [
-//   { width: 485, height: 485, gravity: "face", crop: "fill" },
-// ]})
-
-resp.then((data) => {
-  console.log('------------------------------');
-  console.log(data);
-  console.log('------------------------------');
-  console.log(data.secure_url);
-}).catch((err) => {
-  console.log(err);
-});
-
-
-// Generate 
-// const url = cloudinary.url("uplode_img", {
-//   width: 10,
-//   height: 15,
-//   Crop: 'fill'
-// });
+      // cloudnarry
 
 
 
-// The output url
-// console.log(url);
-console.log(resp);
+      // Upload
+      // let filenamesss = req.files[0].path;
+      // console.log(req.files[0] + 'jijin');
+      // const resp = cloudinary.uploader.upload(filenamesss,{ transformation: [
+      //   { width: 485, height: 485, gravity: "face", crop: "fill" },
+      // ]})
+      // // const resp = cloudinary.url(filenamesss,{ transformation: [
+      // //   { width: 485, height: 485, gravity: "face", crop: "fill" },
+      // // ]})
 
-// https://res.cloudinary.com/<cloud_name>/image/upload/h_150,w_100/olympic_flag
+      // resp.then((data) => {
+      //   console.log('------------------------------');
+      //   console.log(data);
+      //   console.log('------------------------------');
+      //   console.log(data.secure_url);
+      // }).catch((err) => {
+      //   console.log(err);
+      // });
+
+
+      // Generate 
+      // const url = cloudinary.url("uplode_img", {
+      //   width: 10,
+      //   height: 15,
+      //   Crop: 'fill'
+      // });
+
+
+
+      // The output url
+      // console.log(url);
+      // console.log(resp);
+
+      // https://res.cloudinary.com/<cloud_name>/image/upload/h_150,w_100/olympic_flag
 
 
 
 
+      // this is working
+
+      const files = req.files;
+      const promises = await files.map(file => {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(file.path, {
+            transformation: [
+              { width: 485, height: 485, gravity: "face", crop: "fill" },
+            ]
+          }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          });
+        });
+      });
+
+      Promise.all(promises)
+        .then(async (results) => {
+          console.log("All files uploaded successfully", results);
+          console.log(req.body)
+          const newProduct = new Product({
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            price: req.body.price,
+            quantity: req.body.quantity,
+            image: results,
+          })
+          newProduct.save()
+          console.log(newProduct)
+
+        })
 
 
 
@@ -222,38 +272,37 @@ console.log(resp);
 
 
 
-   
-  let name = Date.now() + '-' + req.files[0].originalname;
+      // let name = Date.now() + '-' + req.files[0].originalname;
 
-  await sharp(req.files[0].buffer)
-  .resize({ width: 485, height: 485 })
-  .toFile('public/databaseimg/' + name)
-  await Product.insertMany(
-    [{
-      name: req.body.name,
-      description: req.body.description,
-      category: req.body.category,
-      image: name,// 
-      price: req.body.price,
-      quantity: req.body.quantity,
-    }]
-  )
+      // await sharp(req.files[0].buffer)
+      // .resize({ width: 485, height: 485 })
+      // .toFile('public/databaseimg/' + name)
+      // await Product.insertMany(
+      //   [{
+      //     name: req.body.name,
+      //     description: req.body.description,
+      //     category: req.body.category,
+      //     image: name,// 
+      //     price: req.body.price,
+      //     quantity: req.body.quantity,
+      //   }]
+      // )
 
-  for (let i = 1; i < req.files.length; i++) {
-    name = Date.now() + '-' + req.files[i].originalname;
-    await sharp(req.files[i].buffer).resize({ width: 485, height: 485 }).toFile('public/databaseimg/' + name)
-    await Product.updateOne({ name: req.body.name }, { $push: { image: name } })
+      // for (let i = 1; i < req.files.length; i++) {
+      //   name = Date.now() + '-' + req.files[i].originalname;
+      //   await sharp(req.files[i].buffer).resize({ width: 485, height: 485 }).toFile('public/databaseimg/' + name)
+      //   await Product.updateOne({ name: req.body.name }, { $push: { image: name } })
+      // }
+
+
+      res.redirect("/adminproducts");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-
-
-  res.redirect("/adminproducts");
-  } catch (error) {
-  console.log(error.message);
-  }
-}
-else{
+  else {
     res.redirect('/admin/products/categorymangement?message=Select jpeg format')
-}
+  }
 };
 
 // display image
@@ -264,8 +313,8 @@ const displayimage = async (req, res) => {
     res.render("../views/admin/display.ejs", {
       product: detail,
       catData: catData,
-    }); 
-  } catch (err) { 
+    });
+  } catch (err) {
     console.log(err.message);
   }
 };
@@ -299,7 +348,7 @@ const blockproduct = async (req, res) => {
 
 
 //   get  productid
-let editid;
+let  editid;
 const adminproductgetid = async (req, res) => {
   try {
     console.log(req.query.id);
@@ -310,23 +359,129 @@ const adminproductgetid = async (req, res) => {
 };
 
 // edit product
+
 const adminproductedit = async (req, res) => {
+
   try {
+
+console.log( editid);
+
+
+console.log(req.files);
+  const files = req.files;
+  const promises = await files.map(async (file, index) => {
     const checkedit = await Product.findById({ _id: editid });
     console.log(checkedit);
-    await Product.findByIdAndUpdate(
-      { _id: editid },
-      {
-        $set: {
-          name: req.body.name,
-          description: req.body.description,
-          category: req.body.category,
-          image: req.file.filename,
-          price: req.body.price,
-          quantity: req.body.quantity,
-        },
+    
+    return new Promise( (resolve, reject) => {
+
+      cloudinary.uploader.upload(file.path,
+       {
+        public_id: checkedit.image[index].public_id, 
+      overwrite: true,
+        transformation: [
+          { width: 485, height: 485, gravity: "face", crop: "fill" },
+        ]
       }
-    );
+      , (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  });
+
+  Promise.all(promises)
+    .then(async (results) => {
+      console.log("All files uploaded successfully", results);
+      console.log(results)
+       
+        
+
+
+
+
+
+        const checkedit = await Product.findById({ _id: editid });
+        console.log(checkedit);
+  
+  
+        await Product.updateOne(
+  
+          { _id: editid },
+          {
+            $set: {
+              name: req.body.name,
+              description: req.body.description,
+              category: req.body.category,
+              image: results,           
+                 price: req.body.price,
+              quantity: req.body.quantity,
+            },
+          }
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+      })
+      
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+  console.log(req.file);
+    // const checkedit = await Product.findById({ _id: editid });
+    // console.log(checkedit);
+    // await Product.findByIdAndUpdate(
+
+    //   { _id: editid },
+    //   {
+    //     $set: {
+    //       name: req.body.name,
+    //       description: req.body.description,
+    //       category: req.body.category,
+    //       image: req.file.filename,
+    //       price: req.body.price,
+    //       quantity: req.body.quantity,
+    //     },
+    //   }
+    // );
     res.redirect("/adminproducts");
   } catch (error) {
     console.log(error.message);
@@ -340,7 +495,7 @@ const categorydata = async (req, res) => {
     res.render("../views/admin/admincategory.ejs", {
       category: userdetaicategory,
     });
-  } catch (err) { 
+  } catch (err) {
     console.log(err.message);
   }
   console.log("reach");
@@ -395,7 +550,7 @@ const categoryblock = async (req, res) => {
 const insertbanner = (req, res) => {
   try {
     let banner = new bannermodel({
-      image: req.file.filename, 
+      image: req.file.filename,
     });
     banner.save();
     res.redirect("/adminbanner");
@@ -411,7 +566,7 @@ const banner = async (req, res) => {
     res.render("../views/admin/banner.ejs", {
       bannerimg: bannerimg,
     });
-  } catch (err) { 
+  } catch (err) {
     console.log(err.message);
   }
   console.log("reach");
@@ -487,7 +642,7 @@ const orderstatus = async (req, res) => {
   await ordermodel.updateOne({ _id: id }, { $set: { status: status } })
   const date = new Date();
   const month = date.getMonth();
-  await ordermodel.updateOne({ _id: id }, { $set: { month:  month } })
+  await ordermodel.updateOne({ _id: id }, { $set: { month: month } })
 
   res.redirect('/adminorder')
 }
