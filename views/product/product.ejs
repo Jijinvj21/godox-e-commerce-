@@ -171,13 +171,14 @@
           <ul class="dropdown-menu">
             <% if(categorylist!=null){%>
               <%categorylist.forEach((category)=>{%>
+<%if(category.status === true){%>
 
-                <li>
+            <li>
                   <a class="dropdown-item" href="?category=<%=category.name%>">
                     <%=category.name%>
                   </a>
                 </li>
-
+                <%}%>   
                 <% })%>
                   <%}%>
           </ul>
@@ -197,8 +198,11 @@
         </div>
       </div>
 
-
+      
       <% for (let i=0; i < productdata.length ; i++) { %>
+        <%if(productdata[i].status === true){%>
+          
+  
         <div class="product-item productimag px-2 pt-2" style="border-radius: 20px ;
       background: #e0e0e0;
       box-shadow:  9px 9px 18px #a4a4a4,
@@ -216,6 +220,9 @@
           </div>
         </div>
         <% } %>
+       
+
+          <%}%>
     </div>
 
     <div class="pagnition">

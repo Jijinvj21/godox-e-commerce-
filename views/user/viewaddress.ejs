@@ -53,12 +53,12 @@
         <a href="/addaddress" class="btn btn-dark my-4">Add Address</a>
 
 
-        <div class="card mb-4" style="border-radius: 10px;
+        <div class="card mb-4 table-responsive" style="border-radius: 10px;
                 background: #ffffff;
                 box-shadow:  13px 13px 26px #bababa,
                              -13px -13px 26px #ffffff;">
 
-          <div class="card-body p-4">
+          <div class="card-body ">
 
 
 
@@ -67,7 +67,7 @@
 
 
 
-            <table class="table table-border">
+            <table class="table table-border " >
               
               <thead>
                 
@@ -77,6 +77,7 @@
                   <th scope="col">Address</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Pincode</th>
+                  <th scope="col">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,6 +87,9 @@
                   <td><%=userdatas.addresses[i].address%></td>
                   <td><%=userdatas.addresses[i].phone%></td>
                   <td><%=userdatas.addresses[i].pincode%></td>
+                  <td><a href="/deleteaddress?addressid=<%=userdatas.addresses[i]._id%>">
+                    <h3 class="bi bi-trash text-dark"></h3>
+                  </a></td>
                 </tr>
                 <% } %>
               </tbody>

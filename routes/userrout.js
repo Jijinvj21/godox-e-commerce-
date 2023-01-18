@@ -49,6 +49,8 @@ router.get('/displayorder',userSessionMV,userController.displayorder)
 
 router.post('/addadderss',userSessionMV,userController.addadderss)
 router.post('/edituserdata',userSessionMV,userController.edituserdata)
+router.get('/deleteaddress',userSessionMV,userController.deleteaddress)
+
 
 router.post('/edituserpass',userSessionMV,userController.edituserpass)
 

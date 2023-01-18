@@ -58,7 +58,6 @@
                 <span>$<span id="discount"><%=usercart.totalPrice%></span></span>
               </li>
             </ul>
-      
             <form class="card p-2">
               <div class="input-group">
                 <input type="text" class="form-control" id="couponCode" placeholder="Promo code">
@@ -67,7 +66,8 @@
                 </div>
               </div>
             </form>
-            
+            <p id="message"></p>
+
           </div>
 
 
@@ -192,7 +192,9 @@
       data: { inputValue },
       success: (res)=> {
         let b=res.dis
+        let msg=res.msg
         console.log(b);
+        $('#message').html(msg)
         $('#discount').html(b)
         $('#discoun').val(b)
       }

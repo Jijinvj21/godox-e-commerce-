@@ -16,7 +16,7 @@ paypal.configure({
 });
 
 const paypalgate = async (req, res) => {
-
+req.session.body=req.body
 
 
   console.log(req.body.paymentMethod);
@@ -41,9 +41,16 @@ const paypalgate = async (req, res) => {
       total: req.body.total
     }
     const order = new ordermodel(orderdata);
+    console.log('datas saved');
     order.save();
     await cartmodel.updateOne({ userId: usercheckout._id }, { $pull: { "cartItems": {} } })
     res.redirect('/successpay')
+    console.log(req.session.couponenter);
+    await User.updateOne({ _id:usercheckout._id },
+      {
+        $push: { coupondata: { coupons:req.session.couponenter} }
+      }
+    )
 
   }
   else {
@@ -60,8 +67,8 @@ const paypalgate = async (req, res) => {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://localhost:8080/successpay",
-        "cancel_url": "http://localhost:8080/checkout"
+        "return_url": "https://www.godox.website/successpay",
+        "cancel_url": "https://www.godox.website/checkout"
       },
       "transactions": [{
         "item_list": {
@@ -80,65 +87,66 @@ const paypalgate = async (req, res) => {
         "description": "This is the payment description."
       }]
     };
-    let a=paypal.payment.create(create_payment_json, async function (error, payment) {
+    console.log("jijinnn");
+   paypal.payment.create(create_payment_json, async function (error, payment) {
       
 
       if (error) {
         throw error;
       } else {
+        console.log(payment.links);
+
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === "approval_url") {
             res.redirect(payment.links[i].href);
-            // console.log(payment.links[i].rel);
-
-           
-
-
-
-
 
 
           }
         }
+
       }
+      console.log('amalsss');
     });
   }
 }
 
 
 const success= async(req,res)=>{
-  console.log(req.query);
-  if(req.query === null){
-res.send('cancel')
+  console.log(req.query.paymentId);
+  if(!req.query.paymentId){
+    console.log('haiamal');
   }else{
+console.log(req.session.body.total);
 
-
- // save data
+//  save data
  const usercheckout = await User.findOne({ email: req.session.userEmail });
  const usercheckoutcart = await cartmodel.findOne({ userId: usercheckout._id });
  orderdata = {
    userId: usercheckout._id,
    product: usercheckoutcart.cartItems,
    addresses: [{
-     address: req.body.address,
-     phone: req.body.mobile,
-     name: req.body.name,
-     pincode: req.body.zip,
+     address: req.session.body.address,
+     phone: req.session.body.mobile,
+     name: req.session.body.name,
+     pincode: req.session.body.zip,
    }],
-   payment: req.body.paymentMethod,
-   total: req.body.total
+   payment: req.session.body.paymentMethod,
+   total: req.session.body.total
  }
  const order = new ordermodel(orderdata);
  order.save();
  await cartmodel.updateOne({ userId: usercheckout._id }, { $pull: { "cartItems": {} } })
 
-
+ await User.updateOne({ _id:usercheckout._id },
+  {
+    $push: { coupondata: { coupons:req.session.couponenter} }
+  }
+)
 console.log("nooooooo");
   }
  
 res.render('../views/payment/sucess.ejs')
 }
-
 
 module.exports = {
   paypalgate,

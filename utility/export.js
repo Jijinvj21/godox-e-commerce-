@@ -19,7 +19,7 @@ const exportorder = async (req,res)=>{
     {header:"total", key:"total"},
   ];
   let counter =1;
-  
+  let totalof = 0;
   const saledata = await ordermodel.find();
   saledata.forEach((sale)=>{
     const date = sale.date;
@@ -29,10 +29,15 @@ const exportorder = async (req,res)=>{
   sale.s_no = counter;
   sale.user=sale.addresses[0].name
   sale.item=sale.product.length
+  let myValue = sale.total;
+let newValue = isNaN(myValue) ? 0 : myValue;
+console.log(newValue);
+ let tot= 1*newValue
+  totalof += tot
   worksheet.addRow(sale);
   counter++;
   });
-  
+  worksheet.addRow({ data: 'Total', total: totalof});
   
   worksheet.getRow(1).eachCell((cell)=>{
     cell.font={bold:true};

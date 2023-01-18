@@ -14,14 +14,10 @@ const error = async (req, res) => {
 // render landing page
 const landing = async (req, res) => {
   try {
-    const bannerimg = await bannermodel.find({});
-    //  let hai = banner 
-    // console.log(bannerimg);
-    //     if(banner.status == true){
-    // console.log('hai iam true');
-    //     }
+    const bannerimg = await bannermodel.find({status:true});
+ 
     res.render("../views/product/landingpage.ejs", { banner: bannerimg });
-    // console.log("hai");
+   
   }
   catch (error) {
     console.log(error);
@@ -209,11 +205,18 @@ async function userDeductFromCart(req, res) {
 // remove from cart
 const removeFromCart = async (req, res) => {
   try{
-  console.log(req.query);
+  console.log(req.query.id);
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
-  let productid=req.query.productId
-  await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: productid} } })
+  // let productid=req.query.productId
+  // await cartmodel.updateOne({ userId: userid,$elemMatch: {'cartItems.productId': req.query.id} }, { $pull: { cartItems : {productId:productid}} } )
+  await cartmodel.updateOne({userId:userid},{$pull:{cartItems:{productId:req.query.id}}})
+  // await cartmodel.findByIdAndUpdate(userId: userid, {
+  //     $pull: {
+  //       cartItems: {
+  //         productId: req.body.productid,
+  //       },
+  //     },})
   res.redirect('/cartdataprint')
 } catch (error) {
   res.redirect('/error')

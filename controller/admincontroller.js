@@ -7,27 +7,14 @@ const bannermodel = require("../models/bannermodel");
 const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
 const User = require("../models/usermodel");
-
-
-
 const cloudinary = require('cloudinary').v2;
 
-// Configuration 
+//cloudinary  Configuration
 cloudinary.config({
   cloud_name: "dczou8g32",
   api_key: "634374197678664",
   api_secret: "bT83DQmDOjNOnRPcK8zQqWF6DQU"
 });
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -63,6 +50,8 @@ const adminlogdata = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 // adminlogout
@@ -79,10 +68,14 @@ const userdata = async (req, res) => {
     res.render("../views/admin/customer.ejs", { userdatashow: userdetail });
   } catch (err) {
     console.log(err.message);
+    res.redirect('/error')
+
   }
 };
 // dashboard
 const admindashboard = async (req, res) => {
+try {
+  
 
 
   // find order
@@ -94,9 +87,9 @@ const admindashboard = async (req, res) => {
   // product count
   const productcount = await Product.find();
   // Return','Shipped', 'Placed', 'Delivered', 'Cancelled
-  const ordePending = await ordermodel.find({ status: 'pending' }).count()
+  const placed = await ordermodel.find({ status: 'placed' }).count()
   const Return = await ordermodel.find({ status: 'return' }).count()
-  const shipped = await ordermodel.find({ status: 'shippid' }).count()
+  const shipped = await ordermodel.find({ status: 'shipping' }).count()
   const Delivered = await ordermodel.find({ status: 'delivered' }).count()
   const Cancelled = await ordermodel.find({ status: 'cancel' }).count()
 
@@ -108,9 +101,16 @@ const admindashboard = async (req, res) => {
     orderPerMonth.push(numberOfOrders)
   }
   console.log(orderPerMonth);
+  console.log( boardorderdata+","+ order+","+ userdata+","+ productcount+", "+placed+", "+Return+","+ shipped+"," +Delivered+", "+Cancelled+","+ orderPerMonth);
 
 
-  res.render("../views/admin/admindashboard", { boardorderdata, order, userdata, productcount, ordePending, Return, shipped, Delivered, Cancelled, orderPerMonth })
+  res.render("../views/admin/admindashboard", { boardorderdata, order, userdata, productcount, placed, Return, shipped, Delivered, Cancelled, orderPerMonth })
+
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
 };
 const adminboarddata = (req, res) => {
 
@@ -142,72 +142,17 @@ const blockuser = async (req, res) => {
     res.redirect("/admincustomer");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 // insert image
 const insertProduct = async (req, res) => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   if (req.files) {
     console.log(req.files)
     try {
 
-      // cloudnarry
-
-
-
-      // Upload
-      // let filenamesss = req.files[0].path;
-      // console.log(req.files[0] + 'jijin');
-      // const resp = cloudinary.uploader.upload(filenamesss,{ transformation: [
-      //   { width: 485, height: 485, gravity: "face", crop: "fill" },
-      // ]})
-      // // const resp = cloudinary.url(filenamesss,{ transformation: [
-      // //   { width: 485, height: 485, gravity: "face", crop: "fill" },
-      // // ]})
-
-      // resp.then((data) => {
-      //   console.log('------------------------------');
-      //   console.log(data);
-      //   console.log('------------------------------');
-      //   console.log(data.secure_url);
-      // }).catch((err) => {
-      //   console.log(err);
-      // });
-
-
-      // Generate 
-      // const url = cloudinary.url("uplode_img", {
-      //   width: 10,
-      //   height: 15,
-      //   Crop: 'fill'
-      // });
-
-
-
-      // The output url
-      // console.log(url);
-      // console.log(resp);
-
-      // https://res.cloudinary.com/<cloud_name>/image/upload/h_150,w_100/olympic_flag
-
-
-
-
-      // this is working
-
+      // cloudinary
       const files = req.files;
       const promises = await files.map(file => {
         return new Promise((resolve, reject) => {
@@ -241,63 +186,11 @@ const insertProduct = async (req, res) => {
           console.log(newProduct)
 
         })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // let name = Date.now() + '-' + req.files[0].originalname;
-
-      // await sharp(req.files[0].buffer)
-      // .resize({ width: 485, height: 485 })
-      // .toFile('public/databaseimg/' + name)
-      // await Product.insertMany(
-      //   [{
-      //     name: req.body.name,
-      //     description: req.body.description,
-      //     category: req.body.category,
-      //     image: name,// 
-      //     price: req.body.price,
-      //     quantity: req.body.quantity,
-      //   }]
-      // )
-
-      // for (let i = 1; i < req.files.length; i++) {
-      //   name = Date.now() + '-' + req.files[i].originalname;
-      //   await sharp(req.files[i].buffer).resize({ width: 485, height: 485 }).toFile('public/databaseimg/' + name)
-      //   await Product.updateOne({ name: req.body.name }, { $push: { image: name } })
-      // }
-
-
       res.redirect("/adminproducts");
     } catch (error) {
       console.log(error.message);
+      res.redirect('/error')
+
     }
   }
   else {
@@ -316,6 +209,8 @@ const displayimage = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -343,6 +238,8 @@ const blockproduct = async (req, res) => {
     res.redirect("/adminproducts");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -355,6 +252,8 @@ const adminproductgetid = async (req, res) => {
     editid = req.query.id;
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -390,24 +289,15 @@ console.log(req.files);
           resolve(result);
         }
       });
-    });
-  });
+});
+});
 
   Promise.all(promises)
     .then(async (results) => {
       console.log("All files uploaded successfully", results);
       console.log(results)
-       
-        
-
-
-
-
-
         const checkedit = await Product.findById({ _id: editid });
         console.log(checkedit);
-  
-  
         await Product.updateOne(
   
           { _id: editid },
@@ -422,69 +312,13 @@ console.log(req.files);
             },
           }
         );
-
-
-
-
-
-
-
-
-
-
-
-
       })
-      
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
-
-
-
   console.log(req.file);
-    // const checkedit = await Product.findById({ _id: editid });
-    // console.log(checkedit);
-    // await Product.findByIdAndUpdate(
-
-    //   { _id: editid },
-    //   {
-    //     $set: {
-    //       name: req.body.name,
-    //       description: req.body.description,
-    //       category: req.body.category,
-    //       image: req.file.filename,
-    //       price: req.body.price,
-    //       quantity: req.body.quantity,
-    //     },
-    //   }
-    // );
     res.redirect("/adminproducts");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -497,6 +331,8 @@ const categorydata = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
+    res.redirect('/error')
+
   }
   console.log("reach");
 };
@@ -511,6 +347,8 @@ const addcategory = async (req, res) => {
     res.redirect("/admincategory");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
   console.log("reach");
 };
@@ -539,6 +377,8 @@ const categoryblock = async (req, res) => {
     res.redirect("/admincategory");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 
   console.log("reach");
@@ -556,6 +396,8 @@ const insertbanner = (req, res) => {
     res.redirect("/adminbanner");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -568,6 +410,8 @@ const banner = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
+    res.redirect('/error')
+
   }
   console.log("reach");
 };
@@ -590,6 +434,8 @@ const bannerblock = async (req, res) => {
     res.redirect("/adminbanner");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 // coupon inasert
@@ -618,6 +464,8 @@ const couponsdata = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 };
 
@@ -631,12 +479,14 @@ const admincoupon = async (req, res) => {
 
   }
   catch (error) {
+    res.redirect('/error')
 
     console.log(error.message);
   }
 };
 
 const orderstatus = async (req, res) => {
+  try{
   let status = req.body.select
   let id = req.body.proid
   await ordermodel.updateOne({ _id: id }, { $set: { status: status } })
@@ -645,6 +495,9 @@ const orderstatus = async (req, res) => {
   await ordermodel.updateOne({ _id: id }, { $set: { month: month } })
 
   res.redirect('/adminorder')
+} catch (error) {
+  console.log(error.message);
+}
 }
 
 // display order
@@ -657,6 +510,8 @@ const adminorder = async (req, res) => {
   }
   catch (error) {
     console.log(error.message);
+    res.redirect('/error')
+
   }
 
 };

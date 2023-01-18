@@ -91,64 +91,57 @@ const checkoutform = async (req, res) => {
 
 // coupon_check
 const couponcheck = async (req, res) => {
+  let  discount,msg
  try{
   console.log(req.body.inputValue);
+  req.session.couponenter =req.body.inputValue
   const userdata = await User.findOne({ email: req.session.userEmail });
   let userid = userdata._id
   const cartdata = await cartmodel.findOne({ userId: userid });
   const checkcoupon = await couponmodel.findOne({ name: req.body.inputValue });
-  const checkcouponused = await couponmodel.findOne({ name: req.body.inputValue ,"userdata":{$elemMatch:{
-    userId:userid}} })
-    const finded = await User.find({
-      coupondata : { $elemMatch: {  coupons:req.body.inputValue } }
-   })
-  let exp =checkcoupon.expiredate
+
+  const findeduser =await User.findOne({_id:userid})
+  const finded=findeduser.coupondata.findIndex((item)=>{
+    return item.coupons==req.body.inputValue
+  })
   let date = new Date().toJSON()
   let total = parseInt(cartdata.totalPrice)
-  let minamound = parseInt(checkcoupon.minpurchaseamount)
+
+
+
+
   if (checkcoupon != null ) {
     console.log('iam in');
+    let exp =checkcoupon.expiredate
+
+    let minamound = parseInt(checkcoupon.minpurchaseamount)
 
     if (date < exp.toJSON()) {
-      console.log("date is not expire");
-if ( finded == '') {
+      console.log("date is  notexpire");
+if ( finded == -1) {
 
-
-    // if(cartdata.status == true){
-      // console.log(total);
-      // console.log(minamound);
       if (total > minamound) {
         console.log('total is more');
         
-   
-        // if (cartdata.totalPrice > 50000) {
-        //   console.log('iam morethan 50000');
-        //    let less= parseInt(cartdata.totalPrice) - parseInt(checkcoupon.maxdiscount)
-        //    console.log(less);
-        //    await couponmodel.updateOne({ name: req.body.inputValue },
-        //     {
-        //       $push: { userdata: { userId:userdata._id,discountedtotal:less} }
-        //     }
-        //   )
-        // }
-        // else {
-        //   console.log('iam lessthan'  );
-        // }
+
+        discount= parseInt(cartdata.totalPrice) - parseInt(checkcoupon.maxdiscount)
+
       }
       
       else {
+        console.log('amarnath');
         console.log('lesser than min amound' + cartdata.totalPrice * checkcoupon.discount/ 100);
        let discoun=parseInt(cartdata.totalPrice) * parseInt(checkcoupon.discount)/ 100
-      let  discount=parseInt(cartdata.totalPrice)-parseInt(discoun)
+        discount=parseInt(cartdata.totalPrice)-parseInt(discoun)
         console.log(discount);
-        await User.updateOne({ _id:userdata._id },
-          {
-            $push: { coupondata: { coupons:req.body.inputValue} }
-          }
-        )
-       console.log(userdata._id);
+      //   await User.updateOne({ _id:userdata._id },
+      //     {
+      //       $push: { coupondata: { coupons:req.body.inputValue} }
+      //     }
+      //   )
+      //  console.log(userdata._id);
        
-        await cartmodel.updateOne({ userId:userdata._id},{ $set: {discoundamount:discount}})
+      //   await cartmodel.updateOne({ userId:userdata._id},{ $set: {discoundamount:discount}})
       }
 
     // }
@@ -158,20 +151,24 @@ if ( finded == '') {
   }
   else {
     console.log('coupon is used');
+    msg='Couton is used'
   }
     }
     else {
-      console.log('created date is not reach');
-      
+      console.log('created date is expir');
+      msg="coupon is expire"
+
+     
     }
   }
   else {
     console.log('ther is no coupon');
+    msg="Their is no coupon"
   }
-// let a=10
-// if(a===a){
-  let dis =cartdata.discoundamount
-  res.json({dis})
+
+  let dis =discount
+  console.log(dis);
+  res.json({dis,msg})
 }
 catch(error){
   res.redirect('/error')

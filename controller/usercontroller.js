@@ -92,9 +92,22 @@ const userverification = async (req, res) => {
         password === user.password &&
         user.status === true
       ) {
+
         req.session.userEmail = req.body.email;
         res.redirect("/");
         console.log(req.session.userEmail);
+      } else if (user.status === false) {
+        req.session.destroy((err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("user blocked");
+            
+            res.render("../views/user/userlogin.ejs", {
+              wrong: "Your account has been blocked. Please contact the administrator.",
+            });
+          }
+        });
       } else {
         res.render("../views/user/userlogin.ejs", {
           wrong: "Invalid Credentials",
@@ -287,6 +300,20 @@ let email=req.session.userEmail
 await User.updateOne({ email:email},{ $set: {name : req.body.name , phone :req.body.phone}})
 res.redirect('/viewuserdata')
 }
+// delete address
+const deleteaddress = async (req, res) => {
+  try{
+    console.log(req.query.addressid);
+  const email = req.session.userEmail
+  let userid = await User.findOne({ email: email })
+  await User.updateOne({ _id: userid }, { $pull: { addresses:{_id:req.query.addressid} } })
+  res.redirect('/displayaddress')
+} catch (error) {
+  console.log(error.message);
+  res.redirect('/error')
+
+}
+}
 // edit user password
 const edituserpass = async (req,res)=>{
 let email=req.session.userEmail
@@ -342,6 +369,7 @@ edituserdata,
 edituserpass,
 updateorder,
 addaddress,
+deleteaddress,
 displayaddress,
 displayorder
 
