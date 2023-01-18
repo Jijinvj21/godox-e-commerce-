@@ -53,13 +53,13 @@
             </h5>
 
             <div class="form-outline mb-4">
-              <input name="name" value="<%=userdatas.name%>" type="text" id="form2Example17"
+              <input name="name" value="<%=userdatas.name%>" required type="text" id="form2Example17"
                 class="form-control form-control-lg" />
               <label class="form-label" name="email" for="form2Example17">Your Name</label>
             </div>
 
             <div class="form-outline mb-4">
-              <input name="phone" value="<%=userdatas.phone%>" type="text" id="form2Example27"
+              <input name="tel" value="<%=userdatas.phone%>" required type="text" id="form2Example27"
                 class="form-control form-control-lg" />
               <label class="form-label" name="password" for="form2Example27">Phone Number</label>
             </div>
@@ -75,16 +75,16 @@
           <form action="/edituserpass" method="post">
 
             <div class="form-outline mb-4">
-              <input type="password" name="current" id="form2Example17" class="form-control form-control-lg" />
+              <input type="password" name="current" id="form2Example17" required class="form-control form-control-lg" />
               <label class="form-label" for="form2Example17">Current password</label>
             </div>
 
             <div class="form-outline mb-4">
-              <input type="password" name="new" id="form2Example27" class="form-control form-control-lg" />
+              <input type="password" name="new" id="form2Example27" required class="form-control form-control-lg" />
               <label class="form-label" name="password" for="form2Example27">New password</label>
             </div>
             <div class="form-outline mb-4">
-              <input type="password" name="confirm" id="form2Example27" class="form-control form-control-lg" />
+              <input type="password" name="confirm" id="form2Example27" required class="form-control form-control-lg" />
               <label class="form-label" name="password" for="form2Example27">Confirm password</label>
             </div>
 

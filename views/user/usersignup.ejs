@@ -35,33 +35,34 @@
                       <span class="h1 fw-bold mb-0">SIGN UP</span>
                     </div>
 
-                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+                    <h5 class="fw-normal mb-3 pb-2" style="letter-spacing: 1px;">Sign into your account</h5>
 
-                    <div class="form-outline mb-4">
-                      <input name="name" type="text" id="form2Example17" class="form-control form-control-lg" />
+                    <div class="form-outline mb-3">
+                      <input name="name" type="text" id="form2Example17" required class="form-control form-control-lg" />
                       <label class="form-label" for="form2Example17">Your name</label>
                     </div>
-                    <div class="form-outline mb-4">
-                      <input name="email" type="email" id="form2Example17" class="form-control form-control-lg" />
+                    <div class="form-outline mb-3">
+                      <input name="email" type="email" id="form2Example17" required class="form-control form-control-lg" />
                       <label class="form-label" for="form2Example17">Email address</label>
                     </div>
-                    <div class="form-outline mb-4">
-                      <input name="phone" type="tel" id="form2Example17" class="form-control form-control-lg" />
+                    <div class="form-outline mb-3">
+                      <input name="tel" type="tel" id="form2Example17" required class="form-control form-control-lg" />
                       <label class="form-label" for="form2Example17">Phone number</label>
                     </div>
 
-                    <div class="form-outline mb-4">
-                      <input name="password" type="password" id="form2Example27" class="form-control form-control-lg" />
+                    <div class="form-outline mb-3">
+                      <input name="password" type="password" id="form2Example27" required class="form-control form-control-lg" />
                       <label class="form-label" for="form2Example27">Password</label>
                     </div>
 
-                    <div class="pt-1 mb-4">
-                      <button class="btn btn-dark btn-lg btn-block" type="submit">verify</button>
+                    <div class="pt-1 mb-1">
+                      <button class="btn btn-dark btn-lg btn-block mb-2" type="submit">verify</button>
                     </div>
 
                     <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
                     <p class="mb-5 pb-lg-2" style="color: #393f81;">Allready have an account? <a href="/userlogin"
                         style="color: #393f81;">Login here</a></p>
+                        <p class="text-danger"><%=locals.wrong%></p>
                     <span href="#!" class="small text-muted">Terms of use.</span>
                     <span class="small text-muted">Privacy policy</span>
                   </form>

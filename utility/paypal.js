@@ -68,7 +68,7 @@ req.session.body=req.body
       },
       "redirect_urls": {
         "return_url": "https://www.godox.website/successpay",
-        "cancel_url": "https://www.godox.website/checkout"
+        "cancel_url": "https://www.godox.website/"
       },
       "transactions": [{
         "item_list": {

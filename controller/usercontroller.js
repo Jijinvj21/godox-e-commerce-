@@ -20,8 +20,7 @@ let regData;
 let otpgen;
 // get data from signup
 const insertUser = async (req, res) => {
-  try {
-    
+
 
   try {
     regData = {
@@ -33,7 +32,12 @@ const insertUser = async (req, res) => {
     const email = req.body.email;
     const user = await User.findOne({ email: email });
     if (email === user.email) {
-      res.redirect("/usersignup");
+      // res.redirect("/usersignup");
+      res.render("../views/user/usersignup",
+      {
+wrong:"User alrady exist"
+      });
+
     }
   } catch (error) {
     console.log(error);
@@ -64,9 +68,7 @@ const insertUser = async (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
-} catch (error) {
-    console.log(error.message);
-}
+
 };
 // otp
 // let enterotp

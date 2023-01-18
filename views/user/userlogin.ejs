@@ -25,39 +25,40 @@
       
                       <form action="/userlogin" method="POST" class="register-form" id="login-form">
       
-                        <div class="d-flex align-items-center mb-3 pb-1">
+                        <div class="d-flex align-items-center mb-1 pb-1">
                           <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                           <span class="h1 fw-bold mb-0">LOGIN</span>
                         </div>
       
-                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Login into your account</h5>
+                        <h5 class="fw-normal mb-3 pb-1" style="letter-spacing: 1px;">Login into your account</h5>
       
-                        <div class="form-outline mb-4">
-                          <input type="email" name="email" id="form2Example17" class="form-control form-control-lg" />
+                        <div class="form-outline mb-1">
+                          <input type="email" name="email" id="form2Example17" required class="form-control form-control-lg" />
                           <label class="form-label"   for="form2Example17">Email address</label>
                         </div>
       
                         <div class="form-outline mb-4">
-                          <input type="password" name="password" id="form2Example27" class="form-control form-control-lg" />
+                          <input type="password" name="password" required id="form2Example27" class="form-control form-control-lg" />
                           <label class="form-label"  for="form2Example27">Password</label>
                         </div>
       
                         <div class="pt-1 mb-4">
                           <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                         </div>
+                        
       
                         <a class="small text-muted" href=" /forgotemail">Forgot password?</a>
                         <p class="mb-1 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="/usersignup"
                             style="color: #393f81;">Register here</a></p>
                           
-                              <p class=" text-center" >
-                                <%=locals.error%>
-                              </p>
+                             
+                                 <p class="text-danger"><%=locals.wrong%></p>
+                             
                            
                           
                            
-                        <span class="small text-muted mt-2">Terms of use.</span>
-                        <span class="small text-muted mt-2">Privacy policy</span>
+                        <span class="small text-muted ">Terms of use.</span>
+                        <span class="small text-muted ">Privacy policy</span>
                       </form>
       
                     </div>

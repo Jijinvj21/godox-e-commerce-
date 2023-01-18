@@ -100,8 +100,7 @@ try {
     let numberOfOrders = await ordermodel.find({ month: i }).count()
     orderPerMonth.push(numberOfOrders)
   }
-  console.log(orderPerMonth);
-  console.log( boardorderdata+","+ order+","+ userdata+","+ productcount+", "+placed+", "+Return+","+ shipped+"," +Delivered+", "+Cancelled+","+ orderPerMonth);
+
 
 
   res.render("../views/admin/admindashboard", { boardorderdata, order, userdata, productcount, placed, Return, shipped, Delivered, Cancelled, orderPerMonth })

@@ -44,7 +44,7 @@
             <div class="form-group">
 
               <label for="exampleFormControlInput1">Name</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+              <input type="text" required class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
               <label for="exampleFormControlInput1">Category</label>
               <select name="category" class="form-control" id="exampleFormControlInput1">
                 <% catData.forEach((item)=>{
@@ -55,13 +55,13 @@
                   <% })%>
               </select>
               <label for="exampleFormControlInput1">Description</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Description"
+              <input type="text" class="form-control" required id="exampleFormControlInput1" placeholder="Description"
                 name="description">
               <label for="exampleFormControlInput1">Stock</label>
-              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Stock"
+              <input type="number" class="form-control"required id="exampleFormControlInput1" placeholder="Stock"
                 name="quantity">
               <label for="exampleFormControlInput1">Price</label>
-              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price">
+              <input type="number" class="form-control" required id="exampleFormControlInput1" placeholder="Price" name="price">
               <label for="file-upload" class="form-label">Images to upload</label>
               <input class="form-control" type="file" name="image" multiple>
 
@@ -103,9 +103,9 @@
             <div class="form-group">
 
               <label for="exampleFormControlInput1">Name</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name" name="name">
+              <input type="text" class="form-control" id="exampleFormControlInput1" required placeholder="Name" name="name">
               <label for="exampleFormControlInput1">Category</label>
-              <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Category" name="category">  -->
+            
               <select name="category" class="form-control" id="exampleFormControlInput1">
                 <% catData.forEach((item)=>{
 
@@ -118,19 +118,17 @@
               </select>
 
               <label for="exampleFormControlInput1">Description</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Description"
+              <input type="text" class="form-control" id="exampleFormControlInput1" required placeholder="Description"
                 name="description">
 
-              <!-- <label for="exampleFormControlInput1"> Status</label>
 
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="status" name="status"> -->
 
 
 
               <label for="exampleFormControlInput1">Stock</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Stock" name="quantity">
+              <input type="text" class="form-control" id="exampleFormControlInput1" required placeholder="Stock" name="quantity">
               <label for="exampleFormControlInput1">Price</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Price" name="price">
+              <input type="text" class="form-control" id="exampleFormControlInput1"required placeholder="Price" name="price">
               <label for="file-upload" class="form-label">Images to upload</label>
               <input class="form-control" type="file" name="image" multiple>
 
