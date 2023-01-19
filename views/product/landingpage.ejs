@@ -48,7 +48,11 @@
 
 
     <!-- Wrapper for slides -->
-   
+<%if(banner[0].image!= null){%>
+
+
+
+
     <div class="carousel-inner " style="width:100%;">
 
     <div class="item active ">
@@ -66,6 +70,7 @@
       
       <%}%>
   </div>
+  <%}%>
     <!-- Left and right controls -->
     <a class="left carousel-control" href="#myCarousel" data-slide="prev" hidden>
       <span class="glyphicon glyphicon-chevron-left"></span>
