@@ -134,20 +134,7 @@ if ( finded == -1) {
        let discoun=parseInt(cartdata.totalPrice) * parseInt(checkcoupon.discount)/ 100
         discount=parseInt(cartdata.totalPrice)-parseInt(discoun)
         console.log(discount);
-      //   await User.updateOne({ _id:userdata._id },
-      //     {
-      //       $push: { coupondata: { coupons:req.body.inputValue} }
-      //     }
-      //   )
-      //  console.log(userdata._id);
-       
-      //   await cartmodel.updateOne({ userId:userdata._id},{ $set: {discoundamount:discount}})
       }
-
-    // }
-    // else{
-    //   console.log('couponblocked');
-    // }
   }
   else {
     console.log('coupon is used');

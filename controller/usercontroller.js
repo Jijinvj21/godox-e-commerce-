@@ -16,7 +16,7 @@ const userotp = (req, res) => {
   res.render("../views/user/userotp");
 };
 let regData;
-// console.log(regData)
+
 let otpgen;
 // get data from signup
 const insertUser = async (req, res) => {
@@ -127,7 +127,6 @@ const userverification = async (req, res) => {
   }
 };
 const userProfile = async (req, res) => {
-  // let userData = await User.findOne({ email: req.session.userEmail });
 
   res.send("userHomePage");
 };
@@ -202,7 +201,7 @@ const forgotemailcheck = async (req, res) => {
  });
  let mailOptions = {
    from: "Jijinvjinfo@gmail.com",
-   to:req.body.email,// req.session.regData.email, //doseje1135@bitvoo.com
+   to:req.body.email,
    subject: "YOUR OTP",
    //   text: `enterotp`
    html: `<p>${otpgen}</p>`,

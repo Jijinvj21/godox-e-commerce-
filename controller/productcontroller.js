@@ -208,15 +208,9 @@ const removeFromCart = async (req, res) => {
   console.log(req.query.id);
   const email = req.session.userEmail
   let userid = await userdata.findOne({ email: email })
-  // let productid=req.query.productId
-  // await cartmodel.updateOne({ userId: userid,$elemMatch: {'cartItems.productId': req.query.id} }, { $pull: { cartItems : {productId:productid}} } )
+
   await cartmodel.updateOne({userId:userid},{$pull:{cartItems:{productId:req.query.id}}})
-  // await cartmodel.findByIdAndUpdate(userId: userid, {
-  //     $pull: {
-  //       cartItems: {
-  //         productId: req.body.productid,
-  //       },
-  //     },})
+
   res.redirect('/cartdataprint')
 } catch (error) {
   res.redirect('/error')
