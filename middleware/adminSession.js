@@ -1,6 +1,6 @@
 
 function adminSession(req,res,next){
-    if(true/*req.session.email*/){
+    if(req.session.email){
         next()
     }
     else{

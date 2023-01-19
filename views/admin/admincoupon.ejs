@@ -8,9 +8,17 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-  <link href="/public/stylesheet/css/productccss.css" rel="stylesheet" />
-  <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.1/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -72,22 +80,21 @@
        <div class="container-fluid">
         <% if(coupondata!=null) { %>
 
-          <table id="example" class="table table-bordered table-striped ">
-            <thead>
-            <tr>
-              <!-- <th>No.</th> -->
-              <th>Coupon</th>
-              <th>Discount(%)</th>
-              <th>Min purchase amount</th>
-              <th>Max discound amount</th>
-              <th>Created date</th>
-              <th>Expire date</th>
-              <th>Status</th>
-              <!-- <th>User</th>
-              <th>Discounted total</th> -->
-    
-    
-            </tr>
+
+
+
+        <table id="example" class="table table-striped" style="width:100%">
+          <thead>
+              <tr>
+                <th>Coupon</th>
+                <th>Discount(%)</th>
+                <th>Min purchase amount</th>
+                <th>Max discound amount</th>
+                <th>Created date</th>
+                <th>Expire date</th>
+                <th>Status</th>
+  
+              </tr>
           </thead>
           <tbody>
             <% coupondata.forEach((coupondata)=>{ %>
@@ -103,32 +110,33 @@
              <%let expiredate = isoStrin.split('T')[0]%>
              
               
-              <tr>
+
+             <tr>
                
-                <td><%=coupondata.name%></td>
-                <td><%=coupondata.discount%></td>
-                <td><%=coupondata.minpurchaseamount%></td>
-                <td><%=coupondata.maxdiscount%></td>
-                <td><%=createddate %></td>
-                <td><%=expiredate %></td>
-                <td><%=coupondata.status%></td>
-                <!-- <td><%=coupondata.userId%></td>
-                <td><%=coupondata.discountedtotal%></td> -->
-    
-    
-              </tr>
-              <%})%>
+              <td><%=coupondata.name%></td>
+              <td><%=coupondata.discount%></td>
+              <td><%=coupondata.minpurchaseamount%></td>
+              <td><%=coupondata.maxdiscount%></td>
+              <td><%=createddate %></td>
+              <td><%=expiredate %></td>
+              <td><%=coupondata.status%></td>
+              <!-- <td><%=coupondata.userId%></td>
+              <td><%=coupondata.discountedtotal%></td> -->
+  
+  
+            </tr>
+
+            <%})%>
         </tbody>
         </table>
-        <%}%>
-
-
+         <%}%>
        </div>
         </div>
 
       </div>
     </div>
-       <script>
+    
+    <script>
       $(document).ready(function () {
         var table = $('#example').DataTable({
           rowReorder: {
