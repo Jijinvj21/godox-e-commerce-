@@ -11,6 +11,8 @@ router.patch('/shop',productController.shop)
 router.patch('/catfilter',productController.catfilter)
 router.patch('/search',productController.searchProduct)
 router.patch('/clear',productController.clearFilter)
+router.patch('/pagination',productController.pagination)
+
 router.get('/singleproduct',productController.singleproduct)
 router.get('/cartpage',userSessionMV,productController.userAddToCart)
 router.get('/cartimc',userSessionMV,productController.userAddFromCart)

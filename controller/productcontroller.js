@@ -22,192 +22,247 @@ const landing = async (req, res) => {
 }
 // display, search, pagination, sort, filter
 let products;
-let allproducts
+let allproducts;
+let current;
+let pages;
 const product = async (req, res) => {
-    try {
+  try {
 
     if (!allproducts) {
-      allproducts = await Product.find({status:true})
-      products=allproducts
+      allproducts = await Product.find({ status: true })
+      let dummy = allproducts
+      let category = await categorylist.find({});
+      products = dummy.slice(0, 6);
+      pages = 2;
+      current = 1;
       res.render("../views/product/product", {
-        productdata:products ,categorylist:category,totalpage:1
+        productdata: products, categorylist: category, totalpage: 1,pages,current
       })
-    }else{
+    } else {
       let category = await categorylist.find({});
 
-    res.render("../views/product/product", {
-      productdata:products ,categorylist:category,totalpage:1
-    })
+      res.render("../views/product/product", {
+        productdata: products, categorylist: category, totalpage: 1,pages,current
+      })
     }
-    
+
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
   }
 };
 //sort
-const shop = async(req, res) => {
-if(categories){
-  let temp=categories
-  if (req.body.sort == "asort") {
-    products = temp.sort((a, b) => b.price - a.price);
-    
-    pages = 2;
-    current = 1;
-  
-    res.json({
-      success: true,
-    });
-  } else if (req.body.sort == "dsort") {
-    products = temp.sort((a, b) => a.price - b.price);
-    
-    pages = 2;
-    current = 1;
-    res.json({
-      succes: true,
-    });
-  }
-}else if(searchData){
-  let temp=searchData
-  if (req.body.sort == "asort") {
-    products = temp.sort((a, b) => b.price - a.price);
-    products = temp
-    pages = 2;
-    current = 1;
-  
-    res.json({
-      success: true,
-    });
-  } else if (req.body.sort == "dsort") {
-    products = temp.sort((a, b) => a.price - b.price);
-    products = temp
-    pages = 2;
-    current = 1;
-    res.json({
-      succes: true,
-    });
-  }
-}else{
-  let temp=allproducts
-  if (req.body.sort == "asort") {
-    products = temp.sort((a, b) => b.price - a.price);
-    products = temp
-    pages = 2;
-    current = 1;
-  
-    res.json({
-      success: true,
-    });
-  } else if (req.body.sort == "dsort") {
-    products = temp.sort((a, b) => a.price - b.price);
-    products = temp
-    pages = 2;
-    current = 1;
-    res.json({
-      succes: true,
-    });
-  }
-}
+const shop = async (req, res) => {
+  if (categories) {
+    let temp = categories
+    if (req.body.sort == "asort") {
+      let dummy = temp.sort((a, b) => b.price - a.price);
 
- 
+      products = dummy.slice(0, 6);
+      pages = 1;
+      current = 1;
+      res.json({
+        success: true,
+      });
+    } else if (req.body.sort == "dsort") {
+      let dummy = temp.sort((a, b) => a.price - b.price);
+
+      products = dummy.slice(0, 6);
+      pages = 1;
+      current = 1;
+      res.json({
+        succes: true,
+      });
+    }
+  } else if (searchData) {
+    let temp = searchData
+    if (req.body.sort == "asort") {
+      products = temp.sort((a, b) => b.price - a.price);
+      let dummy = temp
+      products = dummy.slice(0, 6);
+      pages = 1;
+      current = 1;
+
+      res.json({
+        success: true,
+      });
+    } else if (req.body.sort == "dsort") {
+      products = temp.sort((a, b) => a.price - b.price);
+      let dummy = temp
+      products = dummy.slice(0, 6);
+      pages = 1;
+      current = 1;
+      res.json({
+        succes: true,
+      });
+    }
+  } else {
+    let temp = allproducts
+    if (req.body.sort == "asort") {
+      products = temp.sort((a, b) => b.price - a.price);
+      let dummy = temp
+      products = dummy.slice(0, 6);
+      pages = 2;
+      current = 1;
+
+      res.json({
+        success: true,
+      });
+    } else if (req.body.sort == "dsort") {
+      products = temp.sort((a, b) => a.price - b.price);
+      let dummy = temp
+      products = dummy.slice(0, 6);
+      pages = 2;
+      current = 1;
+      res.json({
+        succes: true,
+      });
+    }
+  }
+
+
 }
 
 
 let categories;
-const catfilter= async (req,res)=>{
-  if(searchData){
-    let temp=searchData
-    console.log(req.body.category)
-  
+const catfilter = async (req, res) => {
+  if (searchData) {
+    let temp = searchData
+
     categories = []
     temp.forEach(item => {
-      console.log(item.category)
-      if(item.category===req.body.category){
+      if (item.category === req.body.category) {
         categories.push(item)
       }
     });
-    console.log(categories);
-    products = categories
-    pages = 2;
+    let dummy = categories
+    products = dummy.slice(0, 6);
+    pages = 1;
     current = 1;
     res.json({
       succes: true,
     });
-    
-  }else{
-    let temp=allproducts
-  console.log(req.body.category)
 
-  categories = []
-  temp.forEach(item => {
-    console.log(item.category)
-    if(item.category===req.body.category){
-      categories.push(item)
-    }
-  });
-  console.log(categories);
-  products = categories
-  pages = 2;
-  current = 1;
-  res.json({
-    succes: true,
-  });
+  } else {
+    let temp = allproducts
+
+    categories = []
+    temp.forEach(item => {
+      if (item.category === req.body.category) {
+        categories.push(item)
+      }
+    });
+    let dummy = categories
+    products = dummy.slice(0, 6);
+    pages = 1;
+    current = 1;
+    res.json({
+      succes: true,
+    });
   }
-  
+
 }
 
-let searchData ;
-const searchProduct = async  (req,res)=>{
+let searchData;
+const searchProduct = async (req, res) => {
   const regex = new RegExp(req.body.search, "i");
-  console.log(req.body)
-  if(categories){
-    let temp=categories
-  searchData = []
-  console.log(req.body.search)
+  if (categories) {
+    let temp = categories
+    searchData = []
 
- 
-  temp.forEach(item => {
-    console.log(item.name)
-    if(regex.exec(item.name)){
-      searchData.push(item)
-    }
-  });
-  console.log(searchData);
-  products = searchData
-  pages = 2;
-  current = 1;
-  res.json({
-    succes: true,
-  });
-  }else{
-    let temp=allproducts
-  searchData = []
-  console.log(req.body.search)
 
- 
-  temp.forEach(item => {
-    console.log(item.name)
-    if(regex.exec(item.name)){
-      searchData.push(item)
-    }
-  });
-  console.log(searchData);
-  products = searchData
-  pages = 2;
-  current = 1;
-  res.json({
-    succes: true,
-  });
+    temp.forEach(item => {
+      if (regex.exec(item.name)) {
+        searchData.push(item)
+      }
+    });
+    let dummy = searchData
+    products = dummy.slice(0, 6);
+    pages = 1;
+    current = 1;
+    res.json({
+      succes: true,
+    });
+  } else {
+    let temp = allproducts
+    searchData = []
+
+
+    temp.forEach(item => {
+      if (regex.exec(item.name)) {
+        searchData.push(item)
+      }
+    });
+    let dummy = searchData
+
+    products = dummy.slice(0, 6);
+    pages = 1;
+    current = 1;
+    res.json({
+      succes: true,
+    });
   }
-  
-}
-const clearFilter= async (req,res)=>{
-  categories=null
-  searchData=null
-  products = allproducts
-  res.json({succes : true})
 
 }
+const clearFilter = async (req, res) => {
+  categories = null
+  searchData = null
+  let dummy = allproducts
+  products = dummy.slice(0, 6);
+
+  pages = 2;
+  current = 1;
+  res.json({ succes: true })
+
+}
+
+const pagination = async (req, res) => {
+  var perPage = 6;
+  var page = req.body.cat || 1;
+  if (categories) {
+    let count = categories.length;
+    let dummy = [];
+    dummy = categories;
+    products = dummy.slice(perPage * page - perPage, perPage * page);
+
+    current = page;
+    pages = Math.ceil(count / perPage);
+    res.json({
+      success: true,
+    });
+
+  } else if (searchData) {
+    let count = searchData.length;
+    let dummy = [];
+    dummy = searchData;
+    products = dummy.slice(perPage * page - perPage, perPage * page);
+
+    current = page;
+    pages = Math.ceil(count / perPage);
+    res.json({
+      success: true,
+    });
+  } else {
+    let count = allproducts.length;
+    let dummy = [];
+    dummy = allproducts;
+    products = dummy.slice(perPage * page - perPage, perPage * page);
+
+    current = page;
+    pages = Math.ceil(count / perPage);
+    res.json({
+      success: true,
+    });
+  }
+
+}
+
+
+
+
+
+
+
 // single product page
 const singleproduct = async (req, res) => {
   try {
@@ -424,5 +479,6 @@ module.exports = {
   removeFromWishlist,
   addcartwishlist,
   searchProduct,
-  clearFilter
+  clearFilter,
+  pagination
 };

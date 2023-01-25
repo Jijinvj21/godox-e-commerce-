@@ -53,7 +53,7 @@ width: 100%;
                     <div class="form-outline mb-3 countrycode" >
 
 
-                      <input  class="form-control form-control-lg "   type="tel" id="phone" name="phone" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required  />
+                      <input  class="form-control form-control-lg "   type="tel" id="phone" name="phone"  required  />
 
 
                       <label class="form-label" for="form2Example17">Phone number</label>
@@ -101,7 +101,7 @@ width: 100%;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var dialCode = iti.getSelectedCountryData().dialCode;
-      var phoneNumber = dialCode + input.value;
+      input.value = dialCode + input.value;
            form.submit(); 
     });
 

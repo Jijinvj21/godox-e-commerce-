@@ -234,19 +234,76 @@
     </div>
 
     <div class="pagnition">
-      <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-        <ul class="pagination">
-          <% for(let j=1; j <=totalpage; j++){ %>
-            <li class="page-item">
-              <button class="page-link text-dark bg-white border-1 text-center" onclick="getpage('<%= j %>')"><%= j %></button>
-             
+      
+      <div class="col-md-12 d-flex justify-content-around" id="pageloader">
 
-            </li>
+        <nav id="thePageChanger" aria-label="Page navigation example "
+          class="border-dark d-flex justify-content-center">
+          <% if (pages> 0) { %>
+            <ul id="1100" class="pagination text-center rounded ">
+              <% if (current==1) { %>
+                <li id="2200" class="disabled p-3 btn btn-dark border rounded"><a style="color: white;">First</a></li>
+                <% } else { %>
+                  <li id="3300" class="p-3 btn btn-dark border rounded"><a style="color: white;" onclick="pageButton(1)">First</a>
+                  </li>
+                  <% } %>
+                    <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
+                      <% if (i !==1) { %>
+                        <li id="4400" class="disabled btn p-3 border rounded btn-dark"><a style="color: white;">...</a></li>
+                        <% } %>
+                          <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
+                            <% if (i==current) { %>
+                              <li id="5500" class=" btn active p-3 border rounded btn-dark"><a style="color: white;">
+                                  <%= i %>
+                                </a></li>
+                              <% } else { %>
 
+
+                                <li id="6600" class="btn p-3 btn-dark border rounded"><a style="color: white;"
+                                    onclick="pageButton('<%= i %>')">
+                                    <%= i %>
+                                  </a></li>
+
+                                <% } %>
+                                  <% if (i==Number(current) + 4 && i < pages) { %>
+                                    <li id="7700" class="btn disabled p-3 btn-dark border rounded"><a style="color: white;">...</a></li>
+                                    <% } %>
+                                      <% } %>
+                                        <% if (current==pages) { %>
+                                          <li id="8800" class="btn disabled p-3 btn-dark border rounded"><a style="color: white;">Last</a></li>
+                                          <% } else { %>
+                                            <li id="9900" class="btn p-3 btn-dark border rounded"><a style="color: white;"
+                                                onclick="pageButton('<%= pages %>')">Last</a></li>
+                                            <% } %>
+            </ul>
             <% } %>
-        </ul>
-      </nav>
+
+
+        </nav>
+      </div>
     </div>
+
+
+    
+    <script>
+      var product
+
+      function pageButton(catId) {
+
+        $.ajax({
+          url: "/pagination",
+          method: "patch",
+          data: { cat: catId },
+          success: (res) => {
+            console.log(res)
+
+            $('#product333').load(location.href + ' #product333')
+            $('#pageloader').load(location.href + ' #pageloader')
+          }
+
+        })
+      }
+    </script>
     <%if(productdata.length !=0){%>
       <p style="display: flex; justify-content: center;"></p>
       <%} else{%>
@@ -304,10 +361,10 @@
                 data: { category: catname },
                 success: (res) => {
                     $('#product333').load(location.href + ' #product333')
+                    $('#pageloader').load(location.href + ' #pageloader')
                      }
 
               })
-              console.log(catname);
 
             }
 
@@ -322,10 +379,10 @@ function getsort(sort) {
     data: { sort: sort },
     success: (res) => {
         $('#product333').load(location.href + ' #product333')
+        $('#pageloader').load(location.href + ' #pageloader')
         }
 
   })
-  console.log(sort);
 
 }
 
@@ -340,10 +397,10 @@ function getsort(sort) {
       data: { sort: 'clear' },
       success: (res) => {
           $('#product333').load(location.href + ' #product333')
+          $('#pageloader').load(location.href + ' #pageloader')
            }
   
     })
-    console.log(sort);
   
   }
   
@@ -362,29 +419,14 @@ function getsort(sort) {
     data: { search : value },
     success: (res)=> {
       $('#product333').load(location.href + ' #product333')
+      $('#pageloader').load(location.href + ' #pageloader')
     }
 
   })
   }
 
 </script>
-<script>
 
-  function getpage(page) {
-
-    $.ajax({
-      url: "/shop",
-      method: "patch",
-      data: { page },
-      success: (res) => {
-        }
-
-    })
-    console.log(page);
-
-  }
-
-</script>
 </body>
 
 </html>

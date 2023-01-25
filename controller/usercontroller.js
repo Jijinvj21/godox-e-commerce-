@@ -23,6 +23,7 @@ const insertUser = async (req, res) => {
 
 
   try {
+    console.log(req.body);
     regData = {
       name: req.body.name,
       email: req.body.email,
@@ -45,7 +46,6 @@ wrong:"User alrady exist"
   }
   // otpgenerate
   otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
-  console.log(otpgen);
   // email
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -65,7 +65,6 @@ wrong:"User alrady exist"
     if (error) {
       console.log(error);
     } else {
-      console.log("Email sent: " + info.response);
     }
   });
 
@@ -74,7 +73,6 @@ wrong:"User alrady exist"
 // let enterotp
 const otp = async (req, res) => {
   let enterotp = req.body.otp;
-  console.log(req.body.otp);
   if (enterotp === otpgen) {
     await User.insertMany([regData]);
     res.redirect("/userlogin");
@@ -97,7 +95,6 @@ const userverification = async (req, res) => {
 
         req.session.userEmail = req.body.email;
         res.redirect("/");
-        console.log(req.session.userEmail);
       } else if (user.status === false) {
         req.session.destroy((err) => {
           if (err) {
@@ -139,7 +136,6 @@ const logout = async (req, res) => {
 const resendotp = (req,res)=>{
 // otpgenerate
 otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
-console.log(otpgen);
 // email
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -190,7 +186,6 @@ const forgotemailcheck = async (req, res) => {
 
  // otpgenerate
  otpgen = `${Math.floor(1000 + Math.random() * 9000)}`;
- console.log(otpgen);
  // email
  let transporter = nodemailer.createTransport({
    service: "gmail",
@@ -234,7 +229,6 @@ const forgotemailcheck = async (req, res) => {
 //   otp checking(forgotpassword)
 const forgototpckeck = async (req, res) => {
     let checkotp = req.body.otp;
-    console.log(req.body.otp);
 
     if (checkotp === otpgen) {
       res.redirect("/forgotpassword");
@@ -246,7 +240,6 @@ const forgototpckeck = async (req, res) => {
 const forgotnewpasword = async (req, res) => {
     let newpassword = req.body.password;
     let confirmpassword = req.body.cpassword;
-    console.log(newpassword + confirmpassword );
     if (newpassword === confirmpassword) {
       await User.updateOne({ email:forgotEmail }, { $set: { 
         password:newpassword  } })
@@ -261,7 +254,6 @@ const forgotnewpasword = async (req, res) => {
     const userdatas = await User.findOne({ email: email });
     let userid = userdatas._id
     const order = await ordermodel.find({userId:userid});
-        // console.log(orderdata);
      
     res.render("../views/user/userprofile.ejs",{userdatas,order})
   }
@@ -296,7 +288,6 @@ const addadderss= async(req,res)=>{
 }
 // edit user data
 const edituserdata = async (req,res)=>{
-console.log(req.body.img);
 let email=req.session.userEmail
 await User.updateOne({ email:email},{ $set: {name : req.body.name , phone :req.body.phone}})
 res.redirect('/viewuserdata')
@@ -320,7 +311,6 @@ const edituserpass = async (req,res)=>{
 let email=req.session.userEmail
 const userdatas = await User.findOne({ email: email });
 let password=userdatas.password
-console.log(password);
 if (password ===req.body.current)
 {
   if(req.body.new===req.body.confirm)
@@ -338,8 +328,7 @@ res.redirect('/viewuserdata')
 }
 // // update order stayus
 const updateorder = async (req,res)=>{
- console.log(req.body.select);
- console.log(req.body.proid);
+
  let status=req.body.select
 let id = req.body.proid
 await ordermodel.updateOne({ _id:id},{ $set: { status: status }})

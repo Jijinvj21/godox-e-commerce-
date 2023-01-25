@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Godox</title>
 </head>
+<style>
+  .iti--allow-dropdown{
+width: 100%;
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"
+integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');</style>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -103,7 +111,8 @@
       
               <div class="mb-3">
                 <label for="email">Mobile number <span class="text-muted"></span></label>
-                <input type="email" class="form-control" name="mobile" id="mobno" required placeholder="Enter your mobile number">
+                <input  class="form-control form-control-lg  mobno"   type="tel" id="phone" name="phone"  required  />
+
                 <div class="invalid-feedback">
                   Enter your mobile number
                 </div>
@@ -168,9 +177,10 @@
         },
         success:(response)=>{
             $("#name").val(response.data[0].name);
-            $("#mobno").val(response.data[0].phone);
+            // $(".mobno").val();
             $("#address").val(response.data[0].address);
             $("#zip").val(response.data[0].pincode);
+            iti.setNumber('+'+response.data[0].phone);
             
             
             }
@@ -199,6 +209,23 @@
     }
 
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"
+  integrity="sha512-+gShyB8GWoOiXNwOlBaYXdLTiZt10Iy6xjACGadpqMs20aJOoh+PJt3bwUVA6Cefe7yF7vblX6QwyXZiVwTWGg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  var input = document.querySelector("#phone");
+  var iti = window.intlTelInput(input);
+
+  var form = document.querySelector("form");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var dialCode = iti.getSelectedCountryData().dialCode;
+    input.value = dialCode + input.value;
+         form.submit(); 
+  });
+
+</script>
   
   <!-- ajax -->
   <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>  -->
