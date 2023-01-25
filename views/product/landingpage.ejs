@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>landing</title>
+  <title>Godox</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -29,15 +29,6 @@
     transform: scale(1.1);
 }
     </style>
-
-
-
-
-
-
-
-
-
 </head>
 <body style="margin: 0; padding: 0;">
   <%- include('../partials/user-header')%>
@@ -49,21 +40,12 @@
 
     <!-- Wrapper for slides -->
 <%if(banner != null){%>
-
-
-
-
     <div class="carousel-inner " style="width:100%;">
 
     <div class="item active ">
       <img src="/public/databaseimg/<%=banner[0].image %>" alt="Los Angeles" style="width:100%;">
     </div>
-  
-
     <% for(let i=1; i< banner.length; i++) {%>
-    
-        
-     
       <div class="item  ">
         <img src="/public/databaseimg/<%=banner[i].image %>" alt="Los Angeles" style="width:100%;">
       </div>

@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Godox</title>
     </head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
@@ -18,9 +18,7 @@
             background: #ddd;
             min-height: 100vh;
             vertical-align: middle;
-            /* display: flex; */
-            /* padding-top: 50%;
-    padding-bottom: 50%; */
+
             font-family: sans-serif;
             font-size: 0.8rem;
             font-weight: bold;
@@ -224,64 +222,64 @@
                                 <h1 class="text-center">Product is not listed yet</h1>
                             </div>
                             <%}else{%>
-
-
                                 <%if( proimg!=null){%>
                                     <%if(proimg.cartItems[0]!=null ){%>
                                         <% var subtot=0%>
-                                        <% var totprice = 0 %>
-                                            <div class="row border-top border-bottom">
-                                                <%for(let i=0;i< proimg.cartItems.length;i++){%>
-                                                    <div class="row main align-items-center">
-                                                        <div class="col-2">
-                                                            <img class="img-fluid"
-                                                                src="<%=proimg.cartItems[i].productId.image[0].url%>">
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="row text-muted">
-                                                                <%=proimg.cartItems[i].productId.category%>
+                                            <% var totprice=0 %>
+                                                <div class="row border-top border-bottom">
+                                                    <%for(let i=0;i< proimg.cartItems.length;i++){%>
+                                                        <div class="row main align-items-center">
+                                                            <div class="col-2">
+                                                                <img class="img-fluid"
+                                                                    src="<%=proimg.cartItems[i].productId.image[0].url%>">
                                                             </div>
-                                                            <div class="row">
-                                                                <%=proimg.cartItems[i].productId.name%>
+                                                            <div class="col">
+                                                                <div class="row text-muted">
+                                                                    <%=proimg.cartItems[i].productId.category%>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <%=proimg.cartItems[i].productId.name%>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>"
-                                                                style="text-decoration: none; color: #000;">-</a><a
-                                                                href="#" class="border"
-                                                                style="text-decoration: none; color: #000;">
-                                                                <%=proimg.cartItems[i].qty%>
-                                                            </a><a
-                                                                href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>"
-                                                                style="text-decoration: none; color: #000;">+</a>
-                                                        </div>
-                                                        <% totprice=proimg.cartItems[i].productId.price *
-                                                            proimg.cartItems[i].qty %>
-                                                            <div class="col d-flex justify-content-center">&dollar;<%=totprice%><span class="close">
-                                                                <a
-                                                                            href="/productId?id=<%=proimg.cartItems[i].productId._id%>"
-                                                                            class="mx-auto"
-                                                                            style="text-decoration: none; color: #000;">&#10005;</a></span>
-                                                            </div> <!-- -->
-                                                            <%subtot +=totprice %>
-                                                    </div>
-                                                    <%}%>
-                                            </div>
-                                            <%}else{%>
-                                                <div class="row">
-                                                    <h1 class="text-center">no items Available</h1>
-                                                </div>
-                                                <%}%>
-                                                    <%}else{%>
-                                                        <div class="row">
-                                                            <h1 class="text-center">no items Available</h1>
+                                                            <div class="col">
+                                                                <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                    style="text-decoration: none; color: #000;">-</a><a
+                                                                    href="#" class="border"
+                                                                    style="text-decoration: none; color: #000;">
+                                                                    <%=proimg.cartItems[i].qty%>
+                                                                </a><a
+                                                                    href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                    style="text-decoration: none; color: #000;">+</a>
+                                                            </div>
+                                                            <% totprice=proimg.cartItems[i].productId.price *
+                                                                proimg.cartItems[i].qty %>
+                                                                <div class="col d-flex justify-content-center">&dollar;
+                                                                    <%=totprice%><span class="close">
+                                                                            <a href="/productId?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                                onclick="return confirm('Are you sure')"
+                                                                                class="mx-auto"
+                                                                                style="text-decoration: none; color: #000;">&#10005;</a></span>
+                                                                </div> <!-- -->
+                                                                <%subtot +=totprice %>
                                                         </div>
                                                         <%}%>
+                                                </div>
+                                                <%}else{%>
+                                                    <div class="row">
+                                                        <h1 class="text-center">no items Available</h1>
+                                                    </div>
+                                                    <%}%>
+                                                        <%}else{%>
+                                                            <div class="row">
+                                                                <h1 class="text-center">no items Available</h1>
+                                                            </div>
                                                             <%}%>
-                                                                <div class="back-to-shop"><a href="/productpage"
-                                                                        style="text-decoration: none; color: gray;">&leftarrow;<span
-                                                                            class="text-muted"> Back to shop</span></a>
-                                                                </div>
+                                                                <%}%>
+                                                                    <div class="back-to-shop"><a href="/productpage"
+                                                                            style="text-decoration: none; color: gray;">&leftarrow;<span
+                                                                                class="text-muted"> Back to
+                                                                                shop</span></a>
+                                                                    </div>
                     </div>
                     <div class="col-md-4 summary">
                         <div>

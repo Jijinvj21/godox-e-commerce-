@@ -5,16 +5,18 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>product list</title>
+  <title>Godox</title>
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
   integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
 
+
 <body>
   <style>
-    /* @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"); */
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
+
     * {
       box-sizing: border-box;
     }
@@ -46,11 +48,11 @@
     }
 
     .product-item:hover {
-      border-bottom: 2px solid #fc5a5a;
+      border-bottom: 2px solid #1a1a1a;
     }
 
     .product-item:hover .button {
-      background: #fc5a5a;
+      background: #2c2c2c;
     }
 
     .product-item img {
@@ -76,7 +78,7 @@
     .price {
       font-family: "Open Sans";
       font-size: 16px;
-      color: #fc5a5a;
+      color: #1d1d1d;
       display: block;
       margin-bottom: 12px;
     }
@@ -86,7 +88,7 @@
       display: inline-block;
       padding: 1px 12px 0;
       margin: 0 auto;
-      background: #cccccc;
+      background: #252525;
       color: white;
       text-transform: uppercase;
       text-decoration: none;
@@ -152,17 +154,15 @@
 
 
 
-    <form action="" class="text-center w-100 d-flex justify-content-center align-items-center">
-      <input type="text" name="search" class="searchinput"  required placeholder="Search" style="min-width: 100px;" />
+    <div  class="text-center w-100 d-flex justify-content-center align-items-center">
+      <input onkeyup="searchval(this.value)" type="text" name="search" id="searchval" class="searchinput" required placeholder="Search" style="min-width: 100px;" />
 
-      <button type="submit" class="btn btn-none bg-dark">
-        <i class="bi bi-search text-light" ></i>
-      </button>
-    </form>
+     
+    </div>
 
 
 
-    <div class="container columns" style="min-height: 17.6vh ;">
+    <div class="container columns" style="min-height: 46.6vh ;">
       <div class="filter-sort d-flex justify-content-between m-2">
         <div class="dropdown">
           <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -171,58 +171,66 @@
           <ul class="dropdown-menu">
             <% if(categorylist!=null){%>
               <%categorylist.forEach((category)=>{%>
-<%if(category.status === true){%>
+                <%if(category.status===true){%>
 
-            <li>
-                  <a class="dropdown-item" href="?category=<%=category.name%>">
-                    <%=category.name%>
-                  </a>
-                </li>
-                <%}%>   
-                <% })%>
+                  <li>
+                    <button class="text-dark bg-white border-0 text-center " onclick="getCategory('<%=category.name%>')">
+                      <%=category.name%>
+                    </button>
+
+                  </li>
                   <%}%>
+                    <% })%>
+                      <%}%>
           </ul>
         </div>
+        <button onclick="clearFilter()"  type="submit" class="btn btn-none bg-dark text-light">
+          VIEW ALL
+        </button>
         <div class="dropdown">
           <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             SORT
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="?sort=asort">Price -- High to Low</a>
+              <button class="text-dark bg-white border-0 text-center " onclick="getsort('asort')">Price -- High to Low</button>
             </li>
             <li>
-              <a class="dropdown-item" href="?sort=dsort">Price -- Low to High</a>
+              <button class="text-dark bg-white border-0 text-center " onclick="getsort('dsort')">Price -- Low to High</button>
+
             </li>
           </ul>
         </div>
       </div>
-
-      
+      <div id="product333" class="container-fluid">
       <% for (let i=0; i < productdata.length ; i++) { %>
-        <%if(productdata[i].status === true){%>
-          
-  
-        <div class="product-item productimag px-2 pt-2" style="border-radius: 20px ;
+        <%if(productdata[i].status===true){%>
+
+
+          <div   class="product-item productimag px-2 pt-2" style="border-radius: 20px ;
       background: #e0e0e0;
       box-shadow:  9px 9px 18px #a4a4a4,
                    -9px -9px 18px #ffffff;">
-          <img src="<%=productdata[i].image[0].url%> " height="100px" class="rounded-4">
+            <h4 class="bi bi-heart-fill text-dark p-1" style="float: right;"
+              onclick="addwishlist('<%=productdata[i]._id%>')"></h4>
+            <img src="<%=productdata[i].image[0].url%> " height="100px" class="rounded-4">
 
 
-          <div class="product-list">
-            <h3>
-              <%=productdata[i].name%>
-            </h3>
-            <span class="price">$<%=productdata[i].price%></span><a href="/singleproduct?id=<%=productdata[i]._id%>"
-              class="button">View Product</a>
+            <div class="product-list">
+              <h3>
+                <%=productdata[i].name%>
+              </h3>
+              <span class="price">$<%=productdata[i].price%></span><a href="/singleproduct?id=<%=productdata[i]._id%>"
+                class="button">View Product</a>
 
+            </div>
           </div>
-        </div>
-        <% } %>
-       
+          <% } %>
 
-          <%}%>
+
+            <%}%>
+          </div>
+          
     </div>
 
     <div class="pagnition">
@@ -230,9 +238,8 @@
         <ul class="pagination">
           <% for(let j=1; j <=totalpage; j++){ %>
             <li class="page-item">
-              <a class="page-link text-dark" href="?page=<%= j %>">
-                <%= j %>
-              </a>
+              <button class="page-link text-dark bg-white border-1 text-center" onclick="getpage('<%= j %>')"><%= j %></button>
+             
 
             </li>
 
@@ -243,37 +250,141 @@
     <%if(productdata.length !=0){%>
       <p style="display: flex; justify-content: center;"></p>
       <%} else{%>
-        <div class="errordiv" style="height: 55.4vh;">
+        <div class="errordiv" style="height:20.5vh;">
           <h4 class=" d-flex justify-content-center  text-danger"> NO PRODUCT FOUND</h4>
 
         </div>
 
         <%}%>
+        
           <div class="container-fluid">
             <div class="row">
               <%- include('../partials/user-footer')%>
             </div>
           </div>
+          <script>
+            function addwishlist(productId) {
+              $.ajax({
+                url: "/wishlistdat?productId=" + productId,
+                method: 'get',
+                success: (response) => {
+                  if (!response.email) {
 
+                    alert('Please login')
+                  }
 
+                  else if (response.productAlreadyExist) {
+                    alert('Product exists')
 
+                  }
+                  else {
+                    alert('Product added to Wishlist')
+                  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                }
+              })
+            }
+          </script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+
+
+
+          <script>
+
+            function getCategory(catname) {
+
+              $.ajax({
+                url: "/catfilter",
+                method: "patch",
+                data: { category: catname },
+                success: (res) => {
+                    $('#product333').load(location.href + ' #product333')
+                     }
+
+              })
+              console.log(catname);
+
+            }
+
+          </script>
+
+<script>
+function getsort(sort) {
+
+  $.ajax({
+    url: "/shop",
+    method: "patch",
+    data: { sort: sort },
+    success: (res) => {
+        $('#product333').load(location.href + ' #product333')
+        }
+
+  })
+  console.log(sort);
+
+}
+
+</script>
+
+<script>
+  function clearFilter() {
+  
+    $.ajax({
+      url: "/clear",
+      method: "patch",
+      data: { sort: 'clear' },
+      success: (res) => {
+          $('#product333').load(location.href + ' #product333')
+           }
+  
+    })
+    console.log(sort);
+  
+  }
+  
+  </script>
+  
+
+
+<script>
+  
+  function searchval(value){
+  event.preventDefault();
+  
+  $.ajax({
+    method: "patch",
+    url: "/search",
+    data: { search : value },
+    success: (res)=> {
+      $('#product333').load(location.href + ' #product333')
+    }
+
+  })
+  }
+
+</script>
+<script>
+
+  function getpage(page) {
+
+    $.ajax({
+      url: "/shop",
+      method: "patch",
+      data: { page },
+      success: (res) => {
+        }
+
+    })
+    console.log(page);
+
+  }
+
+</script>
 </body>
 
 </html>

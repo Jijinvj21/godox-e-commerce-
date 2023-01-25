@@ -3,3 +3,59 @@ git add .  //after edit any thing if you need to add that all thing you need to 
  git commit -m "info about it  2:09 pm /7:1:23"
  git push -u origin master
  git push -u origin master
+
+
+
+
+
+
+
+ <form action="" class="text-center w-100 d-flex justify-content-center align-items-center">
+      <input type="text" name="search" class="searchinput"  required placeholder="Search" style="min-width: 100px;" />
+
+      <button type="submit" class="btn btn-none bg-dark">
+        <i class="bi bi-search text-light" ></i>
+      </button>
+    </form>
+
+
+
+
+
+
+
+
+<div class="filter-sort d-flex justify-content-between m-2">
+        <div class="dropdown">
+          <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            FILTER
+          </button>
+          <ul class="dropdown-menu">
+            <% if(categorylist!=null){%>
+              <%categorylist.forEach((category)=>{%>
+<%if(category.status === true){%>
+
+            <li>
+                  <a class="dropdown-item" href="?category=<%=category.name%>">
+                    <%=category.name%>
+                  </a>
+                </li>
+                <%}%>   
+                <% })%>
+                  <%}%>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            SORT
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="?sort=asort">Price -- High to Low</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="?sort=dsort">Price -- Low to High</a>
+            </li>
+          </ul>
+        </div>
+      </div>

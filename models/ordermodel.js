@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 
 const { Schema } = mongoose;
 const orderSchema = new Schema({
-   
+
     userId:{
         type:mongoose.SchemaTypes.ObjectId,
         ref:'User'
@@ -28,7 +28,6 @@ const orderSchema = new Schema({
     },
    
     month:Number
-   
   
 });
 

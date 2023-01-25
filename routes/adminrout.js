@@ -77,12 +77,8 @@ router.get("/admincoupons",adminSessionMW, adminController.admincoupon);
 // add coupons
 router.post("/admincoupons", adminController.couponsdata);
 // block coupon
-
-
 // orderstatus
 router.post("/orderstatus", adminController.orderstatus);
 
 router.get("/exportorder", salesReport.exportorder);
-
-
 module.exports = router;

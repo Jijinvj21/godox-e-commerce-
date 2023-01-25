@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-
 const { Schema } = mongoose;
 const bannerSchema = new Schema({
     image:{
@@ -11,5 +10,4 @@ const bannerSchema = new Schema({
     },
 });
 const banner = mongoose.model('banner', bannerSchema);
-
 module.exports=banner;

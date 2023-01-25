@@ -204,7 +204,7 @@ const forgotemailcheck = async (req, res) => {
    to:req.body.email,
    subject: "YOUR OTP",
    //   text: `enterotp`
-   html: `<p>${otpgen}</p>`,
+   html: `<h5 style="color:red">${otpgen} : This is your Godox verification code</h5>`,
  };
  console.log(req.body.email);
  transporter.sendMail(mailOptions, function (error, info) {

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <title>Admin</title>
+  <title>Godox</title>
     
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
@@ -21,10 +21,31 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
 </head>
 
-<body class="sb-nav-fixed">
+<body class="row container-fluid p-0 m-0">
+  
+  <nav class="navbar bg-dark col-sm-12">
+    <div class="container-fluid">
+      <a class="navbar-brand px-5" href="/admindashboard" style="color: white;">Admin</a>
+      <a href="/adminlogout"> <button class="btn btn-dark logoutbt " style="margin-top: 0.5%; float: right; font-size: 20px;" >Logout</button></a>
 
-  <%- include('../partials/admin-header')%>
-    <div id="la">
+
+    </div>
+  </nav>
+
+ 
+    <div class="d-flex flex-column align-items-center bg-dark  col-sm-2" style=" min-height: 94.2vh;">
+        <a href="/admindashboard" class="home-txt btn btn-dark my-5" style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px;">  <b>Dashboard</b>  </a>
+            <a href="/admincustomer" class="prodect-txt btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255);font-size: 20px; "> <b> Customers</b></a>
+            <a href="/adminproducts" class="prodect-txt btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b>Products</b> </a>
+            <a href="/admincategory" class="prodect-txt btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; " > <b>Category</b> </a>
+            <a href="/adminorder" class="prodect-txt  btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b>Order</b> </a>
+            <a href="/admincoupons" class="prodect-txt  btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px;"> <b>Coupons</b> </a>    
+            <a href="/adminbanner" class="prodect-txt btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b> Banner</b></a>
+
+
+        </div>
+
+    <div class="col-sm-10">
 
       <div id="layoutSidenav_content" class="container-fluid">
 
@@ -100,12 +121,10 @@
             <% coupondata.forEach((coupondata)=>{ %>
               <!-- created date -->
               <%let date = coupondata.createddate %>
-              <%=console.log(date)%>
               <%let isoString = date.toISOString()%>
               <%let createddate = isoString.split('T')[0]%>
              <!-- expired date -->
              <%let dat = coupondata.expiredate %>
-             <%=console.log(dat)%>
              <%let isoStrin = dat.toISOString()%>
              <%let expiredate = isoStrin.split('T')[0]%>
              
@@ -120,8 +139,7 @@
               <td><%=createddate %></td>
               <td><%=expiredate %></td>
               <td><%=coupondata.status%></td>
-              <!-- <td><%=coupondata.userId%></td>
-              <td><%=coupondata.discountedtotal%></td> -->
+            
   
   
             </tr>

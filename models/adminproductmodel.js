@@ -12,8 +12,6 @@ const adminproductSchema= new Schema({
   },
     price:Number,
     quantity:Number
-
   });
   const Adminproduct = mongoose.model('product', adminproductSchema);
-  
   module.exports=Adminproduct;

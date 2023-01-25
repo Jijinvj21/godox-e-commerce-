@@ -8,357 +8,421 @@ const cartmodel = require("../models/cartmodel")
 const wishlistmodel = require('../models/wishlistmodel')
 const error = async (req, res) => {
   res.render("../views/partials/error.ejs");
-
 }
-
 // render landing page
 const landing = async (req, res) => {
   try {
-    const bannerimg = await bannermodel.find({status:true});
- 
+    const bannerimg = await bannermodel.find({ status: true });
     res.render("../views/product/landingpage.ejs", { banner: bannerimg });
-   
   }
   catch (error) {
     console.log(error);
     res.redirect('/error')
-
   }
 }
 // display, search, pagination, sort, filter
+let products;
+let allproducts
 const product = async (req, res) => {
-  try {
-    // sort
-    let sort;
-    if (req.query.sort == "asor") {
-      sort = { price: -1 };
-    } else if (req.query.sort == "dsort") {
-      sort = { price: 1 };
-    } else {
-      sort = {};
-    }
-    // get data from categorylist
-    let category = await categorylist.find({});
-    // filter
-    let filter;
-    if (req.query.category) {
-      filter = { category: req.query.category };
-    } else {
-      filter = {};
-    }
-    // search
-    let search = "";
-    if (req.query.search) {
-      search = req.query.search;
-    }
-    // pagnation
-    let page = 1;
-    if (req.query.page) {
-      page = req.query.page;
-    }
-    const limit = 6;
-    let productdata = await Product.find({
-      $or: [
-        { name: { $regex: ".*" + search + ".*", $options: "i" } },
-        { category: { $regex: ".*" + search + ".*", $options: "i" } },
-      ],
-    })
-      //.filter(filter)
-      .find(filter)
-      .sort(sort)
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .exec();
-    // count how namy data is sent for paging
-    let count = await Product.find({
-      $or: [
-        { name: { $regex: ".*" + search + ".*", $options: "i" } },
-        { category: { $regex: ".*" + search + ".*", $options: "i" } },
-      ],
-    }).countDocuments();
+    try {
+
+    if (!allproducts) {
+      allproducts = await Product.find({status:true})
+      products=allproducts
+      res.render("../views/product/product", {
+        productdata:products ,categorylist:category,totalpage:1
+      })
+    }else{
+      let category = await categorylist.find({});
+
     res.render("../views/product/product", {
-      productdata: productdata,
-      totalpage: Math.ceil(count / limit),
-      currentpage: page,
-      categorylist: category,
-    });
+      productdata:products ,categorylist:category,totalpage:1
+    })
+    }
+    
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
   }
 };
+//sort
+const shop = async(req, res) => {
+if(categories){
+  let temp=categories
+  if (req.body.sort == "asort") {
+    products = temp.sort((a, b) => b.price - a.price);
+    
+    pages = 2;
+    current = 1;
+  
+    res.json({
+      success: true,
+    });
+  } else if (req.body.sort == "dsort") {
+    products = temp.sort((a, b) => a.price - b.price);
+    
+    pages = 2;
+    current = 1;
+    res.json({
+      succes: true,
+    });
+  }
+}else if(searchData){
+  let temp=searchData
+  if (req.body.sort == "asort") {
+    products = temp.sort((a, b) => b.price - a.price);
+    products = temp
+    pages = 2;
+    current = 1;
+  
+    res.json({
+      success: true,
+    });
+  } else if (req.body.sort == "dsort") {
+    products = temp.sort((a, b) => a.price - b.price);
+    products = temp
+    pages = 2;
+    current = 1;
+    res.json({
+      succes: true,
+    });
+  }
+}else{
+  let temp=allproducts
+  if (req.body.sort == "asort") {
+    products = temp.sort((a, b) => b.price - a.price);
+    products = temp
+    pages = 2;
+    current = 1;
+  
+    res.json({
+      success: true,
+    });
+  } else if (req.body.sort == "dsort") {
+    products = temp.sort((a, b) => a.price - b.price);
+    products = temp
+    pages = 2;
+    current = 1;
+    res.json({
+      succes: true,
+    });
+  }
+}
+
+ 
+}
+
+
+let categories;
+const catfilter= async (req,res)=>{
+  if(searchData){
+    let temp=searchData
+    console.log(req.body.category)
+  
+    categories = []
+    temp.forEach(item => {
+      console.log(item.category)
+      if(item.category===req.body.category){
+        categories.push(item)
+      }
+    });
+    console.log(categories);
+    products = categories
+    pages = 2;
+    current = 1;
+    res.json({
+      succes: true,
+    });
+    
+  }else{
+    let temp=allproducts
+  console.log(req.body.category)
+
+  categories = []
+  temp.forEach(item => {
+    console.log(item.category)
+    if(item.category===req.body.category){
+      categories.push(item)
+    }
+  });
+  console.log(categories);
+  products = categories
+  pages = 2;
+  current = 1;
+  res.json({
+    succes: true,
+  });
+  }
+  
+}
+
+let searchData ;
+const searchProduct = async  (req,res)=>{
+  const regex = new RegExp(req.body.search, "i");
+  console.log(req.body)
+  if(categories){
+    let temp=categories
+  searchData = []
+  console.log(req.body.search)
+
+ 
+  temp.forEach(item => {
+    console.log(item.name)
+    if(regex.exec(item.name)){
+      searchData.push(item)
+    }
+  });
+  console.log(searchData);
+  products = searchData
+  pages = 2;
+  current = 1;
+  res.json({
+    succes: true,
+  });
+  }else{
+    let temp=allproducts
+  searchData = []
+  console.log(req.body.search)
+
+ 
+  temp.forEach(item => {
+    console.log(item.name)
+    if(regex.exec(item.name)){
+      searchData.push(item)
+    }
+  });
+  console.log(searchData);
+  products = searchData
+  pages = 2;
+  current = 1;
+  res.json({
+    succes: true,
+  });
+  }
+  
+}
+const clearFilter= async (req,res)=>{
+  categories=null
+  searchData=null
+  products = allproducts
+  res.json({succes : true})
+
+}
 // single product page
 const singleproduct = async (req, res) => {
   try {
     const productimg = await Product.find({ _id: req.query.id });
-   const email = req.session.userEmail
+    const email = req.session.userEmail
     const user = await userdata.findOne({ email: email });
     res.render("../views/product/singleproductwithzoom.ejs", { productimg: productimg, user })
   }
   catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 }
 const cartdataprint = async (req, res) => {
   try {
-    
-  
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  const proimg = await cartmodel.findOne({ userId: userid }).populate('cartItems.productId');
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    const proimg = await cartmodel.findOne({ userId: userid }).populate('cartItems.productId');
 
-  const product = await Product.find({});
-  res.render("../views/product/cart2.ejs", { proimg: proimg, product })
-
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
-}
+    const product = await Product.find({});
+    res.render("../views/product/cart2.ejs", { proimg: proimg, product })
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
+  }
 }
 // add to cart
 async function userAddToCart(req, res) {
-  try{
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  let userCart = await cartmodel.findOne({ userId: userid })
-  console.log(userCart);
-  if (!userCart) {
-    await cartmodel.insertMany([{ userId: userid }])
-    userCart = await cartmodel.findOne({ userId: userid })
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    let userCart = await cartmodel.findOne({ userId: userid })
+    if (!userCart) {
+      await cartmodel.insertMany([{ userId: userid }])
+      userCart = await cartmodel.findOne({ userId: userid })
+    }
+    let itemIndex = userCart.cartItems.findIndex((cartItems) => {
+      return cartItems.productId == req.query.productid
+    })
+    if (itemIndex > -1) {//-1 if no item matches
+      await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.productid },
+        {
+          $inc: { 'cartItems.$.qty': 1 }
+        }
+      )
+    }
+    else {
+      await cartmodel.updateOne({ userId: userid },
+        {
+          $push: { cartItems: { productId: req.query.productid, qty: 1 } }
+        }
+      )
+    }
+    res.redirect('/cartdataprint')
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
   }
-  let itemIndex = userCart.cartItems.findIndex((cartItems) => {
-    return cartItems.productId == req.query.productid
-  })
-  if (itemIndex > -1) {//-1 if no item matches
-    await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.productid },
+}
+// increment
+async function userAddFromCart(req, res) {
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
       {
         $inc: { 'cartItems.$.qty': 1 }
       }
     )
+    res.redirect('/cartdataprint')
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
   }
-  else {
-    await cartmodel.updateOne({ userId: userid },
-      {
-        $push: { cartItems: { productId: req.query.productid, qty: 1 } }
-      }
-    )
-  }
-  res.redirect('/cartdataprint')
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
 }
-
-}
-
-// increment
-async function userAddFromCart(req, res) {
-  try {
-    
-
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
-    {
-      $inc: { 'cartItems.$.qty': 1 }
-    }
-  )
-  res.redirect('/cartdataprint')
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
-    
-}
-}
-
 // decrement
 async function userDeductFromCart(req, res) {
-  try{
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  const qtyChech = await cartmodel.aggregate([{ $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
-  { $unwind: "$cartItems" },
-  { $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
-  { $project: { "cartItems.qty": 1, _id: 0 } }
-  ])
-  let productqty = parseInt(qtyChech[0].cartItems.qty)
-  if (productqty - 1 <= 0) {
-    await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: req.query.id } } })
-  } else {
-    await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
-      {
-        $inc: { 'cartItems.$.qty': -1 }
-      })
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    const qtyChech = await cartmodel.aggregate([{ $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
+    { $unwind: "$cartItems" },
+    { $match: { "cartItems.productId": mongoose.Types.ObjectId(req.query.id) } },
+    { $project: { "cartItems.qty": 1, _id: 0 } }
+    ])
+    let productqty = parseInt(qtyChech[0].cartItems.qty)
+    if (productqty - 1 <= 0) {
+      await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { id: req.query.id } } })
+    } else {
+      await cartmodel.updateOne({ userId: userid, 'cartItems.productId': req.query.id },
+        {
+          $inc: { 'cartItems.$.qty': -1 }
+        })
+    }
+    res.redirect('/cartdataprint')
+  } catch (error) {
+    res.redirect('/error')
+    console.log(error.message);
   }
-  res.redirect('/cartdataprint')
-} catch (error) {
-  res.redirect('/error')
-
-  console.log(error.message);
-}
 }
 // remove from cart
 const removeFromCart = async (req, res) => {
-  try{
-  console.log(req.query.id);
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-
-  await cartmodel.updateOne({userId:userid},{$pull:{cartItems:{productId:req.query.id}}})
-
-  res.redirect('/cartdataprint')
-} catch (error) {
-  res.redirect('/error')
-
-  console.log(error.message);
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    await cartmodel.updateOne({ userId: userid }, { $pull: { cartItems: { productId: req.query.id } } })
+    res.redirect('/cartdataprint')
+  } catch (error) {
+    res.redirect('/error')
+    console.log(error.message);
+  }
 }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // wishlist
 const userWishlist = async (req, res) => {
-
-try{
-
+  try {
     const email = req.session.userEmail
     let userid = await userdata.findOne({ email: email })
     const wishlistdata = await wishlistmodel.findOne({ userId: userid }).populate('products');
-    console.log(wishlistdata);
     res.render('../views/product/wishlist.ejs', { wishlistdata: wishlistdata })
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
-}
+  }
 }
 // add to wishlist
 const userAddToWishlist = async (req, res) => {
-  try{
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  let userWishlist = await wishlistmodel.findOne({ userId: userid })
-  if (!userWishlist) {
-    await wishlistmodel.insertMany([{ userId: userid }])
-    userWishlist = await wishlistmodel.findOne({ userId: userid })
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    let userWishlist = await wishlistmodel.findOne({ userId: userid })
+    let productAlreadyExist
+    if (!userWishlist) {
+      await wishlistmodel.insertMany([{ userId: userid }])
+      userWishlist = await wishlistmodel.findOne({ userId: userid })
+    }
+    let itemIndex = userWishlist.products.findIndex((products) => {
+      return products == req.query.productId
+    })
+    if (itemIndex > -1) {//-1 if no item matches
+      productAlreadyExist = true
+    }
+    else {
+      await wishlistmodel.updateOne({ userId: userid },
+        {
+          $push: { products: req.query.productId }
+        }
+      )
+    }
+    res.json({ email, productAlreadyExist })
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
   }
-  let itemIndex = userWishlist.products.findIndex((products) => {
-    return products == req.query.productId
-  })
-  if (itemIndex > -1) {//-1 if no item matches
-    console.log('product alredy exist');
-  }
-  else {
-    await wishlistmodel.updateOne({ userId: userid },
-      {
-        $push: { products: req.query.productId }
-      }
-    )
-  }
-  res.redirect('/wishlistdata')
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
-}
 }
 // remove from wishlist
 const removeFromWishlist = async (req, res) => {
-  try{
-  const email = req.session.userEmail
-  let userid = await userdata.findOne({ email: email })
-  await wishlistmodel.updateOne({ userId: userid }, { $pull: { products: req.query.productId } })
-  res.redirect('/wishlistdata')
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
-}
+  try {
+    const email = req.session.userEmail
+    let userid = await userdata.findOne({ email: email })
+    await wishlistmodel.updateOne({ userId: userid }, { $pull: { products: req.query.productId } })
+    res.redirect('/wishlistdata')
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
+  }
 }
 // removefrom wishlist add to cart
 const addcartwishlist = async (req, res) => {
-  try{
-  let userid = await userdata.find({ email: req.session.userEmail });
-  let user_id = userid[0]._id
-  // delete from wishlist
-  // add to cart
-  let userCart = await cartmodel.findOne({ userId: user_id })
-  let itemIndex = userCart.cartItems.findIndex((cartItems) => {
-    return cartItems.productId == req.query.productId
-  })
-  if (itemIndex > -1) {//-1 if no item matches
-    await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
-      {
-
-        $inc: { 'cartItems.$.qty': 1 }
-      }
-    )
-    await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
-
+  try {
+    let userid = await userdata.find({ email: req.session.userEmail });
+    let user_id = userid[0]._id
+    // delete from wishlist
+    // add to cart
+    let userCart = await cartmodel.findOne({ userId: user_id })
+    let itemIndex = userCart.cartItems.findIndex((cartItems) => {
+      return cartItems.productId == req.query.productId
+    })
+    if (itemIndex > -1) {//-1 if no item matches
+      await cartmodel.updateOne({ userId: user_id, 'cartItems.productId': req.query.productId },
+        {
+          $inc: { 'cartItems.$.qty': 1 }
+        }
+      )
+      await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
+    }
+    else {
+      await cartmodel.updateOne({ userId: user_id },
+        {
+          $push: { cartItems: { productId: req.query.productId, qty: 1 } }
+        }
+      )
+      await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
+    }
+    res.redirect('/wishlistdata')
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error')
   }
-  else {
-    await cartmodel.updateOne({ userId: user_id },
-      {
-        $push: { cartItems: { productId: req.query.productId, qty: 1 } }
-      }
-    )
-    await wishlistmodel.updateOne({ userId: user_id }, { $pull: { products: req.query.productId } })
-  }
-  res.redirect('/wishlistdata')
-} catch (error) {
-  console.log(error.message);
-  res.redirect('/error')
-
 }
-}
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
   error,
   landing,
-
   product,
-
+  shop,
+  catfilter,
   singleproduct,
-
   cartdataprint,
   userAddToCart,
   userAddFromCart,
   userDeductFromCart,
   removeFromCart,
-
   userWishlist,
   userAddToWishlist,
   removeFromWishlist,
-  addcartwishlist
+  addcartwishlist,
+  searchProduct,
+  clearFilter
 };

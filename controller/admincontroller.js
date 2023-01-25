@@ -1,4 +1,3 @@
-const sharp = require("sharp")
 const admindatamodel = require("../models/adminmodel");
 const Product = require("../models/adminproductmodel");
 const Userdatamodel = require("../models/usermodel");
@@ -8,31 +7,23 @@ const couponmodel = require("../models/couponmodel");
 const ordermodel = require("../models/ordermodel");
 const User = require("../models/usermodel");
 const cloudinary = require('cloudinary').v2;
-
 //cloudinary  Configuration
 cloudinary.config({
   cloud_name: "dczou8g32",
   api_key: "634374197678664",
   api_secret: "bT83DQmDOjNOnRPcK8zQqWF6DQU"
 });
-
-
-
 const adminlogin = (req, res) => {
   res.render("../views/admin/adminlogin");
 };
-
 const admincategory = (req, res) => {
   res.render("../views/admin/admincategory");
 };
-
 // admin login
-
 const adminlogdata = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body.email);
     let user = await admindatamodel.findOne({ email: email });
     if (user) {
       if (email === user.email && password === user.password) {
@@ -51,7 +42,6 @@ const adminlogdata = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
 // adminlogout
@@ -60,7 +50,6 @@ const adminlogout = (req, res) => {
   req.session.destroy()
   res.redirect('/adminlogin')
 };
-
 // show customer data
 const userdata = async (req, res) => {
   try {
@@ -69,15 +58,11 @@ const userdata = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.redirect('/error')
-
   }
 };
 // dashboard
 const admindashboard = async (req, res) => {
 try {
-  
-
-
   // find order
   const order = await Product.find();
   // find order
@@ -92,65 +77,45 @@ try {
   const shipped = await ordermodel.find({ status: 'shipping' }).count()
   const Delivered = await ordermodel.find({ status: 'delivered' }).count()
   const Cancelled = await ordermodel.find({ status: 'cancel' }).count()
-
-
-
   let orderPerMonth = []
   for (let i = 0; i < 12; i++) {
     let numberOfOrders = await ordermodel.find({ month: i }).count()
     orderPerMonth.push(numberOfOrders)
   }
-
-
-
   res.render("../views/admin/admindashboard", { boardorderdata, order, userdata, productcount, placed, Return, shipped, Delivered, Cancelled, orderPerMonth })
-
 } catch (error) {
   console.log(error.message);
   res.redirect('/error')
-
 }
 };
 const adminboarddata = (req, res) => {
-
-
   res.redirect('/admindashboard')
 }
-
 // blockuser
 const blockuser = async (req, res) => {
   try {
-    console.log("reach");
     const check = await Userdatamodel.findById({ _id: req.query.id });
-    console.log(check);
     if (check.status == true) {
       await Userdatamodel.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: false } }
       );
-      console.log(req.query.id + "hau");
-
-      console.log(check.status);
     } else {
       await Userdatamodel.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: true } }
       );
-      console.log(check.status);
     }
     res.redirect("/admincustomer");
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
 // insert image
 const insertProduct = async (req, res) => {
   if (req.files) {
-    console.log(req.files)
     try {
-
       // cloudinary
       const files = req.files;
       const promises = await files.map(file => {
@@ -168,11 +133,8 @@ const insertProduct = async (req, res) => {
           });
         });
       });
-
       Promise.all(promises)
         .then(async (results) => {
-          console.log("All files uploaded successfully", results);
-          console.log(req.body)
           const newProduct = new Product({
             name: req.body.name,
             description: req.body.description,
@@ -182,21 +144,17 @@ const insertProduct = async (req, res) => {
             image: results,
           })
           newProduct.save()
-          console.log(newProduct)
-
         })
       res.redirect("/adminproducts");
     } catch (error) {
       console.log(error.message);
       res.redirect('/error')
-
     }
   }
   else {
     res.redirect('/admin/products/categorymangement?message=Select jpeg format')
   }
 };
-
 // display image
 const displayimage = async (req, res) => {
   try {
@@ -209,70 +167,48 @@ const displayimage = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.redirect('/error')
-
   }
 };
-
 //   blockproduct
 const blockproduct = async (req, res) => {
   try {
-    console.log("reach");
     const check = await Product.findById({ _id: req.query.id });
-
     if (check.status == true) {
       await Product.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: false } }
       );
-      console.log(req.query.id + "hau");
-
-      console.log(check.status);
     } else {
       await Product.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: true } }
       );
-      console.log(check.status);
     }
     res.redirect("/adminproducts");
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
-
-
 //   get  productid
 let  editid;
 const adminproductgetid = async (req, res) => {
   try {
-    console.log(req.query.id);
     editid = req.query.id;
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
-
 // edit product
-
 const adminproductedit = async (req, res) => {
-
+  console.log(req.query + '1232322222222');
+  console.log(req.body);
   try {
-
-console.log( editid);
-
-
-console.log(req.files);
   const files = req.files;
   const promises = await files.map(async (file, index) => {
-    const checkedit = await Product.findById({ _id: editid });
-    console.log(checkedit);
-    
+    const checkedit = await Product.findById({ _id:  req.body.id });  
     return new Promise( (resolve, reject) => {
-
       cloudinary.uploader.upload(file.path,
        {
         public_id: checkedit.image[index].public_id, 
@@ -290,16 +226,11 @@ console.log(req.files);
       });
 });
 });
-
   Promise.all(promises)
     .then(async (results) => {
-      console.log("All files uploaded successfully", results);
-      console.log(results)
-        const checkedit = await Product.findById({ _id: editid });
-        console.log(checkedit);
+        const checkedit = await Product.findById({ _id:  req.body.id });
         await Product.updateOne(
-  
-          { _id: editid },
+          { _id:  req.body.id },
           {
             $set: {
               name: req.body.name,
@@ -312,15 +243,12 @@ console.log(req.files);
           }
         );
       })
-  console.log(req.file);
     res.redirect("/adminproducts");
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
-
 // render category
 const categorydata = async (req, res) => {
   try {
@@ -331,60 +259,51 @@ const categorydata = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.redirect('/error')
-
   }
-  console.log("reach");
 };
 // add category
 const addcategory = async (req, res) => {
   try {
-    let category = new categorymodel({
+  let  proexist=await categorymodel.findOne({name:req.body.name})
+    if(proexist){
+      const userdetaicategory = await categorymodel.find({});
+
+   res.render("../views/admin/admincategory.ejs",{error:'Category Already Exist', category:userdetaicategory })
+
+    }else{
+      let category = new categorymodel({
       name: req.body.name,
     });
-    console.log(req.file);
     category.save();
     res.redirect("/admincategory");
+  }
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
-  console.log("reach");
 };
 // category block
-
 const categoryblock = async (req, res) => {
   try {
-    console.log("reach");
     const check = await categorymodel.findById({ _id: req.query.id });
-
     if (check.status == true) {
       await categorymodel.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: false } }
       );
-      console.log(req.query.id + "hau");
-
-      console.log(check.status);
     } else {
       await categorymodel.findByIdAndUpdate(
         { _id: req.query.id },
         { $set: { status: true } }
       );
-      console.log(check.status);
     }
     res.redirect("/admincategory");
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
-
-  console.log("reach");
 };
-
 // banner
-
 // insert banner
 const insertbanner = (req, res) => {
   try {
@@ -396,10 +315,8 @@ const insertbanner = (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
-
 // display banner image
 const banner = async (req, res) => {
   try {
@@ -410,15 +327,12 @@ const banner = async (req, res) => {
   } catch (err) {
     console.log(err.message);
     res.redirect('/error')
-
   }
-  console.log("reach");
 };
 // block banner image
 const bannerblock = async (req, res) => {
   try {
     const check = await bannermodel.findById({ _id: req.query.id });
-
     if (check.status == true) {
       await bannermodel.findByIdAndUpdate(
         { _id: req.query.id },
@@ -434,19 +348,15 @@ const bannerblock = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
 // coupon inasert
 const couponsdata = async (req, res) => {
-
-
   try {
 
     const name = req.body.name;
     let couponexist = await couponmodel.findOne({ name: name });
     if (couponexist) {
-      console.log('exist');
       res.redirect("/admincoupons");
     } else {
       let coupon = new couponmodel({
@@ -456,7 +366,6 @@ const couponsdata = async (req, res) => {
         minpurchaseamount: req.body.minpurchase,
         createddate: req.body.crearedate,
         expiredate: req.body.expiredate,
-
       });
       coupon.save();
       res.redirect("/admincoupons");
@@ -464,26 +373,18 @@ const couponsdata = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
 };
-
-
 // display coupon
 const admincoupon = async (req, res) => {
   try {
     const coupon = await couponmodel.find({});
-
     res.render("../views/admin/admincoupon", { coupondata: coupon });
-
   }
   catch (error) {
     res.redirect('/error')
-
-    console.log(error.message);
   }
 };
-
 const orderstatus = async (req, res) => {
   try{
   let status = req.body.select
@@ -492,33 +393,25 @@ const orderstatus = async (req, res) => {
   const date = new Date();
   const month = date.getMonth();
   await ordermodel.updateOne({ _id: id }, { $set: { month: month } })
-
   res.redirect('/adminorder')
 } catch (error) {
   console.log(error.message);
 }
 }
-
 // display order
 const adminorder = async (req, res) => {
   try {
     const order = await ordermodel.find({});
-
-
     res.render("../views/admin/adminorder", { order: order });
   }
   catch (error) {
     console.log(error.message);
     res.redirect('/error')
-
   }
-
 };
-
 
 module.exports = {
   admindashboard,
-
   // admin login
   adminlogin,
   adminlogdata,
@@ -554,5 +447,4 @@ module.exports = {
   //coupons
   couponsdata,
   // couponblock
-
 };

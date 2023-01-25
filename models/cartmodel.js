@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-// const { userAddToCart } = require('../controller/productcontroller');
-
-// const Adminproduct=require('./adminproductmodel');
 const cartSchema = new mongoose.Schema({
     userId:{
         type:mongoose.SchemaTypes.ObjectId,
@@ -26,7 +23,5 @@ const cartSchema = new mongoose.Schema({
             type:Number
         }
 })
-
-
 const Cart = mongoose.model('cart', cartSchema);
 module.exports = Cart;

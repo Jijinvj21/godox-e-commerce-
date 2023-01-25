@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin</title>
+    <title>Godox</title>
     
     
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
@@ -21,16 +21,33 @@
 <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.1/css/rowReorder.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-    <link href="/public/stylesheet/css/productccss.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script> -->
-</head>
+    </head>
 
-<body class="sb-nav-fixed">
+<body class="row container-fluid m-0 p-0">
     
-  <%- include('../partials/admin-header')%>
-    <div id="h">
-      <div class="container-fluid px-4">
+  <nav class="navbar bg-dark col-sm-12">
+    <div class="container-fluid">
+      <a class="navbar-brand px-5" href="/admindashboard" style="color: white;">Admin</a>
+      <a href="/adminlogout"> <button class="btn btn-dark logoutbt " style="margin-top: 0.5%; float: right; font-size: 20px;" >Logout</button></a>
+
+
+    </div>
+  </nav>
+
+ 
+    <div class="d-flex flex-column align-items-center bg-dark  col-sm-2" style=" min-height: 94.2vh;">
+        <a href="/admindashboard" class="home-txt btn btn-dark my-5" style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px;">  <b>Dashboard</b>  </a>
+            <a href="/admincustomer" class="prodect-txt btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255);font-size: 20px; "> <b> Customers</b></a>
+            <a href="/adminproducts" class="prodect-txt btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b>Products</b> </a>
+            <a href="/admincategory" class="prodect-txt btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; " > <b>Category</b> </a>
+            <a href="/adminorder" class="prodect-txt  btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b>Order</b> </a>
+            <a href="/admincoupons" class="prodect-txt  btn btn-dark"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px;"> <b>Coupons</b> </a>    
+            <a href="/adminbanner" class="prodect-txt btn btn-dark my-5"  style="text-decoration: none ; color: rgb(255, 255, 255); font-size: 20px; "> <b> Banner</b></a>
+
+
+        </div>
+    <div class="col-sm-10">
+      <div class="container-fluid ">
         <h1 class="mt-4 text-center"  style="background-color: #c5c5c5; padding-top: 15px;padding-bottom: 15px;">User data</h1> 
         
   </div>
@@ -81,15 +98,6 @@
       
     </div>
     <!-- </div> -->
-
-
-
-
-
-
-
-
-    
     <script>
       $(document).ready(function () {
         var table = $('#example').DataTable({
@@ -101,13 +109,7 @@
       });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/javascript/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/public/assets/demo/chart-area-demo.js"></script>
-    <script src="/public/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/public/javascript/js/datatables-simple-demo.js"></script> -->
+
 </body>
 
 </html>
