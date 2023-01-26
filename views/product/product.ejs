@@ -162,7 +162,7 @@
 
 
 
-    <div class="container columns" style="min-height: 46.6vh ;">
+    <div class="container columns" style="min-height: 64.7vh ;">
       <div class="filter-sort d-flex justify-content-between m-2">
         <div class="dropdown">
           <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -202,6 +202,19 @@
           </ul>
         </div>
       </div>
+
+
+      <%if(productdata.length !=0){%>
+        <p style="display: flex; justify-content: center;"></p>
+        <%} else{%>
+          <div class="errordiv" style="height:20.5vh;">
+            <h4 class=" d-flex justify-content-center mt-5 text-danger"> NO PRODUCT FOUND</h4>
+  
+          </div>
+  
+          <%}%>
+
+
       <div id="product333" class="container-fluid">
       <% for (let i=0; i < productdata.length ; i++) { %>
         <%if(productdata[i].status===true){%>
@@ -232,6 +245,7 @@
           </div>
           
     </div>
+  
 
     <div class="pagnition">
       
@@ -304,15 +318,7 @@
         })
       }
     </script>
-    <%if(productdata.length !=0){%>
-      <p style="display: flex; justify-content: center;"></p>
-      <%} else{%>
-        <div class="errordiv" style="height:20.5vh;">
-          <h4 class=" d-flex justify-content-center  text-danger"> NO PRODUCT FOUND</h4>
-
-        </div>
-
-        <%}%>
+    
         
           <div class="container-fluid">
             <div class="row">
