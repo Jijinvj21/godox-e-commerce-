@@ -231,31 +231,31 @@
                                                         <div class="row main align-items-center">
                                                             <div class="col-2">
                                                                 <img class="img-fluid"
-                                                                    src="<%=proimg.cartItems[i].productId.image[0].url%>">
+                                                                    src="<%=proimg?.cartItems[i]?.productId?.image[0].url%>">
                                                             </div>
                                                             <div class="col">
                                                                 <div class="row text-muted">
-                                                                    <%=proimg.cartItems[i].productId.category%>
+                                                                    <%=proimg?.cartItems[i]?.productId?.category%>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <%=proimg.cartItems[i].productId.name%>
+                                                                    <%=proimg?.cartItems[i]?.productId?.name%>
                                                                 </div>
                                                             </div>
                                                             <div class="col">
-                                                                <a href="/cartdec?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                <a href="/cartdec?id=<%=proimg?.cartItems[i]?.productId?._id%>"
                                                                     style="text-decoration: none; color: #000;">-</a><a
                                                                     href="#" class="border"
                                                                     style="text-decoration: none; color: #000;">
                                                                     <%=proimg.cartItems[i].qty%>
                                                                 </a><a
-                                                                    href="/cartimc?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                    href="/cartimc?id=<%=proimg.cartItems[i].productId?._id%>"
                                                                     style="text-decoration: none; color: #000;">+</a>
                                                             </div>
-                                                            <% totprice=proimg.cartItems[i].productId.price *
-                                                                proimg.cartItems[i].qty %>
+                                                            <% totprice=proimg.cartItems[i].productId?.price *
+                                                                proimg.cartItems[i]?.qty %>
                                                                 <div class="col d-flex justify-content-center">&dollar;
                                                                     <%=totprice%><span class="close">
-                                                                            <a href="/productId?id=<%=proimg.cartItems[i].productId._id%>"
+                                                                            <a href="/productId?id=<%=proimg.cartItems[i].productId?._id%>"
                                                                                 onclick="return confirm('Are you sure')"
                                                                                 class="mx-auto"
                                                                                 style="text-decoration: none; color: #000;">&#10005;</a></span>
